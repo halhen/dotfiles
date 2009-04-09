@@ -1,0 +1,43 @@
+Xft.dpi:	96
+emacs.font = -*-terminal-medium-r-normal-*-12-*-*-*-*-*-iso8859-1
+
+URxvt*termName: rxvt
+    
+## borderless and no scrollbar
+URxvt*scrollBar_right: false
+URxvt*scrollBar: false
+URxvt*borderLess: false
+
+## teh transparency stuff
+URxvt*inheritPixmap: true
+URxvt*tintColor: white
+URxvt*shading: 40
+
+## geometry and font
+URxvt*geometry: 84×24
+URxvt*font: xft:terminus:pixelsize=11
+
+## change default colors
+URxvt*background: #000000
+URxvt*foreground: #CCCCCC
+URxvt*color0: #000000
+URxvt*color1: #A80000
+URxvt*color2: #00A800
+URxvt*color3: #A85400
+URxvt*color4: #0000A8
+URxvt*color5: #A800A8
+URxvt*color6: #00A8A8
+URxvt*color7: #CCCCCC
+URxvt*color8: #545054
+URxvt*color9: #F85450
+URxvt*color10: #50FC50
+URxvt*color11: #AFC81C
+URxvt*color12: #5054F8
+URxvt*color13: #F854F8
+URxvt*color14: #50FCF8
+URxvt*color15: #F8FCF8
+
+URxvt.perl-ext-common: default,matcher
+URxvt.urlLauncher: firefox
+URxvt.matcher.button: 2
+URxvt.matcher.pattern.1: \\bwww\\.[\\w-]\\.[\\w./?&@#-]*[\\w/-]
