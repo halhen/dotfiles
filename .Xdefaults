@@ -1,5 +1,4 @@
 Xft.dpi:	96
-emacs.font = -*-terminal-medium-r-normal-*-12-*-*-*-*-*-iso8859-1
 
 URxvt*termName: rxvt
     

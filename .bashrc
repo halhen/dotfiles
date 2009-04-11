@@ -60,3 +60,8 @@ extract () {
 repkg() {
     makepkg -efi
 }
+
+calc(){ 
+	echo "$*" | bc;
+}
+
