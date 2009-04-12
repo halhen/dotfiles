@@ -65,3 +65,8 @@ calc(){
 	echo "$*" | bc;
 }
 
+radio() {
+    killall mpg123; shoutcast-search -n 1 -t mpeg -b ">63" --sort=ln10r $* | xargs mpg123 -q -@ &
+}
+
+
