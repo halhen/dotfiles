@@ -10,6 +10,9 @@ syndaemon -k -t -i 1 > /dev/null &
 # urxvt deamon
 urxvtd -q -f -o
 
+killall notification-daemon &> /dev/null
+statnot & 
+
 # Launch DE
 # exec gnome-session
 # exec startkde
