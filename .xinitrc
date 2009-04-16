@@ -10,6 +10,10 @@ syndaemon -k -t -i 1 > /dev/null &
 # urxvt deamon
 urxvtd -q -f -o
 
+# speed up keyboard repetition rate
+xset r rate 200 30 &
+
+# status messages / notifications
 killall notification-daemon &> /dev/null
 statnot & 
 
