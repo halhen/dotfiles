@@ -1,12 +1,10 @@
 clear mod1
 clear mod4
-clear mod5
 
 keycode 133 = Alt_L
-keycode 134 = ISO_Level3_Shift
 
 keycode 64 = Meta_L
 keycode 92 = Meta_R
 add mod1 = Alt_L
 add mod4 = Meta_L Meta_R
-add mod5 = Mode_switch ISO_Level3_Shift
+
