@@ -66,8 +66,16 @@ calc(){
 	echo "$*" | bc;
 }
 
-radio() {
-    killall mpg123; shoutcast-search -n 1 -t mpeg -b ">63" --sort=ln10r $* | xargs mpg123 -q -@ &
+# Play a random radio station from shoutcast. Optionally add arguments, r.g. 'randradio metallica'.
+randradio() {
+    killall mpg123 &> /dev/null; shoutcast-search -n 1 -t mpeg -b ">63" --sort=ln10r $* | xargs mpg123 -q -@ &
 }
 
-
+# Use dmenu to select a radio station. Optionally add arguments, e.g. 'radio metallica'.
+radio() {
+    killall mpg123 &> /dev/null;
+    URL=`shoutcast-search -t mpeg -b ">63" --sort=l -f "[%l] %s %p %u" $* | dmenu -fn "-*-terminal-medium-r-normal-*-12-*-*-*-*-*-iso8859-1" -nb "#222222" -nf "#a8a8a8" -sb "#222222" -sf "#afc81c" | awk '{ print $NF }'` 
+    if [ ! -z $URL ]; then
+        mpg123 -q -@ $URL &
+    fi
+}
