@@ -4,6 +4,11 @@
 #
 # Executed by startx (run your window manager from here)
 
+# possible xmodmap - for macbook
+if [ -f ~/.Xmodmap ]; then
+    xmodmap ~/.Xmodmap
+fi
+
 # Disable touchpad clicks while typing
 syndaemon -k -t -i 1 > /dev/null &
 
