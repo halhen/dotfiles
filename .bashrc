@@ -76,6 +76,6 @@ radio() {
     killall mpg123 &> /dev/null;
     URL=`shoutcast-search -t mpeg -b ">63" --sort=l -f "[%l] %s %p %u" $* | dmenu -fn "-*-terminal-medium-r-normal-*-12-*-*-*-*-*-iso8859-1" -nb "#222222" -nf "#a8a8a8" -sb "#222222" -sf "#afc81c" | awk '{ print $NF }'` 
     if [ ! -z $URL ]; then
-        mpg123 -q -@ $URL &
+        nohup mpg123 -q -@ $URL &>/dev/null &
     fi
 }
