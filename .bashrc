@@ -25,6 +25,7 @@ alias pacman='sudo pacman'
 alias y='yaourt'
 alias rm="rm --preserve-root"
 alias emacs="emacs -nw"
+alias c="cd .."
 
 # Exports
 export EDITOR="emacs -nw"
