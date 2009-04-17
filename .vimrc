@@ -1,3 +1,4 @@
+" Replace tabs with four spaces
 :set tabstop=4
 :set expandtab
-:wq!    
+:set shiftwidth=4
