@@ -1,6 +1,3 @@
-" Color scheme
-colorscheme colorer
-
 " Tab settings
 set smartindent
 set tabstop=4
