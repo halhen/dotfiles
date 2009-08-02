@@ -26,7 +26,5 @@ syntax enable
 set history=1024
 set undolevels=1024
 
-" Highlight word under cursor
-highlight flicker cterm=bold ctermfg=white
-au CursorMoved <buffer> exe 'match flicker /\V\<'.escape(expand('<cword>'), '/').'\>/'
-
+" gvim font / color scheme
+set gfn=Monospace\ 8
