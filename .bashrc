@@ -30,6 +30,7 @@ alias c="cd .."
 # Exports
 export EDITOR="vim"
 export OOO_FORCE_DESKTOP=gnome
+export AWT_TOOLKIT=MToolkit
 
 # Useful functions
 extract () {
