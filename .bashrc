@@ -2,7 +2,7 @@
 [ -z "$PS1" ] && return
 
 # Start X if logging in from vc/1
-if [[ -z "$DISPLAY" ]] && [[ $(tty) = /dev/vc/1 ]]; then
+if [[ -z "$DISPLAY" ]] && [[ $(tty) = /dev/tty1 ]]; then
 	xinit -- :0
 	logout
 fi
