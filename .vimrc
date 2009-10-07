@@ -19,6 +19,9 @@ set backupdir=/tmp/
 map <F1> :tabp<CR>
 map <F2> :tabn<CR>
 
+" NERDtree
+map <F6> :NERDTreeToggle<CR>
+
 " Enable syntax highlighting
 syntax enable
 
