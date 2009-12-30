@@ -8,6 +8,7 @@ if [[ -z "$DISPLAY" ]] && [[ $(tty) = /dev/tty1 ]]; then
 fi
 
 # bash-completion
+complete -cf sudo
 if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
@@ -26,6 +27,7 @@ alias y='yaourt'
 alias rm="rm --preserve-root"
 alias emacs="emacs -nw"
 alias c="cd .."
+alias e3="e3vi"
 
 # Exports
 export EDITOR="vim"
@@ -80,3 +82,6 @@ radio() {
         nohup mpg123 -q -@ $URL &>/dev/null &
     fi
 }
+
+# Make files or directories belong to me
+function mkmine() { sudo chown -R ${USER}:${USER} ${1:-.}; }
