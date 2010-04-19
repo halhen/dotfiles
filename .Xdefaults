@@ -7,17 +7,12 @@ URxvt*scrollBar_right: false
 URxvt*scrollBar: false
 URxvt*borderLess: false
 
-## teh transparency stuff
-URxvt*inheritPixmap: true
-URxvt*tintColor: white
-URxvt*shading: 40
-
 ## geometry and font
 URxvt*geometry: 84×24
 URxvt*font: xft:terminus:pixelsize=11
 
 ## change default colors
-URxvt*background: #000000
+URxvt*background: #111111
 URxvt*foreground: #CCCCCC
 URxvt*color0: #000000
 URxvt*color1: #A80000
@@ -36,7 +31,12 @@ URxvt*color13: #F854F8
 URxvt*color14: #50FCF8
 URxvt*color15: #F8FCF8
 
-URxvt.perl-ext-common: default,matcher
-URxvt.urlLauncher: firefox
+URxvt.perl-ext-common: default,matcher,clipboard
+URxvt.urlLauncher: chromium
 URxvt.matcher.button: 2
 URxvt.matcher.pattern.1: \\bwww\\.[\\w-]\\.[\\w./?&@#-]*[\\w/-]
+
+
+## xterm
+XTerm*background: #111111
+XTerm*Foreground: Grey

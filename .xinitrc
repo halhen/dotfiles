@@ -9,9 +9,10 @@ syndaemon -k -t -i 1 > /dev/null &
 
 # Launch DE
 # exec gnome-session
-exec startkde
+# exec awesome
+#exec startkde
 # exec startxfce4
 # ...or the Window Manager of your choice
 # exec xterm
-# exec ~/.dwm-run.sh
+exec ~/.dwm-run.sh
 # exec wmii
