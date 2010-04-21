@@ -16,6 +16,9 @@ fi
 # Prompt
 PS1='\[\e[1;33m\][\!]\[\e[m\]\[\e[0;37m\][\u \w]\[\e[m\]\[\e[m\] \[\e[1;33m\]\$ \[\e[m\]\[\e[0;37m\]'
 
+# vi mode
+set -o vi
+
 # Add some color
 alias ls='ls --color=auto'
 export GREP_COLOR="1;33"
