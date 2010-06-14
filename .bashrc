@@ -14,7 +14,8 @@ if [ -f /etc/bash_completion ]; then
 fi
 
 # Prompt
-PS1='\[\e[1;33m\][\!]\[\e[m\]\[\e[0;37m\][\u \w]\[\e[m\]\[\e[m\] \[\e[1;33m\]\$ \[\e[m\]\[\e[0;37m\]'
+PS1='\[\033[1;33m\]\w\[\033[0m\] \$ '
+PS2='\\ '
 
 # vi mode
 set -o vi
@@ -31,6 +32,8 @@ alias rm="rm --preserve-root"
 alias emacs="emacs -nw"
 alias c="cd .."
 alias e3="e3vi"
+
+alias cal="cal -m"
 
 # Exports
 export EDITOR="vim"
@@ -72,17 +75,11 @@ calc(){
 	echo "$*" | bc;
 }
 
-# Play a random radio station from shoutcast. Optionally add arguments, r.g. 'randradio metallica'.
-randradio() {
-    killall mpg123 &> /dev/null; shoutcast-search -n 1 -t mpeg -b ">63" --sort=ln10r $* | xargs mpg123 -q -@ &
-}
-
 # Use dmenu to select a radio station. Optionally add arguments, e.g. 'radio metallica'.
 radio() {
-    killall mpg123 &> /dev/null;
-    URL=`shoutcast-search -t mpeg -b ">63" --sort=l -f "[%l] %s %p %u" $* | dmenu -fn "-*-terminal-medium-r-normal-*-12-*-*-*-*-*-iso8859-1" -nb "#222222" -nf "#a8a8a8" -sb "#222222" -sf "#afc81c" | awk '{ print $NF }'` 
+    URL=`shoutcast-search -t mpeg -b ">64" --sort=l -f "[%l] %s %p %u" $* | dmenu -fn "-*-terminal-medium-r-normal-*-12-*-*-*-*-*-iso8859-1" -nb "#222222" -nf "#a8a8a8" -sb "#222222" -sf "#afc81c" | awk '{print $NF}' | xargs curl -s | grep File | sort -R | head -n 1 | cut -d = -f 2`
     if [ ! -z $URL ]; then
-        nohup mpg123 -q -@ $URL &>/dev/null &
+        mpc -q clear; mpc -q add $URL; mpc -q play;
     fi
 }
 
