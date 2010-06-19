@@ -36,6 +36,7 @@ alias e3="e3vi"
 alias cal="cal -m"
 
 # Exports
+export BROWSER="chromium"
 export EDITOR="vim"
 export OOO_FORCE_DESKTOP=gnome
 export AWT_TOOLKIT=MToolkit
