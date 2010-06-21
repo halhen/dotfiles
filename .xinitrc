@@ -7,9 +7,6 @@
 # Disable touchpad clicks while typing
 syndaemon -k -t -i 1 > /dev/null &
 
-# Get some music going
-mpd ~/.mpd/config
-
 # Launch DE
 # exec gnome-session
 # exec awesome

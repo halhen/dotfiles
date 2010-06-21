@@ -80,6 +80,7 @@ calc(){
 radio() {
     URL=`shoutcast-search -t mpeg -b ">64" --sort=l -f "[%l] %s %p %u" $* | dmenu -fn "-*-terminal-medium-r-normal-*-12-*-*-*-*-*-iso8859-1" -nb "#222222" -nf "#a8a8a8" -sb "#222222" -sf "#afc81c" | awk '{print $NF}' | xargs curl -s | grep File | sort -R | head -n 1 | cut -d = -f 2`
     if [ ! -z $URL ]; then
+        pidof mpd || mpd ~/.mpd/config &> /dev/null; # start mpd if not running
         mpc -q clear; mpc -q add $URL; mpc -q play;
     fi
 }
