@@ -17,9 +17,6 @@ fi
 PS1='\[\033[1;33m\]\w\[\033[0m\] \$ '
 PS2='\\ '
 
-# vi mode
-set -o vi
-
 # Add some color
 alias ls='ls --color=auto'
 export GREP_COLOR="1;33"
