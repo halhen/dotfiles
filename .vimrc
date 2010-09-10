@@ -31,3 +31,7 @@ set undolevels=1024
 
 " gvim font / color scheme
 set gfn=Monospace\ 8
+
+" persistend undo support
+set undofile
+set undodir=~/.undo
