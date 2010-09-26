@@ -32,6 +32,9 @@ alias e3="e3vi"
 
 alias cal="cal -m"
 
+alias screenon="sudo vbetool dpms on"
+alias screenoff="sudo vbetool dpms off"
+
 # Exports
 export BROWSER="chromium"
 export EDITOR="vim"
