@@ -1,6 +1,7 @@
 #!/bin/bash
 #
 # pbrisbin 2010
+# Adapted from http://pbrisbin.com/bin/xdg-open 
 #
 # put this at /usr/bin/xdg-open (or just ahead of it in $PATH) and
 # chromium will open apps sanely without all that .desktop crap
@@ -14,13 +15,8 @@ if [[ ! -f "$file" ]]; then
   exit 1
 fi
 
-if ! which xdg-mime &>/dev/null; then
-  echo 'xdg-mime required' >&2
-  exit 1
-fi
-
 # read the major and minor mimetype
-IFS='/' read -r major minor < <(xdg-mime query filetype "$file" 2>/dev/null | cut -d ';' -f 1)
+IFS='/' read -r major minor < <(file -ib "$file" 2>/dev/null | cut -d ';' -f 1)
 
 # check for a specific case
 case "$major/$minor" in
