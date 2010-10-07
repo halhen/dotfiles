@@ -15,10 +15,16 @@ if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
 
+
+build_ps1() {
+    local prompt_color='\e[1;33m\]'
+    local host=''
+    [[ $UID -eq 0 ]] && prompt_color='\e[1;31m'
+    [[ ! -z $SSH_TTY ]] && host="@$HOSTNAME "
+    echo "${prompt_color}${host}\w\[\033[0m\] \$ "
+}
 # Prompt
-prompt_color='\e[1;33m\]'
-[[ $UID -eq 0 ]] && prompt_color='\e[1;31m'
-PS1="${prompt_color}\w\[\033[0m\] \$ "
+PS1=$(build_ps1)
 PS2='\\ '
 
 # Add some color
