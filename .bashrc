@@ -16,7 +16,9 @@ if [ -f /etc/bash_completion ]; then
 fi
 
 # Prompt
-PS1='\[\033[1;33m\]\w\[\033[0m\] \$ '
+prompt_color='\e[1;33m\]'
+[[ $UID -eq 0 ]] && prompt_color='\e[1;31m'
+PS1="${prompt_color}\w\[\033[0m\] \$ "
 PS2='\\ '
 
 # Add some color
