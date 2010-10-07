@@ -32,6 +32,7 @@ alias emacs="emacs -nw"
 alias c="cd .."
 alias e3="e3vi"
 
+alias o="xdg-open"
 alias cal="cal -m"
 
 alias screenon="sudo vbetool dpms on"
