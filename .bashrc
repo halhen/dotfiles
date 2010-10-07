@@ -48,7 +48,6 @@ alias grep='grep --color=auto'
 
 # Other aliases
 alias pacman='sudo pacman'
-alias y='yaourt'
 alias rm="rm --preserve-root"
 alias emacs="emacs -nw"
 alias c="cd .."
@@ -93,6 +92,13 @@ extract () {
      ffmpeg -i $1 -copyts -sameq -target ntsc-dvd $2 
 }     
  
+p() {
+# Packer / pacman wrapper. Packer does what it can, passes on to
+# pacman if needed.
+    packer $*
+    [[ $? -eq 5 ]] && pacman $*
+}
+
 repkg() {
     makepkg -efi
 }
