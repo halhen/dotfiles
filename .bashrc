@@ -27,6 +27,20 @@ build_ps1() {
 PS1=$(build_ps1)
 PS2='\\ '
 
+# shell options
+shopt -s cdspell
+shopt -s dotglob
+shopt -s extglob
+shopt -s globstar
+
+# Share history between sessions
+shopt -s histappend
+export PROMPT_COMMAND="history -a; history -n"
+export HISTSIZE=10000
+
+# More helpful cd
+export CDPATH=".:$HOME"
+
 # Add some color
 alias ls='ls --color=auto'
 export GREP_COLOR="1;33"
