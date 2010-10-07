@@ -1,0 +1,61 @@
+#!/usr/bin/env python
+
+import re
+import os
+from time import strftime, localtime, sleep
+
+re_bat = re.compile('(Charging|Discharging|Full), ([\d]+)%')
+re_temp = re.compile('([\d]+(\.\d)?) degrees')
+
+separator = ' | '
+
+def time_str():
+    return strftime('%H:%M')
+
+def acpi_str():
+    acpilines = list(os.popen('acpi -V').readlines())
+    bat_match = re_bat.search(acpilines[0]) 
+    temp_match = re_temp.search(acpilines[3])
+
+    bat_str = temp_str = ''
+
+    if not bat_match:
+        bat_str = ' ' * 4
+    else:
+        status = bat_match.group(1)
+        load = int(bat_match.group(2))
+        charge_direction = {'Charging': '+', 'Discharging': '-', 'Full': ' '}[status]
+
+        if load > 98:
+            bat_str = 'FULL'
+        else:
+            bat_str = '%s%2d%%' % (charge_direction, load)
+
+    if not temp_match:
+        temp_str = ' ' * 5
+    else:
+        temp_str = temp_match.group(1) + 'C'
+
+    return temp_str + separator + bat_str
+
+def setstatus(text):
+    os.popen('xsetroot -name "%s"' % text)
+    
+if __name__ == '__main__':
+    import optparse
+
+    o = optparse.OptionParser(usage="%prog [options]", 
+           description="Update dwm status bar. Use -l to keep %prog alive to regularly keep updating.")
+    o.add_option('-l', '--keep-alive', dest='loop', action='store_true', 
+                default=False, help='Keep updating regularly')
+
+    (options, args) = o.parse_args()
+    loop = options.loop
+
+    while True:
+        statusstr = acpi_str() + separator + time_str()
+        setstatus(statusstr)
+        if not loop:
+            break
+        # Update every HH:MM:00
+        sleep(60 - localtime().tm_sec)

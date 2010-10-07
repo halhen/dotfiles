@@ -22,12 +22,7 @@ dwm() {
     # Random wallpaper
     find $HOME/.wallpaper -type f -regex '.*\.\(jpg\|png\)' | shuf -n 1 | xargs bgs
 
-    # Simple message in bar; battery life and HH:MM
-    while :;
-    do
-        xsetroot -name "$(acpi | awk -F ", " '{printf $2}'; date +' %R')";
-        sleep $(expr 60 - `date +"%S"`); # Update minutes at second 00
-    done &
+    dwmstatus -l & 
 
     exec dwm
 }
