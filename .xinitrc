@@ -22,7 +22,7 @@ dwm() {
     # Random wallpaper
     find $HOME/.wallpaper -type f -regex '.*\.\(jpg\|png\)' | shuf -n 1 | xargs bgs
 
-    dwmstatus -l & 
+    $HOME/.bin/dwmstatus -l & 
 
     exec dwm
 }
