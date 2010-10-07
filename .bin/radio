@@ -1,0 +1,6 @@
+#!/bin/sh
+URL=`shoutcast-search -t mpeg -b ">64" --sort=l -f "[%l] %s %p %u" $* | dmenu | awk '{print $NF}' | xargs curl -s | grep File | sort -R | head -n 1 | cut -d = -f 2`
+if [ ! -z $URL ]; then
+    pidof mpd &> /dev/null || mpd ~/.mpd/config &> /dev/null; # start mpd if not running
+    mpc -q clear; mpc -q add $URL; mpc -q play;
+fi
