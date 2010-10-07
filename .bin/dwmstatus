@@ -4,8 +4,9 @@ import re
 import os
 from time import strftime, localtime, sleep
 
-re_bat = re.compile('(Charging|Discharging|Full), ([\d]+)%')
-re_temp = re.compile('([\d]+(\.\d)?) degrees')
+re_bat = re.compile('(Charging|Discharging|Full), (\d+)%')
+re_bat_discharge = re.compile('(\d\d):(\d\d):\d\d remaining')
+re_temp = re.compile('(\d+(\.\d)?) degrees')
 
 separator = ' | '
 
@@ -24,12 +25,15 @@ def acpi_str():
     else:
         status = bat_match.group(1)
         load = int(bat_match.group(2))
-        charge_direction = {'Charging': '+', 'Discharging': '-', 'Full': ' '}[status]
 
-        if load > 98:
-            bat_str = 'FULL'
+        if status == 'Discharging':
+            bat_discharge_match = re_bat_discharge.search(acpilines[0])
+            bat_str = '%dh%s' % (int(bat_discharge_match.group(1)), bat_discharge_match.group(2))
         else:
-            bat_str = '%s%2d%%' % (charge_direction, load)
+            if load > 98:
+                bat_str = 'FULL'
+            else:
+                bat_str = '+%2d%%' % (load)
 
     if not temp_match:
         temp_str = ' ' * 5
