@@ -21,7 +21,7 @@ do
     then
         if [[ $XRANDR == *$CURRENT\ connected\ \(* ]] # is disabled
         then
-            EXECUTE+="--output $CURRENT --auto --above $DEFAULT_OUTPUT "
+            EXECUTE+="--output $CURRENT --auto "
         else
             EXECUTE+="--output $CURRENT --off "
         fi
