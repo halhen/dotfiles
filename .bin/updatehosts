@@ -79,6 +79,7 @@ temp='/tmp/hosts'
 
 # array of 'host::ip'; will be added at top of file (after localhost)
 lanips=( 
+  'desktop::192.168.0.72'
   'printer::192.168.0.26'
   'router::192.168.0.1'
   )
