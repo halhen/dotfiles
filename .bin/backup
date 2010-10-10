@@ -1,0 +1,72 @@
+#!/bin/bash
+#
+# Backup between laptop and desktop computer
+# Adapted from http://www.mikerubel.org/computers/rsync_snapshots/
+
+VERBOSE=false
+BACKUP_ROOT="/home/backup"
+FROM_DESKTOP=(Henrik Karin Musik Pictures Videos)
+DESKTOP_IP=$(gethostip -d desktop)
+
+error() { echo "$(date +"%Y-%m-%d %H:%M:%S"): $*" >&2; }
+fail() { error "Fatal: $*"; exit 1; }
+
+backup_cifs()
+# $1: cifs service
+{
+    [[ -z $1 ]] && fail "backup_cifs(): missing parameter"
+
+    local mountdir="/tmp/bu.$$"
+    local folder=${1##*/}
+    mkdir -p $mountdir
+
+    $VERBOSE && echo "Attempting to backup $1"
+    if mount.cifs "$1" $mountdir -o iocharset=utf8,password=""; then
+        $VERBOSE && rsync_p="-P" || rsync_p=""
+
+        mkdir -p "$BACKUP_ROOT/bu.0/$folder"
+        rsync $rsync_p -a --delete $mountdir/ "$BACKUP_ROOT/bu.0/$folder"
+        umount $mountdir
+        $VERBOSE && echo "Done"
+    else
+        error "Failed to mount $1"
+    fi;
+
+    rmdir $mountdir
+}
+
+# First, check that we are ready to backup
+
+# Are we root?
+[[ $(id -u) -eq 0 ]] || fail "Must be root"
+
+# Is desktop up?
+ping -q -c 2 $DESKTOP_IP > /dev/null 2>&1 || fail "Desktop not reachable"
+
+# Command line parameters
+while [[ -n "$1" ]]; do
+    case $1 in
+        -v) VERBOSE=true;;
+    esac
+    shift
+done
+
+# Make sure directores are there
+for i in {0..4}; do
+    mkdir -p $BACKUP_ROOT/bu.$i
+done;
+
+# Cycle backup directories
+# Don't delete the oldest, reuse it
+mv $BACKUP_ROOT/bu.4 $BACKUP_ROOT/bu.tmp
+mv $BACKUP_ROOT/bu.3 $BACKUP_ROOT/bu.4
+mv $BACKUP_ROOT/bu.2 $BACKUP_ROOT/bu.3
+mv $BACKUP_ROOT/bu.1 $BACKUP_ROOT/bu.2
+mv $BACKUP_ROOT/bu.0 $BACKUP_ROOT/bu.1
+mv $BACKUP_ROOT/bu.tmp $BACKUP_ROOT/bu.0
+cp -al $BACKUP_ROOT/bu.1/. $BACKUP_ROOT/bu.0
+
+# Backup desktop folders
+for dir in "${FROM_DESKTOP[@]}"; do
+    backup_cifs "//$DESKTOP_IP/$dir"
+done
