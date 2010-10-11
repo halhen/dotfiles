@@ -29,6 +29,7 @@ PS2='\\ '
 
 # shell options
 shopt -s cdspell
+shopt -s checkwinsize
 shopt -s dotglob
 shopt -s extglob
 shopt -s globstar
