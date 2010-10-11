@@ -1,0 +1,14 @@
+#!/bin/bash
+#
+# Find file system objects by strftime / date(1) formats
+
+[[ -z $1 ]] && echo "Usage: $(basename $0) <pattern>" && exit 1
+
+dir_glob=$(echo $1 | sed 's/%./*/g;s/*\+/*/g')
+
+# First, match by wildcards
+for cand in $(ls -d1 $dir_glob 2>/dev/null); do
+    # Second, make sure the wildcards were valid FORMATS
+    python -c "import time, sys; time.strptime('$cand', '$1'); sys.exit(0);" 2>/dev/null
+    [[ $? -eq 0 ]] && echo $cand
+done
