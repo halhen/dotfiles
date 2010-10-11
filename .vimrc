@@ -5,6 +5,10 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 
+" Folds
+"set foldmethod=indent
+nnoremap <space> za
+
 " Flash matching paranthesis
 set showmatch
 
@@ -18,9 +22,6 @@ set backupdir=/tmp/
 " File tabs
 map <F1> :tabp<CR>
 map <F2> :tabn<CR>
-
-" NERDtree
-map <F6> :NERDTreeToggle<CR>
 
 " Enable syntax highlighting
 syntax enable
