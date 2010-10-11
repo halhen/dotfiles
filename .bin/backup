@@ -30,9 +30,7 @@ Usage: $(basename $0) -s dir_to_backup -d destination_dir
 
 # Find existing paths that contain the strftime FORMAT given
 function _find_existing_backups {
-    for cand in $(ls -cd1 $(find_by_strftime_format $1)); do
-        echo $cand
-    done
+    ls -cd1 $(find_by_strftime_format $1)
 }
 
 # Set defaults
