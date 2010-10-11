@@ -52,9 +52,7 @@ while [[ -n "$1" ]]; do
 done
 
 # Make sure directores are there
-for i in {0..4}; do
-    mkdir -p $BACKUP_ROOT/bu.$i
-done;
+mkdir -p $BACKUP_ROOT/bu.{0..4}
 
 # Cycle backup directories
 # Don't delete the oldest, reuse it
@@ -70,3 +68,6 @@ cp -al $BACKUP_ROOT/bu.1/. $BACKUP_ROOT/bu.0
 for dir in "${FROM_DESKTOP[@]}"; do
     backup_cifs "//$DESKTOP_IP/$dir"
 done
+
+chown -R backup:users $BACKUP_ROOT/bu.*
+chmod -R a+r $BACKUP_ROOT/bu.*
