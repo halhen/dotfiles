@@ -49,7 +49,7 @@ do
                 [0-9]*) bu_num="$OPTARG";;
                 *)      _fatal "Error: -n requires an integer argument";;
             esac;;
-        ?)  fatal "Unrecognized option, see $(basename $0) -h for help."
+        ?)  _fatal "Unrecognized option, see $(basename $0) -h for help."
     esac
 done
 
