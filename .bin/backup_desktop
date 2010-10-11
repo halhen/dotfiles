@@ -45,7 +45,7 @@ _cleanup
 # Update latest symlink
 rm $backup_latest_symlink 2>/dev/null
 latest_backup=$(ls -cd1 $(find_by_strftime_format "$backup_dest") | head -n 1)
-ln -s "$latest_backup" "$backup_latest_symlink"
+ln -s "$latest_backup" "$backup_latest_symlink" || _fatal "Failed to create latest symlink"
 
 # Give all read access
-chmod a+r $latest_backup $backup_latest_symlink
+chmod a+r $latest_backup $backup_latest_symlink || _fatal "Failed to chmod backup"
