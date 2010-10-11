@@ -67,33 +67,7 @@ export OOO_FORCE_DESKTOP=gnome
 export AWT_TOOLKIT=MToolkit
 
 # Useful functions
-extract () {
-    if [ -f $1 ] ; then
-	case $1 in
-            *.tar.bz2)   tar xvjf $1    ;;
-            *.tar.gz)    tar xvzf $1    ;;
-            *.bz2)       bunzip2 $1     ;;
-            *.rar)       rar x $1       ;;
-           *.gz)        gunzip $1      ;;
-            *.tar)       tar xvf $1     ;;
-            *.tbz2)      tar xvjf $1    ;;
-            *.tgz)       tar xvzf $1    ;;
-            *.zip)       unzip $1       ;;
-            *.Z)         uncompress $1  ;;
-            *.7z)        7z x $1        ;;
-            *)           echo "don't know how to extract '$1'..." ;;
-       esac
-   else
-	echo "'$1' is not a valid file!"
-   fi
- }
-
- convert_video() {
-     # convert_video xxx.mts xxx.avi
-     ffmpeg -i $1 -copyts -sameq -target ntsc-dvd $2 
-}     
- 
-p() {
+function p {
 # Packer / pacman wrapper. Packer does what it can, passes on to
 # pacman if needed.
     packer $*
