@@ -1,0 +1,51 @@
+#!/bin/bash
+# 
+# Backup the Windows desktop
+
+source_folders=(Henrik Karin Musik Pictures Videos)
+backup_dest="/home/backup/desktop/daily-%Y%m%d"
+backup_latest_symlink="/home/backup/desktop/latest"
+
+desktop_ip=$(gethostip -d desktop)
+mountpoint="/tmp/backup.$$"
+
+function _cleanup {
+    for f in "$mountpoint/*"; do
+        umount $f >/dev/null 2>&1
+        rmdir $f >/dev/null 2>&1
+    done
+    rmdir $mountpoint >/dev/null 2>&1
+}
+
+function _fatal {
+    echo "Fatal: $*" >&2
+    _cleanup
+    exit ;
+}
+
+# Must be root
+[[ $(id -u) -eq 0 ]] || _fatal "Must be root"
+
+# Make sure we can talk to desktop
+ping -q -c 1 $desktop_ip > /dev/null 2>&1 || _fatal "Desktop not reachable"
+
+# Mount all folders
+mkdir -p $mountpoint || _fatal "Could not create mountpoint $mountpoint"
+for dir in "${source_folders[@]}"; do
+    mkdir -p "$mountpoint/$dir" || _fatal "Could not create mountpoint $mountpoint"
+    mount.cifs "//$desktop_ip/$dir" "$mountpoint/$dir" -o iocharset=utf8,password="" || _fatal "Could not mount $dir"
+done
+
+# Backup
+backup -s $mountpoint -d $backup_dest -n 5 -v || _fatal "Backup failed"
+
+# Cleanup
+_cleanup
+
+# Update latest symlink
+rm $backup_latest_symlink 2>/dev/null
+latest_backup=$(ls -cd1 $(find_by_strftime_format "$backup_dest") | head -n 1)
+ln -s "$latest_backup" "$backup_latest_symlink"
+
+# Give all read access
+chmod a+r $latest_backup $backup_latest_symlink

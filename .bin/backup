@@ -1,73 +1,98 @@
 #!/bin/bash
 #
-# Backup between laptop and desktop computer
-# Adapted from http://www.mikerubel.org/computers/rsync_snapshots/
+# Backup script using rsync snapshot style
+# Reference: http://www.mikerubel.org/computers/rsync_snapshots/
 
-VERBOSE=false
-BACKUP_ROOT="/home/backup"
-FROM_DESKTOP=(Henrik Karin Musik Pictures Videos)
-DESKTOP_IP=$(gethostip -d desktop)
-
-error() { echo "$(date +"%Y-%m-%d %H:%M:%S"): $*" >&2; }
-fail() { error "Fatal: $*"; exit 1; }
-
-backup_cifs()
-# $1: cifs service
-{
-    [[ -z $1 ]] && fail "backup_cifs(): missing parameter"
-
-    local mountdir="/tmp/bu.$$"
-    local folder=${1##*/}
-    mkdir -p $mountdir
-
-    $VERBOSE && echo "Attempting to backup $1"
-    if mount.cifs "$1" $mountdir -o iocharset=utf8,password=""; then
-        $VERBOSE && rsync_p="-P" || rsync_p=""
-
-        mkdir -p "$BACKUP_ROOT/bu.0/$folder"
-        rsync $rsync_p -a --delete $mountdir/ "$BACKUP_ROOT/bu.0/$folder"
-        umount $mountdir
-        $VERBOSE && echo "Done"
-    else
-        error "Failed to mount $1"
-    fi;
-
-    rmdir $mountdir
+function _fatal {
+    echo "Fatal: $*" >&2
+    exit 1
 }
 
-# First, check that we are ready to backup
+function _help {
+    echo "
+Usage: $(basename $0) -s dir_to_backup -d destination_dir 
+                [-n keep_number_of] [-v] [-h]
 
-# Are we root?
-[[ $(id -u) -eq 0 ]] || fail "Must be root"
+    Options:
+        -s dir_to_backup    Backup all contents in dir_to_backup.
+        -d destination_dir  Backup files to destination_dir. 
+                            destination_dir can contain date(1) FORMATS.
+        -n keep_number_of   Keep keep_number_of recent snapshots, as defined
+                            by backup directory creation time. This is
+                            only applicable if destination_dir contains
+                            date(1) elements that make different. 
+                            Default: 3
+        -v                  verbose mode
+        -h                  print this help and exit"
 
-# Is desktop up?
-ping -q -c 2 $DESKTOP_IP > /dev/null 2>&1 || fail "Desktop not reachable"
+    exit 1
+}
 
-# Command line parameters
-while [[ -n "$1" ]]; do
-    case $1 in
-        -v) VERBOSE=true;;
+# Find existing paths that contain the strftime FORMAT given
+function _find_existing_backups {
+    for cand in $(ls -cd1 $(find_by_strftime_format $1)); do
+        echo $cand
+    done
+}
+
+# Set defaults
+verbose=false
+bu_num=3
+
+# Parse command line
+while getopts "hvs:d:n:" flag
+do
+    case $flag in 
+        h)  _help;;
+        v)  verbose=true;;
+        s)  bu_source="$OPTARG";;
+        d)  bu_dest="$OPTARG";;
+        n)  case $OPTARG in
+                [0-9]*) bu_num="$OPTARG";;
+                *)      _fatal "Error: -n requires an integer argument";;
+            esac;;
+        ?)  fatal "Unrecognized option, see $(basename $0) -h for help."
     esac
-    shift
 done
 
-# Make sure directores are there
-mkdir -p $BACKUP_ROOT/bu.{0..4}
+# Verify command line
+[[ -z $bu_source ]] && _fatal "Missing -s option. See $(basename $0) -h for help." 
+[[ ! -d $bu_source ]] && _fatal "Missing source directory: $bu_source"
+[[ -z $bu_dest ]] && _fatal "Missing -d option. See $(basename $0) -h for help." 
+[[ $bu_num -lt 1 ]] && bu_num=1
 
-# Cycle backup directories
-# Don't delete the oldest, reuse it
-mv $BACKUP_ROOT/bu.4 $BACKUP_ROOT/bu.tmp
-mv $BACKUP_ROOT/bu.3 $BACKUP_ROOT/bu.4
-mv $BACKUP_ROOT/bu.2 $BACKUP_ROOT/bu.3
-mv $BACKUP_ROOT/bu.1 $BACKUP_ROOT/bu.2
-mv $BACKUP_ROOT/bu.0 $BACKUP_ROOT/bu.1
-mv $BACKUP_ROOT/bu.tmp $BACKUP_ROOT/bu.0
-cp -al $BACKUP_ROOT/bu.1/. $BACKUP_ROOT/bu.0
+$verbose && echo "Source: $bu_source"
+$verbose && echo "Destination: $bu_dest"
+$verbose && echo "Number of backups to keep: $bu_num"
 
-# Backup desktop folders
-for dir in "${FROM_DESKTOP[@]}"; do
-    backup_cifs "//$DESKTOP_IP/$dir"
+# Get name of last known backup
+previous_backup=$(_find_existing_backups "$bu_dest" | head -n 1)
+$verbose && echo "Previous backup: $previous_backup"
+
+# Name this backup
+this_backup=$(date +"$bu_dest")
+$verbose && echo "This backup: $this_backup"
+
+# Create new backup dir
+mkdir -p "$this_backup" || _fatal "Failed to create directory: $this_backup"
+
+# Hardlink old contents if it exists, unless we're redoing backup to same dir
+if [[ -d "$previous_backup" && "$previous_backup" != "$this_backup" ]]; then
+    $verbose && echo "Hardlinking previous backup..."
+    cp -al "$previous_backup/." "$this_backup" || _fatal "Hardlinking failed"
+    $verbose && echo "    Done"
+fi
+
+# Do the actual rsync backup
+$verbose && echo "rsync:ing backup..."
+$verbose && rsync_p="-P"
+rsync $rsync_p -a --delete "$bu_source/" "$this_backup" || _fatal "rsync failed"
+$verbose && echo "    Done"
+
+# Removing old backups
+for old in $(_find_existing_backups "$bu_dest" | tail -n +$(( $bu_num+1 ))); do
+    $verbose && echo "Removing old backup: $old"
+    rm -rf $old || echo "Remove failed, continuing..."
 done
 
-chown -R backup:users $BACKUP_ROOT/bu.*
-chmod -R a+r $BACKUP_ROOT/bu.*
+$verbose && echo "All done"
