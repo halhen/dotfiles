@@ -5,6 +5,9 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 
+" Colors
+colorscheme dante
+
 " Folds
 "set foldmethod=indent
 nnoremap <space> za
