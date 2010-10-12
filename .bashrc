@@ -61,3 +61,8 @@ function p {
     packer $*
     [[ $? -eq 5 ]] && pacman $*
 }
+
+function music {
+    pidof mpd &> /dev/null || mpd ~/.mpd/config &> /dev/null
+    ncmpcpp $*
+}
