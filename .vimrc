@@ -48,6 +48,13 @@ nmap <enter> za
 " Tabbing
 noremap <left> :tabp<CR>
 noremap <right> :tabn<CR>
+" Disable arrow keys to really get off them
+noremap <up> <NOP>
+noremap <down> <NOP>
+inoremap <left> <NOP>
+inoremap <right> <NOP>
+inoremap <up> <NOP>
+inoremap <down> <NOP>
 
 " Search
 noremap <space> /\v
