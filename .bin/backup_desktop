@@ -2,6 +2,8 @@
 # 
 # Backup the Windows desktop
 
+export PATH=/home/henrik/.bin:/usr/bin:$PATH
+
 source_folders=(Henrik Karin Musik Pictures Videos)
 backup_dest="/home/backup/desktop/daily-%Y%m%d"
 backup_latest_symlink="/home/backup/desktop/latest"
