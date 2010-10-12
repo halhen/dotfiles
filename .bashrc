@@ -46,6 +46,7 @@ alias cal="cal -m"
 alias o="xdg-open"
 alias rm="rm --preserve-root"
 alias repkg="makepkg -efi"
+alias vim="vim -p"
 
 # Exports
 export AWT_TOOLKIT=MToolkit
