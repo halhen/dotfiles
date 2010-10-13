@@ -53,6 +53,7 @@ export AWT_TOOLKIT=MToolkit
 export BROWSER="chromium"
 export EDITOR="vim"
 export OOO_FORCE_DESKTOP=gnome
+export MOZ_DISABLE_PANGO=1
 
 # Useful functions
 function p {
