@@ -1,6 +1,8 @@
 Xft.dpi:	96
 
 URxvt*termName: rxvt
+URxvt*transparent: true
+URxvt*shading: 10
     
 ## borderless and no scrollbar
 URxvt*scrollBar_right: false
