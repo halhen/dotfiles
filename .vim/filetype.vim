@@ -10,3 +10,8 @@ augroup END
 augroup yaml
     au! BufRead,BufNewFile *.yaml,*.yml     setfiletype yaml
 augroup END
+
+augroup filetypedetect
+    " Mail
+    autocmd BufRead,BufNewFile *mutt-*      setfiletype mail
+augroup END
