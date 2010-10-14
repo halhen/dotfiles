@@ -13,6 +13,12 @@ separator = ' | '
 def time_str():
     return strftime('%H:%M')
 
+def mail_str():
+    numnew = len(os.listdir('/home/henrik/.mail/INBOX/new'))
+    if numnew > 0:
+        return '%d new mail%s' % (numnew, numnew > 1 and 's' or '')
+    return ''
+
 def acpi_str():
     acpilines = list(os.popen('acpi -V').readlines())
     bat_match = re_bat.search(acpilines[0]) 
@@ -57,7 +63,7 @@ if __name__ == '__main__':
     loop = options.loop
 
     while True:
-        statusstr = acpi_str() + separator + time_str()
+        statusstr = separator.join(s for s in (mail_str(), acpi_str(), time_str()) if s)
         setstatus(statusstr)
         if not loop:
             break
