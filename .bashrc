@@ -1,4 +1,4 @@
-# #.bashrc
+# #~/.bashrc
 
 # This is my configuration for bash. I hope to keep it useful across
 # the computers I use, without depending on bash for my custom
