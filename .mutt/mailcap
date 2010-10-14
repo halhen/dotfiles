@@ -1,0 +1,1 @@
+text/html; lynx -dump -force_html %s -display_charset "`locale charmap`" -assume_charset %{charset}; nametemplate=%s.html; copiousoutput; description=HTML Text;
