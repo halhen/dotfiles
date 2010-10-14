@@ -38,6 +38,7 @@ unset markers
 set fcc_attach
 unset mime_forward
 set forward_format      = "Fwd: %s"
+set fast_reply
 set include
 set forward_quote
 
