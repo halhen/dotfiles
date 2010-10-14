@@ -1,0 +1,5 @@
+#!/bin/bash
+
+killall offlineimap
+offlineimap -u Noninteractive.Basic &
+exit 0
