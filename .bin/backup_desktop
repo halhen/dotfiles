@@ -25,29 +25,71 @@ function _fatal {
     exit ;
 }
 
+function _help {
+    echo "
+Usage: $(basename $0) [-s snapshot_directory] [-h]
+
+    Options:
+        -s snapshot_directory Snapshot latest backup to snapshot_directory.
+                              snapshot_directory can contain date(1) formats.
+                              By using date(1) formats, weekly snapshots can
+                              be made with e.g. weekly-%Y%W and montly with
+                              e.g. monthly-%Y%m.
+                              (Known bug: %V does not work properly)
+        -h                  print this help and exit"
+
+    exit 1
+}
+
+# Check command line arguments
+while getopts "s:h" flag
+do
+    case $flag in 
+        h) _help ;;
+        s) snapshot_dest="$OPTARG" ;;
+        ?) _fatal "Unrecognized option, see $(basename $0) -h for help" ;;
+    esac
+done
+
 # Must be root
 [[ $(id -u) -eq 0 ]] || _fatal "Must be root"
 
-# Make sure we can talk to desktop
-ping -q -c 1 $desktop_ip > /dev/null 2>&1 || _fatal "Desktop not reachable"
 
-# Mount all folders
-mkdir -p $mountpoint || _fatal "Could not create mountpoint $mountpoint"
-for dir in "${source_folders[@]}"; do
-    mkdir -p "$mountpoint/$dir" || _fatal "Could not create mountpoint $mountpoint"
-    mount.cifs "//$desktop_ip/$dir" "$mountpoint/$dir" -o iocharset=utf8,password="" || _fatal "Could not mount $dir"
-done
+if [[ $snapshot_dest ]]
+then
+    # Don't backup, snapshot latest finished backup ($backup_latest_symlink)
 
-# Backup
-backup -s $mountpoint -d $backup_dest -n 5 -v || _fatal "Backup failed"
+    snapshot_name=$(date +"$snapshot_dest")
+    cp -alL $backup_latest_symlink $snapshot_name || _fatal "Snapshot to $snapshot_name failed"
 
-# Cleanup
-_cleanup
+    # Keep maximum 3 snapshot copies with this destination
+    for old in $(ls -cd1 $(find_by_strftime_format "$snapshot_dest") | tail -n +4); do
+        rm -rf $old || echo "Failed to remove $old, continuing anyway..." >&2
+    done
+else
+    # Backup
 
-# Update latest symlink
-rm $backup_latest_symlink 2>/dev/null
-latest_backup=$(ls -cd1 $(find_by_strftime_format "$backup_dest") | head -n 1)
-ln -s "$latest_backup" "$backup_latest_symlink" || _fatal "Failed to create latest symlink"
+    # Make sure we can talk to desktop
+    ping -q -c 1 $desktop_ip > /dev/null 2>&1 || _fatal "Desktop not reachable"
 
-# Give all read access
-chmod a+r $latest_backup $backup_latest_symlink || _fatal "Failed to chmod backup"
+    # Mount all folders
+    mkdir -p $mountpoint || _fatal "Could not create mountpoint $mountpoint"
+    for dir in "${source_folders[@]}"; do
+        mkdir -p "$mountpoint/$dir" || _fatal "Could not create mountpoint $mountpoint"
+        mount.cifs "//$desktop_ip/$dir" "$mountpoint/$dir" -o iocharset=utf8,password="" || _fatal "Could not mount $dir"
+    done
+
+    # Backup
+    backup -s $mountpoint -d $backup_dest -n 5 -v || _fatal "Backup failed"
+
+    # Cleanup
+    _cleanup
+
+    # Update latest symlink
+    rm $backup_latest_symlink 2>/dev/null
+    latest_backup=$(ls -cd1 $(find_by_strftime_format "$backup_dest") | head -n 1)
+    ln -s "$latest_backup" "$backup_latest_symlink" || _fatal "Failed to create latest symlink"
+
+    # Give all read access
+    chmod a+r $latest_backup $backup_latest_symlink || _fatal "Failed to chmod backup"
+fi
