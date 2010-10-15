@@ -19,7 +19,7 @@ function _cleanup {
 function _fatal {
     echo "Fatal: $*" >&2
     _cleanup
-    exit ;
+    exit 1
 }
 
 
