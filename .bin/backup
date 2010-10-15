@@ -25,7 +25,8 @@ Usage: $0 -s dir_to_backup -d destination_dir [-v] [-h]
 
 # Find existing paths that contain the strftime FORMAT given
 function _find_existing_backups {
-    ls -td1 $(find_by_strftime_format "$1")
+    matching_dirs=$(find_by_strftime_format "$1")
+    [[ $matching_dirs ]] && ls -td1 $(find_by_strftime_format "$1")
 }
 
 # Remove old backups
@@ -96,7 +97,7 @@ fi
 # Do the actual rsync backup
 $verbose && echo "rsync:ing backup..."
 $verbose && rsync_p="-P"
-rsync $rsync_p -a --delete "$bu_source/" "$this_backup" || _fatal "rsync failed"
+rsync $rsync_p -ah --copy-unsafe-links --delete "$bu_source/" "$this_backup" || _fatal "rsync failed"
 $verbose && echo "    Done"
 
 # Update `latest` symlink
