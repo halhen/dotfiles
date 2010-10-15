@@ -10,18 +10,13 @@ function _fatal {
 
 function _help {
     echo "
-Usage: $(basename $0) -s dir_to_backup -d destination_dir 
-                [-n keep_number_of] [-v] [-h]
+Usage: $0 -s dir_to_backup -d destination_dir [-v] [-h]
 
     Options:
         -s dir_to_backup    Backup all contents in dir_to_backup.
         -d destination_dir  Backup files to destination_dir. 
-                            destination_dir can contain date(1) FORMATS.
-        -n keep_number_of   Keep keep_number_of recent snapshots, as defined
-                            by backup directory creation time. This is
-                            only applicable if destination_dir contains
-                            date(1) elements that make different. 
-                            Default: 3
+                            In this folder, daily, weekly and monthly folders
+                            will be created.
         -v                  verbose mode
         -h                  print this help and exit"
 
@@ -30,12 +25,31 @@ Usage: $(basename $0) -s dir_to_backup -d destination_dir
 
 # Find existing paths that contain the strftime FORMAT given
 function _find_existing_backups {
-    ls -cd1 $(find_by_strftime_format $1)
+    ls -td1 $(find_by_strftime_format "$1")
+}
+
+# Remove old backups
+# $1 is the format of backups, $2 is number of backups to keep
+function _keep_backups {
+    local dirpattern="$1"
+    local num_keepers="$2"
+    [[ $1 && $2 ]] || _fatal "Missing parameters in _keep_backups"
+
+    for old in $(_find_existing_backups "$dirpattern" | tail -n +$(( $num_keepers+1 ))); do
+        $verbose && echo "Removing old backup: $old"
+        rm -rf "$old" || echo "Remove failed, continuing..."
+    done
+}
+
+# Create a symlink snapshot of $1 named $2.
+function _snapshot {
+    snapshot_dest=$2
+    snapshot_name=$(date +"$snapshot_dest")
+    cp -alL "$1" "$snapshot_name" || _fatal "Snapshot to $snapshot_name failed"
 }
 
 # Set defaults
 verbose=false
-bu_num=3
 
 # Parse command line
 while getopts "hvs:d:n:" flag
@@ -45,10 +59,6 @@ do
         v)  verbose=true;;
         s)  bu_source="$OPTARG";;
         d)  bu_dest="$OPTARG";;
-        n)  case $OPTARG in
-                [0-9]*) bu_num="$OPTARG";;
-                *)      _fatal "Error: -n requires an integer argument";;
-            esac;;
         ?)  _fatal "Unrecognized option, see $(basename $0) -h for help."
     esac
 done
@@ -57,18 +67,20 @@ done
 [[ -z $bu_source ]] && _fatal "Missing -s option. See $(basename $0) -h for help." 
 [[ ! -d $bu_source ]] && _fatal "Missing source directory: $bu_source"
 [[ -z $bu_dest ]] && _fatal "Missing -d option. See $(basename $0) -h for help." 
-[[ $bu_num -lt 1 ]] && bu_num=1
 
 $verbose && echo "Source: $bu_source"
 $verbose && echo "Destination: $bu_dest"
-$verbose && echo "Number of backups to keep: $bu_num"
+
+daily_dest="$bu_dest/daily-%Y%m%d"
+weekly_dest="$bu_dest/weekly-%Y%W"
+monthly_dest="$bu_dest/monthly-%Y%m"
 
 # Get name of last known backup
-previous_backup=$(_find_existing_backups "$bu_dest" | head -n 1)
+previous_backup=$(_find_existing_backups "$daily_dest" | head -n 1)
 $verbose && echo "Previous backup: $previous_backup"
 
 # Name this backup
-this_backup=$(date +"$bu_dest")
+this_backup=$(date +"$daily_dest")
 $verbose && echo "This backup: $this_backup"
 
 # Create new backup dir
@@ -77,7 +89,7 @@ mkdir -p "$this_backup" || _fatal "Failed to create directory: $this_backup"
 # Hardlink old contents if it exists, unless we're redoing backup to same dir
 if [[ -d "$previous_backup" && "$previous_backup" != "$this_backup" ]]; then
     $verbose && echo "Hardlinking previous backup..."
-    cp -al "$previous_backup/." "$this_backup" || _fatal "Hardlinking failed"
+    cp -alL "$previous_backup/." "$this_backup" || _fatal "Hardlinking failed"
     $verbose && echo "    Done"
 fi
 
@@ -87,10 +99,22 @@ $verbose && rsync_p="-P"
 rsync $rsync_p -a --delete "$bu_source/" "$this_backup" || _fatal "rsync failed"
 $verbose && echo "    Done"
 
-# Removing old backups
-for old in $(_find_existing_backups "$bu_dest" | tail -n +$(( $bu_num+1 ))); do
-    $verbose && echo "Removing old backup: $old"
-    rm -rf $old || echo "Remove failed, continuing..."
-done
+# Update `latest` symlink
+latest_symlink="$(dirname "$this_backup")/latest"
+$verbose && echo "Creating $latest_symlink"
+rm $latest_symlink 2>/dev/null
+ln -s "$this_backup" "$latest_symlink" || _fatal "Failed to create the latest symlink"
 
-$verbose && echo "All done"
+# Update weekly and monthly snapshots
+$verbose && echo "Creating weekly snapshot"
+_snapshot "$latest_symlink" "$weekly_dest"
+$verbose && echo "Creating monthly snapshot"
+_snapshot "$latest_symlink" "$monthly_dest"
+
+# Remove old ones
+$verbose && echo "Removing obsolete backups"
+_keep_backups "$daily_dest" 6
+_keep_backups "$weekly_dest" 3
+_keep_backups "$monthly_dest" 3
+
+$verbose && echo "Backup done"

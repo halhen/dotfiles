@@ -2,16 +2,8 @@
 # 
 # Backup the Windows desktop
 
-export PATH=/home/henrik/.bin:/usr/bin:$PATH
-
 source_folders=(Henrik Karin Musik Pictures Videos)
 backup_root="/home/backup/desktop"
-backup_dest="$backup_root/daily-%Y%m%d"
-backup_latest_symlink="$backup_root/latest"
-
-# Array of snapshots to update after backup
-# Keep three weekly and three monthly ones
-snapshots=("weekly-%Y%W" "monthly-%Y%m")
 
 desktop_ip=$(gethostip -d desktop)
 mountpoint="/tmp/backup.$$"
@@ -30,20 +22,6 @@ function _fatal {
     exit ;
 }
 
-# Create a symlink snapshot of $1 named $2. Keep maximum $3 snapshot copies
-function _snapshot {
-    snapshot_dest=$2
-    snapshot_name=$(date +"$snapshot_dest")
-    cp -alL "$1" "$snapshot_name" || _fatal "Snapshot to $snapshot_name failed"
-
-    local num_keepers=$3
-    local num_keepers=${num_keepers:="3"}
-
-    # Delete old snapshots
-    for old in $(ls -cd1 $(find_by_strftime_format "$snapshot_dest") | tail -n +$(( $num_keepers+1 ))); do
-        rm -rf $old || echo "Failed to remove $old, continuing anyway..." >&2
-    done
-}
 
 # Must be root
 [[ $(id -u) -eq 0 ]] || _fatal "Must be root"
@@ -59,20 +37,10 @@ for dir in "${source_folders[@]}"; do
 done
 
 # Backup
-backup -s $mountpoint -d $backup_dest -n 5 -v || _fatal "Backup failed"
+backup -s "$mountpoint" -d "$backup_root" -v || _fatal "Backup failed"
 
 # Cleanup
 _cleanup
 
-# Update `latest` symlink
-rm $backup_latest_symlink 2>/dev/null
-latest_backup=$(ls -cd1 $(find_by_strftime_format "$backup_dest") | head -n 1)
-ln -s "$latest_backup" "$backup_latest_symlink" || _fatal "Failed to create latest symlink"
-
 # Give all read access
-chmod a+r $latest_backup $backup_latest_symlink || _fatal "Failed to chmod backup"
-
-# Create / update snapshots
-for s in "${snapshots[@]}"; do
-    _snapshot $backup_latest_symlink "$backup_root/$s" || echo "Failed to snapshot $s, continuing..." >&2
-done
+chmod -R a+r "$backup_root" || _fatal "Failed to chmod backup"
