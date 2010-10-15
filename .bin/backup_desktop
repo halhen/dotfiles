@@ -5,8 +5,13 @@
 export PATH=/home/henrik/.bin:/usr/bin:$PATH
 
 source_folders=(Henrik Karin Musik Pictures Videos)
-backup_dest="/home/backup/desktop/daily-%Y%m%d"
-backup_latest_symlink="/home/backup/desktop/latest"
+backup_root="/home/backup/desktop"
+backup_dest="$backup_root/daily-%Y%m%d"
+backup_latest_symlink="$backup_root/latest"
+
+# Array of snapshots to update after backup
+# Keep three weekly and three monthly ones
+snapshots=("weekly-%Y%W" "monthly-%Y%m")
 
 desktop_ip=$(gethostip -d desktop)
 mountpoint="/tmp/backup.$$"
@@ -25,71 +30,49 @@ function _fatal {
     exit ;
 }
 
-function _help {
-    echo "
-Usage: $(basename $0) [-s snapshot_directory] [-h]
+# Create a symlink snapshot of $1 named $2. Keep maximum $3 snapshot copies
+function _snapshot {
+    snapshot_dest=$2
+    snapshot_name=$(date +"$snapshot_dest")
+    cp -alL "$1" "$snapshot_name" || _fatal "Snapshot to $snapshot_name failed"
 
-    Options:
-        -s snapshot_directory Snapshot latest backup to snapshot_directory.
-                              snapshot_directory can contain date(1) formats.
-                              By using date(1) formats, weekly snapshots can
-                              be made with e.g. weekly-%Y%W and montly with
-                              e.g. monthly-%Y%m.
-                              (Known bug: %V does not work properly)
-        -h                  print this help and exit"
+    local num_keepers=$3
+    local num_keepers=${num_keepers:="3"}
 
-    exit 1
+    # Delete old snapshots
+    for old in $(ls -cd1 $(find_by_strftime_format "$snapshot_dest") | tail -n +$(( $num_keepers+1 ))); do
+        rm -rf $old || echo "Failed to remove $old, continuing anyway..." >&2
+    done
 }
-
-# Check command line arguments
-while getopts "s:h" flag
-do
-    case $flag in 
-        h) _help ;;
-        s) snapshot_dest="$OPTARG" ;;
-        ?) _fatal "Unrecognized option, see $(basename $0) -h for help" ;;
-    esac
-done
 
 # Must be root
 [[ $(id -u) -eq 0 ]] || _fatal "Must be root"
 
+# Make sure we can talk to desktop
+ping -q -c 1 $desktop_ip > /dev/null 2>&1 || _fatal "Desktop not reachable"
 
-if [[ $snapshot_dest ]]
-then
-    # Don't backup, snapshot latest finished backup ($backup_latest_symlink)
+# Mount all folders
+mkdir -p $mountpoint || _fatal "Could not create mountpoint $mountpoint"
+for dir in "${source_folders[@]}"; do
+    mkdir -p "$mountpoint/$dir" || _fatal "Could not create mountpoint $mountpoint"
+    mount.cifs "//$desktop_ip/$dir" "$mountpoint/$dir" -o iocharset=utf8,password="" || _fatal "Could not mount $dir" 
+done
 
-    snapshot_name=$(date +"$snapshot_dest")
-    cp -alL $backup_latest_symlink $snapshot_name || _fatal "Snapshot to $snapshot_name failed"
+# Backup
+backup -s $mountpoint -d $backup_dest -n 5 -v || _fatal "Backup failed"
 
-    # Keep maximum 3 snapshot copies with this destination
-    for old in $(ls -cd1 $(find_by_strftime_format "$snapshot_dest") | tail -n +4); do
-        rm -rf $old || echo "Failed to remove $old, continuing anyway..." >&2
-    done
-else
-    # Backup
+# Cleanup
+_cleanup
 
-    # Make sure we can talk to desktop
-    ping -q -c 1 $desktop_ip > /dev/null 2>&1 || _fatal "Desktop not reachable"
+# Update `latest` symlink
+rm $backup_latest_symlink 2>/dev/null
+latest_backup=$(ls -cd1 $(find_by_strftime_format "$backup_dest") | head -n 1)
+ln -s "$latest_backup" "$backup_latest_symlink" || _fatal "Failed to create latest symlink"
 
-    # Mount all folders
-    mkdir -p $mountpoint || _fatal "Could not create mountpoint $mountpoint"
-    for dir in "${source_folders[@]}"; do
-        mkdir -p "$mountpoint/$dir" || _fatal "Could not create mountpoint $mountpoint"
-        mount.cifs "//$desktop_ip/$dir" "$mountpoint/$dir" -o iocharset=utf8,password="" || _fatal "Could not mount $dir"
-    done
+# Give all read access
+chmod a+r $latest_backup $backup_latest_symlink || _fatal "Failed to chmod backup"
 
-    # Backup
-    backup -s $mountpoint -d $backup_dest -n 5 -v || _fatal "Backup failed"
-
-    # Cleanup
-    _cleanup
-
-    # Update latest symlink
-    rm $backup_latest_symlink 2>/dev/null
-    latest_backup=$(ls -cd1 $(find_by_strftime_format "$backup_dest") | head -n 1)
-    ln -s "$latest_backup" "$backup_latest_symlink" || _fatal "Failed to create latest symlink"
-
-    # Give all read access
-    chmod a+r $latest_backup $backup_latest_symlink || _fatal "Failed to chmod backup"
-fi
+# Create / update snapshots
+for s in "${snapshots[@]}"; do
+    _snapshot $backup_latest_symlink "$backup_root/$s" || echo "Failed to snapshot $s, continuing..." >&2
+done
