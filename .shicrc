@@ -1,0 +1,18 @@
+# Configuration file for shic ( http://github.com/halhen/shic )
+SHIC_HOST="irc.freenode.net"
+SHIC_PORT=6667
+SHIC_NICK="halhen"
+SHIC_PASS=""
+# Join #archlinux and #python, then set current channel to none
+SHIC_SCRIPT=":j #archlinux; :j #python; :s;"
+# Red error, green background for private message, cyan for #archlinux, yellow for #python
+# white for conversations in and out, and gray for everything else
+SHIC_PREFIX=(
+    "\e[31m::^ERROR"
+    "\e[42m\e[30m::(^<[^@]*@[^#])"
+    "\e[36m::#archlinux>"
+    "\e[33m::#python>"
+    "\e[0m::^<"
+    "\e[0m::^->"
+    "\e[1;30m::(.*)"
+)
