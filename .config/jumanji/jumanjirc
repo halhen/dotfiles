@@ -8,4 +8,6 @@ set download_command urxvt -e sh -c "wget --load-cookies ~/.config/jumanji/cooki
 
 searchengine ggl http://www.google.com/search?q=%s
 
+map b nav_history previous 
+
 script ~/.config/jumanji/scripts/dwb2_hints.js
