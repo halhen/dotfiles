@@ -10,6 +10,7 @@ SHIC_SCRIPT=":j #archlinux; :j #python; :s;"
 SHIC_PREFIX=(
     "\e[31m::^ERROR"
     "\e[42m\e[30m::(^<[^@]*@[^#])"
+    "\e[42m\e[30m::(^<.*$SHIC_NICK)"
     "\e[36m::#archlinux>"
     "\e[33m::#python>"
     "\e[0m::^<"
