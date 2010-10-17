@@ -14,6 +14,6 @@ urxvt*foreground: #f2f2f2
 urxvt*background: #101010
 
 URxvt.perl-ext-common: default,matcher,clipboard
-URxvt.urlLauncher: chromium
+URxvt.urlLauncher: jumanji
 URxvt.matcher.button: 2
 URxvt.matcher.pattern.1: \\bwww\\.[\\w-]\\.[\\w./?&@#-]*[\\w/-]
