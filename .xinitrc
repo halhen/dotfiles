@@ -17,9 +17,6 @@ fi
 xset r rate 200 30 &
 
 # ## Needed processes
-# Disable touchpad (mis-)clicks while typing.
-syndaemon -k -t -i 1 > /dev/null &
-
 # Start the rxvt-unicode daemon if needed.
 pidof urxvtd || urxvtd -q -f -o
 
