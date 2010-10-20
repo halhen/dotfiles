@@ -1,4 +1,4 @@
-set homepage funbeat.se
+set homepage about:blank
 set font monospace normal 6
 set auto_save 60
 set statusbar true
