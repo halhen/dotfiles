@@ -1,5 +1,9 @@
 #! /usr/bin/env python2.7
 #
+#   HACKED TOGETHER SHOUTCAST-SEARCH AFTER ARCHLINUX SWITCHED
+#   DEFAULT PYTHON TO VERSION 3. THIS WILL PROBABLY BE A MORE 
+#   PERMANENT SOLUTION THAN I'D LIKE IT TO BE, FOR LACK OF TIME.
+#
 #   scs - shoutcast search; search among station on shoutcast.com
 #   Use as application to e.g. start random stream on command line.
 #
