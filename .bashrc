@@ -123,7 +123,7 @@ alias vim="vim -p"
 # First tries `packer`, which tells us if it won't handle the command.
 # If `packer` fails, let `pacman` do the job.
 function p {
-    packer $*
+    packer --noconfirm --noedit $*
     [[ $? -eq 5 ]] && pacman $*
 }
 
