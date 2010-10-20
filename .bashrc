@@ -127,12 +127,4 @@ function p {
     [[ $? -eq 5 ]] && pacman $*
 }
 
-# Start what's needed for listening to music.
-# Since I rarely listen to music, I haven't got [mpd](http://mpd.wikia.com) 
-# running all the time. This function starts the daemon if needed, and then the client.
-function music {
-    pidof mpd &> /dev/null || mpd ~/.mpd/config &> /dev/null
-    ncmpcpp $*
-}
-
 # }}}

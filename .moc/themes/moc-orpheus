@@ -1,0 +1,36 @@
+# orpheus theme for MOC by orveldv; adapted from the orpheus default color scheme  (version 3)
+# 24/May/2007
+
+
+background		= black		black	normal
+frame			= blue		black	bold
+window_title		= black		black	bold
+directory		= cyan		black	normal
+selected_directory	= cyan		black	bold
+playlist		= white		black	normal
+selected_playlist	= cyan		black	bold
+file			= green		black	normal
+selected_file		= green		black	bold
+marked_file		= yellow	black	bold
+marked_selected_file	= green		black	bold
+info			= blue		black	bold
+status			= black		white	normal
+title			= yellow	black	bold
+state			= green		black	bold,blink
+current_time		= white		black	normal
+time_left		= black		black	bold
+total_time		= green		black	normal
+time_total_frames	= black		black	bold
+sound_parameters	= white		black	normal
+legend			= green		black	normal
+disabled		= black		black	bold
+enabled			= white		black	normal
+empty_mixer_bar		= white		black	normal
+filled_mixer_bar	= black		white	normal
+empty_time_bar		= black		black	normal
+filled_time_bar		= black		white	bold
+entry			= white		black	normal
+entry_title		= black		white	normal
+error			= yellow	black	bold
+message			= yellow	black	bold
+plist_time		= black		white	normal
