@@ -57,8 +57,10 @@ inoremap <right> <C-o>:tabp<CR>
 inoremap <up> <NOP>
 inoremap <down> <NOP>
 
+" Space for scrolling
+noremap <space> <C-d>
+
 " Search
-noremap <space> /\v
 set incsearch
 set ignorecase
 set smartcase
