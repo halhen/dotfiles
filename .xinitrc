@@ -20,6 +20,9 @@ xset r rate 200 30 &
 # Start the rxvt-unicode daemon if needed.
 pidof urxvtd || urxvtd -q -f -o
 
+# Manage clipboards
+autocutsel &
+
 # ## dwm
 # Function to launch dwm with other dwm specific processes.
 #
