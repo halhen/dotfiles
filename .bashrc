@@ -70,9 +70,6 @@ export HISTSIZE=10000
 # }}}
 
 # ## Exports {{{
-# When `cd`, look through these paths.
-export CDPATH=".:$HOME"
-
 # Java needs this to behave on e.g. [dwm](http://dwm.suckless.org).
 export AWT_TOOLKIT=MToolkit
 
