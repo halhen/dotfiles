@@ -40,7 +40,7 @@ EOF
     host="${entry%%::*}"
     ip="${entry##*::}"
 
-    echo -e "$ip\t$host.localdomain\t$host"
+    [[ $host != $HOSTNAME ]] && echo -e "$ip\t$host.localdomain\t$host"
   done
 
   # satisfy the license
@@ -79,6 +79,8 @@ temp='/tmp/hosts'
 
 # array of 'host::ip'; will be added at top of file (after localhost)
 lanips=( 
+  'm1330'::192.168.0.10
+  'luna'::192.168.0.12
   'desktop::192.168.0.72'
   'printer::192.168.0.26'
   'router::192.168.0.1'
