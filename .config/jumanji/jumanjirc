@@ -1,4 +1,4 @@
-set homepage about:blank
+set homepage http://familj.k2h.se
 set font monospace normal 6
 set auto_save 60
 set statusbar true
