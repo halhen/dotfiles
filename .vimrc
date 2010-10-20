@@ -33,6 +33,7 @@ set undodir=~/.undo
 
 " Color scheme
 colorscheme dante
+hi Folded ctermbg=Black
 
 " Tab settings
 set autoindent
