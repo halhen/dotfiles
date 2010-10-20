@@ -13,33 +13,23 @@ URxvt*font: xft:terminus:pixelsize=11
 urxvt*foreground: #f2f2f2
 urxvt*background: #101010
 
-urxvt*color0:    #6c6c6c
-urxvt*color1:    #e9897c
-urxvt*color2:    #b6e77d
-urxvt*color3:    #ecebbe
-urxvt*color4:    #a9cdeb
-urxvt*color5:    #ea96eb
-urxvt*color6:    #c9caec
-urxvt*color7:    #f2f2f2
+urxvt*color0:    #1b1d1e
+urxvt*color1:    #f92673
+urxvt*color2:    #86b413
+urxvt*color3:    #fdb436
+urxvt*color4:    #55c5d6
+urxvt*color5:    #8952fe
+urxvt*color6:    #465457
+urxvt*color7:    #ccccc7
 
-! Light
-! color8    black
-! color9    red
-! color10    green
-! color11    yellow
-! color12    blue
-! color13    purple
-! color14    cyan
-! color15    white
-
-urxvt*color8:    #747474
-urxvt*color9:    #f99286
-urxvt*color10:    #c3f786
-urxvt*color11:    #fcfbcc
-urxvt*color12:    #b6defb
-urxvt*color13:    #fba1fb
-urxvt*color14:    #d7d9fc
-urxvt*color15:    #e2e2e2
+urxvt*color8:    #343737
+urxvt*color9:    #ff5996
+urxvt*color10:    #b8e354
+urxvt*color11:    #feed6a
+urxvt*color12:    #8ceeff
+urxvt*color13:    #9c6efe
+urxvt*color14:    #899ca1
+urxvt*color15:    #f2f2f2
 
 URxvt.perl-ext-common: default,matcher,clipboard
 URxvt.urlLauncher: jumanji
