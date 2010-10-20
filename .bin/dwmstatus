@@ -14,9 +14,12 @@ def time_str():
     return strftime('%H:%M')
 
 def mail_str():
-    numnew = len(os.listdir('/home/henrik/.mail/INBOX/new'))
-    if numnew > 0:
-        return '%d new mail%s' % (numnew, numnew > 1 and 's' or '')
+    try:
+        numnew = len(os.listdir('/home/henrik/.mail/INBOX/new'))
+        if numnew > 0:
+            return '%d new mail%s' % (numnew, numnew > 1 and 's' or '')
+    except:
+        pass
     return ''
 
 def acpi_str():
