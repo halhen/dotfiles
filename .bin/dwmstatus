@@ -38,7 +38,7 @@ def music_str():
                 songtitle = m.group(1)
             m = re_moc_file.search(mocstr)
             if m:
-                filename = m.group(1)
+                filename = os.path.basename(m.group(1))
 
             if artist and title:
                 return '%s - %s' % (artist, title)
