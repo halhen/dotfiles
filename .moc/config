@@ -24,10 +24,10 @@ ShowStreamErrors	= no
 Mp3IgnoreCRCErrors	= yes
 
 # Turn on repeat.
-Repeat			= no
+Repeat			= yes
 
 # Turn on shuffle.
-Shuffle			= no
+Shuffle			= yes
 
 # Turn on AutoNext
 AutoNext		= yes

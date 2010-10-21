@@ -12,6 +12,7 @@ re_temp = re.compile('(\d+(\.\d)?) degrees')
 re_moc_title = re.compile('Title: (.*)')
 re_moc_artist = re.compile('Artist: (.*)')
 re_moc_songtitle = re.compile('SongTitle: (.*)')
+re_moc_file = re.compile('File: (.*)')
 
 separator = ' | '
 
@@ -23,8 +24,8 @@ def music_str():
         retcode = subprocess.call(['pidof', 'mocp'], stdout=subprocess.PIPE)
         # Query only if mocp is alive, otherwise it starts the server
         if retcode == 0:
-            title = artist = songtitle = ''
-            mocstr='\n'.join(os.popen('mocp -i'))
+            title = artist = songtitle = filename = ''
+            mocstr='\n'.join(os.popen('/usr/bin/mocp -i'))
 
             m = re_moc_title.search(mocstr)
             if m:
@@ -34,7 +35,10 @@ def music_str():
                 artist = m.group(1)
             m = re_moc_songtitle.search(mocstr)
             if m:
-                mocstr = m.group(1)
+                songtitle = m.group(1)
+            m = re_moc_file.search(mocstr)
+            if m:
+                filename = m.group(1)
 
             if artist and title:
                 return '%s - %s' % (artist, title)
@@ -44,6 +48,8 @@ def music_str():
                 return title
             elif artist:
                 return artist
+            elif filename:
+                return filename
     except:
         pass
     return ''
