@@ -24,7 +24,7 @@ fi
 # `root` has a red prompt, others a yellow one.
 # If we are connected remotely, `@<hostname>` shows first.
 build_ps1() {
-    local prompt_color='\[\e[1;33m\]'
+    local prompt_color='\[\e[33m\]'
     local host=''
     [[ $UID -eq 0 ]] && prompt_color='\[\e[1;31m\]'
     [[ $SSH_TTY ]] && host="@$HOSTNAME "

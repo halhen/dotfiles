@@ -2,5 +2,5 @@
 #
 # dmenu "customization" script. Put in path before the regular dmenu
 
-/usr/bin/dmenu -fn "-*-*-*-*-*-*-10-*-*-*-*-*-iso8859-1" -nb "#222222" -nf "#f2f2f2" -sb "#222222" -sf "#b6e77d" $@
+/usr/bin/dmenu -fn "-*-*-*-*-*-*-10-*-*-*-*-*-iso8859-1" -nb "#222222" -nf "#f2f2f2" -sb "#222222" -sf "#fdb436" "$@"
 
