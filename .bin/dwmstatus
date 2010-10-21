@@ -2,16 +2,51 @@
 
 import re
 import os
+import subprocess
 from time import strftime, localtime, sleep
 
 re_bat = re.compile('(Charging|Discharging|Full), (\d+)%')
 re_bat_discharge = re.compile('(\d\d):(\d\d):\d\d remaining')
 re_temp = re.compile('(\d+(\.\d)?) degrees')
 
+re_moc_title = re.compile('Title: (.*)')
+re_moc_artist = re.compile('Artist: (.*)')
+re_moc_songtitle = re.compile('SongTitle: (.*)')
+
 separator = ' | '
 
 def time_str():
     return strftime('%H:%M')
+
+def music_str():
+    try:
+        retcode = subprocess.call(['pidof', 'mocp'], stdout=subprocess.PIPE)
+        # Query only if mocp is alive, otherwise it starts the server
+        if retcode == 0:
+            title = artist = songtitle = ''
+            mocstr='\n'.join(os.popen('mocp -i'))
+
+            m = re_moc_title.search(mocstr)
+            if m:
+                title = m.group(1)
+            m = re_moc_artist.search(mocstr)
+            if m:
+                artist = m.group(1)
+            m = re_moc_songtitle.search(mocstr)
+            if m:
+                mocstr = m.group(1)
+
+            if artist and title:
+                return '%s - %s' % (artist, title)
+            elif songtitle:
+                return songtitle
+            elif title:
+                return title
+            elif artist:
+                return artist
+    except:
+        pass
+    return ''
 
 def mail_str():
     try:
@@ -52,7 +87,7 @@ def acpi_str():
     return temp_str + separator + bat_str
 
 def setstatus(text):
-    os.popen('xsetroot -name "%s"' % text)
+    subprocess.call(['xsetroot', '-name', text])
     
 if __name__ == '__main__':
     import optparse
@@ -66,7 +101,7 @@ if __name__ == '__main__':
     loop = options.loop
 
     while True:
-        statusstr = separator.join(s for s in (mail_str(), acpi_str(), time_str()) if s)
+        statusstr = separator.join(s for s in (mail_str(), music_str(), acpi_str(), time_str()) if s)
         setstatus(statusstr)
         if not loop:
             break
