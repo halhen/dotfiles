@@ -1,0 +1,4 @@
+#!/bin/bash
+
+pidof mocp || /usr/bin/mocp -S
+/usr/bin/mocp "$@"
