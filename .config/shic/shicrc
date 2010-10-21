@@ -13,7 +13,7 @@ SHIC_PREFIX=(
     "\e[42m\e[30m::(^<[^@]*@[^#])"
     "\e[42m\e[30m::(^<.*$SHIC_NICK)"
     "\e[32m::^->"
-    "\e[36m::#archlinux>"
+    "\e[34m::#archlinux>"
     "\e[33m::#python>"
     "\e[0m::^<"
     "\e[1;30m::(.*)"
