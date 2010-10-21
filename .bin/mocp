@@ -1,6 +1,0 @@
-#!/bin/bash
-#
-# Update dwm statusbar automatically when mocp is used
-
-/usr/bin/mocp "$@"
-dwmstatus

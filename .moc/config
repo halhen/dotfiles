@@ -286,3 +286,7 @@ SetXtermTitle		= yes
 
 # Display full paths instead of just file names in the playlist.
 #PlaylistFullPaths	= yes
+
+# Update dwmstatus
+OnSongChange = "/home/henrik/.bin/dwmstatus"
+OnStop = "/home/henrik/.bin/dwmstatus"
