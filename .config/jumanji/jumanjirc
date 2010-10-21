@@ -7,6 +7,11 @@ set single_instance false
 set download_dir ~/download
 set download_command urxvt -e sh -c "wget --load-cookies ~/.config/jumanji/cookies '%s' -O %s";
 
+set inputbar_fgcolor #fdb436
+set statusbar_ssl_bgcolor #fdb436
+set completion_hl_bgcolor #fdb436
+set tabbar_focus_fgcolor #fdb436
+
 searchengine ggl http://www.google.com/search?q=%s
 
 map b nav_history previous 
