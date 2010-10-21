@@ -110,6 +110,9 @@ alias cal="cal -m"
 # Remake a `PKGBUILD` in the current directory.
 alias repkg="makepkg -efi"
 
+# Defaults for bc
+alias bc="bc -l"
+
 # Open multiple files as tabs.
 alias vim="vim -p"
 
