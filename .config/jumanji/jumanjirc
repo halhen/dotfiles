@@ -6,6 +6,7 @@ set tabbar true
 set single_instance false
 set download_dir ~/download
 set download_command urxvt -e sh -c "wget --load-cookies ~/.config/jumanji/cookies '%s' -O %s";
+set plugin_blocker false
 
 set inputbar_fgcolor #fdb436
 set statusbar_ssl_bgcolor #fdb436
