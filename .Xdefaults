@@ -19,7 +19,7 @@ urxvt*color2:    #86b413
 urxvt*color3:    #fdb436
 urxvt*color4:    #55c5d6
 urxvt*color5:    #8952fe
-urxvt*color6:    #465457
+urxvt*color6:    #899ca1
 urxvt*color7:    #ccccc7
 
 urxvt*color8:    #343737
@@ -28,7 +28,7 @@ urxvt*color10:    #b8e354
 urxvt*color11:    #feed6a
 urxvt*color12:    #8ceeff
 urxvt*color13:    #9c6efe
-urxvt*color14:    #899ca1
+urxvt*color14:    #a9bcc1
 urxvt*color15:    #f2f2f2
 
 URxvt.perl-ext-common: default,matcher,clipboard
