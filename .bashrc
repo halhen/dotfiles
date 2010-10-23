@@ -146,9 +146,8 @@ function k {
 }
 
 # ### cd improvements {{{
-# Use pushd/popd to preserve history, and use helpers `pd` for previous dir
-# and `cdm` to display a menu of previous dirs,
-# Taken from Pro Bash Programming - ISBN 978-1430219989
+# Use pushd to preserve history. `cdm` displays a menu of previous dirs,
+# Adapted from Pro Bash Programming - ISBN 978-1430219989
 
 # cd with history - i.e. pushd
 function cd {
@@ -171,51 +170,26 @@ function cd {
     return "$error"
 } >/dev/null
 
-# Previous directory
-function pd {
-    popd
-} >/dev/null
-
-# Menu function
-function _menu {
-    local IFS=$' \n\t'
-    local num n=1 opt="" item cmd
-    echo
-
-    for item; do
-        printf "  %3d, %s\n" "$n" "${item%%:*}"
-        n=$(( n + 1 ))
-    done
-    echo
-
-    # Accept single digit press if possible
-    [[ $# -lt 10 ]] && opt=-sn1
-    read -p " (1 to $#) ==> " $opt num
-    echo
-
-    case $num in 
-        [qQ0] | "" ) return ;;
-        *[!0-9]* | 0* ) printf "Invalid response: %s\n" "$num" >&2; return 1;;
-    esac
-
-    [ "$num" -gt "$#" ] && printf "Invalid response: %s\n" "$num" >&2 && return 1;
-
-    eval "${!num#*:}"
-}
 # cd by menu, with previous directories as options
 function cdm {
-    local dir IFS=$'\n' item
+    local dir IFS=$'\n' item n
+
     for dir in $(dirs -p); do
-        fulldir=${dir//\~/$HOME}
-        [[ "$fulldir" = "$PWD" ]] && continue
-        case ${item[*]} in
-            *"$dir:"*) ;;
-            *) item+=( "$dir:cd '$fulldir'" );;
-        esac
+        [[ "$dir" = "${PWD//$HOME/~}" ]] && continue
+        [[ ${item[*]} = *"$dir "* ]] && continue
+
+        item+=( "$dir " )
+        [[ ++n -ge 10 ]] && break
     done
 
     [[ -z "${item[@]}" ]] && return
-    _menu "${item[@]}"
+    echo 
+    select i in "${item[@]}"; do
+        if [[ "$i" ]]; then
+            cd "${i//\~/$HOME}" 
+            return $?
+        fi
+    done
 }
 
 # }}}
