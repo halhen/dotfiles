@@ -212,8 +212,9 @@ function cdm {
             *) item+=( "$dir:cd '$fulldir'" );;
         esac
     done
-    _menu "${item[@]}"
 
+    [[ -z "${item[@]}" ]] && return
+    _menu "${item[@]}"
 }
 
 # }}}
