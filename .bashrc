@@ -92,7 +92,7 @@ export MOZ_DISABLE_PANGO=1
 alias ls='ls --color=auto'
 
 # Colorize `grep`.
-export GREP_COLOR="1;33"
+export GREP_COLORS="1;33"
 alias grep='grep --color=auto'
 
 # Convenient `cd..`.
@@ -141,7 +141,7 @@ function calc {
 
 # Search man pages for user commands
 function k {
-    man -k "$@" | grep '(1'
+    man -k "$@" | grep '(1' --color=never
 }
 
 # ### cd improvements {{{
