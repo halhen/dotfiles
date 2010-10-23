@@ -201,7 +201,7 @@ function _menu {
 
     eval "${!num#*:}"
 }
-# cd by meny, with previous directories as options
+# cd by menu, with previous directories as options
 function cdm {
     local dir IFS=$'\n' item
     for dir in $(dirs -p); do
