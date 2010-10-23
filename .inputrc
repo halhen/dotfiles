@@ -1,4 +1,13 @@
+set editing-mode vi
+
+set keymap vi-command
 "\e[A":history-search-backward
 "\e[B":history-search-forward
 "\C-l":redraw-current-line
+
+set keymap vi-insert
+"\e[A":history-search-backward
+"\e[B":history-search-forward
+"\C-l":redraw-current-line
+
 set show-all-if-ambiguous on
