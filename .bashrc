@@ -127,4 +127,96 @@ function p {
     [[ $? -eq 5 ]] && pacman $*
 }
 
+# Make directories, cd into the first one
+function md {
+    mkdir -p "$@" && cd "$1"
+
+}
+
+# calculate expression
+function calc {
+    echo "$@" | bc -l
+}
+
+
+# Search man pages for user commands
+function k {
+    man -k "$@" | grep '(1'
+}
+
+# ### cd improvements {{{
+# Use pushd/popd to preserve history, and use helpers `pd` for previous dir
+# and `cdm` to display a menu of previous dirs,
+# Taken from Pro Bash Programming - ISBN 978-1430219989
+
+# cd with history - i.e. pushd
+function cd {
+    local dir error
+    
+    while :; do # No support for options, consume them
+        case $1 in
+            --) break ;;
+            -*) shift ;;
+            *) break ;;
+        esac
+    done
+
+    dir=${1:-$HOME}
+
+    pushd "$dir" 2>/dev/null
+    error=$?
+
+    [[ $error != 0 ]] && builtin cd "$dir"
+    return "$error"
+} >/dev/null
+
+# Previous directory
+function pd {
+    popd
+} >/dev/null
+
+# Menu function
+function _menu {
+    local IFS=$' \n\t'
+    local num n=1 opt="" item cmd
+    echo
+
+    for item; do
+        printf "  %3d, %s\n" "$n" "${item%%:*}"
+        n=$(( n + 1 ))
+    done
+    echo
+
+    # Accept single digit press if possible
+    [[ $# -lt 10 ]] && opt=-sn1
+    read -p " (1 to $#) ==> " $opt num
+    echo
+
+    case $num in 
+        [qQ0] | "" ) return ;;
+        *[!0-9]* | 0* ) printf "Invalid response: %s\n" "$num" >&2; return 1;;
+    esac
+
+    [ "$num" -gt "$#" ] && printf "Invalid response: %s\n" "$num" >&2 && return 1;
+
+    eval "${!num#*:}"
+}
+# cd by meny, with previous directories as options
+function cdm {
+    local dir IFS=$'\n' item
+    for dir in $(dirs -p); do
+        fulldir=${dir//\~/$HOME}
+        [[ "$fulldir" = "$PWD" ]] && continue
+        case ${item[*]} in
+            *"$dir:"*) ;;
+            *) item+=( "$dir:cd '$fulldir'" );;
+        esac
+    done
+    _menu "${item[@]}"
+
+}
+
+# }}}
+
+# Menu with previous dirs
 # }}}
