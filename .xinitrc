@@ -15,6 +15,8 @@ fi
 
 # Speed up the keyboard repetition rate.
 xset r rate 200 30 &
+# ... and the mouse
+xset m 5 3/2
 
 # ## Needed processes
 # Start the rxvt-unicode daemon if needed.
