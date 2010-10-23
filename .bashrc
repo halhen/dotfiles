@@ -32,6 +32,7 @@ build_ps1() {
 }
 PS1=$(build_ps1)
 PS2='\\ '
+PS4='+ $LINENO: '
 
 # }}}
 
