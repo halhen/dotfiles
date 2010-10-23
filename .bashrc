@@ -217,6 +217,4 @@ function cdm {
 }
 
 # }}}
-
-# Menu with previous dirs
 # }}}
