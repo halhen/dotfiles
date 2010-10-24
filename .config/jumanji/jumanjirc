@@ -3,7 +3,6 @@ set font monospace normal 6
 set auto_save 60
 set statusbar true
 set tabbar true
-set single_instance false
 set download_dir ~/download
 set download_command urxvt -e sh -c "wget --load-cookies ~/.config/jumanji/cookies '%s' -O %s";
 set plugin_blocker false
