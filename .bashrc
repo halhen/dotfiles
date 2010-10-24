@@ -90,7 +90,10 @@ export MOZ_DISABLE_PANGO=1
 
 # ## Aliases {{{
 # Colorize `ls`.
-alias ls='ls --color=auto'
+alias ls='ls --color=always'
+
+# Show colors in less
+alias less='less -R'
 
 # Colorize `grep`.
 export GREP_COLORS="1;33"
