@@ -19,15 +19,23 @@ export HOSTNAME=$(hostname)
 # }}}
 
 # {{{ Shell options
+setopt AUTO_RESUME
+setopt BG_NICE
 setopt CHECK_JOBS
 setopt CORRECT
 setopt EXTENDED_GLOB
 setopt GLOB_DOTS
+setopt MULTIOS
 setopt SHORT_LOOPS
 
 bindkey -v
 bindkey "^[[A" history-search-backward
 bindkey "^[[B" history-search-forward
+
+# ^E to edit the current command line in $EDITOR
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '^E' edit-command-line
 
 # }}}
 
@@ -65,7 +73,21 @@ PS1="%{$ps1_col_prompt%}$ps1_host%~ %(?..%{$ps1_col_error%}(%?%) )%{$reset_color
 PS2="%_> "
 PS4="%N (%i)> "
 
-unset ps1_col_prompt ps1_col_error ps1_host
+unset ps1_col_prompt ps1_col_error
+
+# Use the prompt also as term title
+# Must keep $ps1_host fo work as expected
+case $TERM in
+    xterm*|rxvt*|(K|a)term)
+        function precmd {
+            print -Pn "\e]0;$ps1_host%~ %(?..(%?%) )$ \a"
+        }
+
+        function preexec {
+            print -Pn "\e]0;$ps1_host%~ %(?..(%?%) )$ $1\a"
+        }
+        ;;
+esac
 
 # }}}
 
