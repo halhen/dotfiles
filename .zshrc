@@ -51,6 +51,8 @@ PS1="%{$ps1_col_prompt%}$ps1_host%~ %(?..%{$ps1_col_error%}(%?%) )%{$reset_color
 PS2="%_> "
 PS4="%N (%i)> "
 
+unset ps1_col_prompt ps1_col_error ps1_host
+
 # }}}
 
 # {{{ History
