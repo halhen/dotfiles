@@ -39,7 +39,10 @@ bindkey "^[[B" history-search-forward
     # More processes in kill completion
     zstyle ':completion:*:processes' command 'ps -au$USER'
     # There's lots of bad hosts in /etc/hosts with IP 0.0.0.0. These should not be in completion
-    zstyle ':completion:*' hosts $(awk '/^[^#0]/ {print $2, $3, $4, $5}' /etc/hosts)
+    hosts=( $(( awk 'BEGIN {OFS="\n"} /^[^#0]/ {for (i=2;i<=NF;i++) print $i}' ) | grep -v '\.localdomain$' | sort -u) )
+    zstyle ':completion:*' hosts $hosts
+    # Menu
+    zstyle ':completion:* menu select
 # }}}
 
 # {{{ Prompts
