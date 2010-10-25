@@ -50,7 +50,7 @@ bindkey "^[[B" history-search-forward
     zstyle ':completion:*' users $users
 
     # Use menu by default
-    zstyle ':completion:* menu select
+    zstyle ':completion:*' menu select
 # }}}
 
 # {{{ Prompts
