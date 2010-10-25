@@ -34,14 +34,22 @@ bindkey "^[[B" history-search-forward
 # {{{ Completion
     # Remove pwd after doing ../
     zstyle ':completion:*:(cd|mv|cp):*' ignore-parents parent pwd
+
     # Don't keep suggesting file / pid if it is on the line already
     zstyle ':completion:*:(rm|kill|diff):*' ignore-line yes
+
     # More processes in kill completion
     zstyle ':completion:*:processes' command 'ps -au$USER'
+
     # There's lots of bad hosts in /etc/hosts with IP 0.0.0.0. These should not be in completion
-    hosts=( $(( awk 'BEGIN {OFS="\n"} /^[^#0]/ {for (i=2;i<=NF;i++) print $i}' ) | grep -v '\.localdomain$' | sort -u) )
+    hosts=( $(( awk 'BEGIN {OFS="\n"} /^[^#0]/ {for (i=2;i<=NF;i++) print $i}' /etc/hosts ) | grep -v '\.localdomain$' | sort -u) )
     zstyle ':completion:*' hosts $hosts
-    # Menu
+
+    # Less users
+    users=(henrik root)
+    zstyle ':completion:*' users $users
+
+    # Use menu by default
     zstyle ':completion:* menu select
 # }}}
 
