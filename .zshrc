@@ -37,6 +37,9 @@ autoload -U edit-command-line
 zle -N edit-command-line
 bindkey '^E' edit-command-line
 
+# ^L to pipe through $PAGER and execute
+bindkey -s '^L' "|$PAGER\n"
+
 # }}}
 
 # {{{ Completion
@@ -104,7 +107,7 @@ setopt BANG_HIST
 
 # {{{ Aliases
 alias ls="ls --color=always"
-alias less="less -R"
+alias less="less -MRs"
 export GREP_COLORS="1;33"
 alias grep="grep --color=auto"
 alias c="cd .."
@@ -115,6 +118,7 @@ alias repkg="makepkg -efi"
 alias bc="bc -l"
 alias vim="vim -p"
 alias history="history -Df"
+alias webshare="python2 -m SimpleHTTPServer"
 
 # }}}
 
