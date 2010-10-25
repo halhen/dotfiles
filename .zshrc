@@ -113,15 +113,13 @@ function k {
 # cd with history - i.e. pushd
 setopt AUTO_PUSHD
 setopt PUSHD_IGNORE_DUPS
+setopt PUSHD_SILENT
+export DIRSTACKSIZE=10
 
 # cd by menu, with previous directories as options
 function cdm {
-    local IFS=$'\n'
-    dirhist=( $(dirs -p | tail -n +2 | head) )
-
-    [[ -z "${dirhist[@]}" ]] && return
-    echo 
-    select i in "${dirhist[@]}"; do
+    #echo 
+    select i in $(dirs -p | tail -n +2); do
         if [[ -n "$i" ]]; then
             cd "${i//\~/$HOME}" 
             return $?
