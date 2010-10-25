@@ -148,6 +148,14 @@ function k {
     man -k "$@" | grep '(1' --color=never
 }
 
+# Recursively push all git repos in $1, or $HOME
+function gitpushall {
+    local repo
+    for repo in "${1:-$HOME}/"**/.git; do
+        (echo "--- ${repo:h} ---"; cd $repo; git push; echo)
+    done
+}
+
 # ### cd improvements {{{
 # Use pushd to preserve history. `cdm` displays a menu of previous dirs,
 # Adapted from Pro Bash Programming - ISBN 978-1430219989
