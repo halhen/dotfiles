@@ -148,11 +148,12 @@ function k {
     man -k "$@" | grep '(1' --color=never
 }
 
-# Recursively push all git repos in $1, or $HOME
-function gitpushall {
+# Recursively execute git command in git roots from $PWD
+# Example: $ gitrec push
+function gitrec {
     local repo
-    for repo in "${1:-$HOME}/"**/.git; do
-        (echo "--- ${repo:h} ---"; cd $repo; git push; echo)
+    for repo in **/.git; do
+        (echo "--- ${repo:h} ---"; cd ${repo:h}; git "$@"; echo)
     done
 }
 
