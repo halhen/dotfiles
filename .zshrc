@@ -40,6 +40,17 @@ bindkey -s '^L' "|$PAGER\n"
 
 # }}}
 
+# {{{ Colors for console
+
+# Use the settings for urxvt from ~/.Xdefaults
+if [[ "$TERM" = "linux" ]]; then
+    for i in $(sed -n 's/^urxvt\*color\(.*\):.*#\(.*\)/\1 \2/p' "$HOME/.Xdefaults" | awk '{printf "\\e]P%X%s", $1, $2}'); do
+        echo -en "$i"
+    done
+    clear
+fi
+# }}}
+
 # {{{ Completion
     # Remove pwd after doing ../
     zstyle ':completion:*:(cd|mv|cp):*' ignore-parents parent pwd
