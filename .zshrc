@@ -166,6 +166,21 @@ function gitrec {
     done
 }
 
+# Start dvtm with ^A as MOD, and with dwmstatus as status bar
+function dvtm {
+    FIFO="/tmp/dvtm-status.$$.$RANDOM"
+
+    [ -e "$FIFO" ] || mkfifo "$FIFO"
+    chmod 600 $FIFO
+
+    dwmstatus -s -l > $FIFO &
+
+    STATUS_PID=$!
+    /usr/bin/dvtm -s $FIFO -m "^A" "$@" 2> /dev/null
+    kill $STATUS_PID
+    rm $FIFO
+}
+
 # ### cd improvements {{{
 # Use pushd to preserve history. `cdm` displays a menu of previous dirs,
 # Adapted from Pro Bash Programming - ISBN 978-1430219989
