@@ -1,2 +1,2 @@
-text/html; lynx -dump -force_html %s -display_charset "`locale charmap`" -assume_charset %{charset}; nametemplate=%s.html; copiousoutput; description=HTML Text;
+text/html; w3m -dump %s;
 application/pdf; zathura %s;
