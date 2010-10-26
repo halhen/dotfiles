@@ -2,6 +2,7 @@
 
 import re
 import os
+import sys
 import subprocess
 from time import strftime, localtime, sleep
 
@@ -102,13 +103,20 @@ if __name__ == '__main__':
            description="Update dwm status bar. Use -l to keep %prog alive to regularly keep updating.")
     o.add_option('-l', '--keep-alive', dest='loop', action='store_true', 
                 default=False, help='Keep updating regularly')
+    o.add_option('-s', '--stdout', dest='stdout', action='store_true',
+                default=False, help='Print to stdout instead of setting X root name')
 
     (options, args) = o.parse_args()
     loop = options.loop
+    stdout = options.stdout
 
     while True:
         statusstr = separator.join(s for s in (mail_str(), music_str(), acpi_str(), time_str()) if s)
-        setstatus(statusstr)
+        if not stdout:
+            setstatus(statusstr)
+        else:
+            print(statusstr)
+            sys.stdout.flush()
         if not loop:
             break
         # Update every HH:MM:00
