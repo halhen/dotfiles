@@ -1,6 +1,4 @@
-# TODO: Remove 0.0.0.0 adresses at host comppletion
-# TODO: Get inspired by other .zshrc:s
-# TODO: Is ~/.bin added everywhere it should?
+# vim:ft=sh
 
 autoload -U compinit && compinit
 autoload -U colors && colors
@@ -124,7 +122,7 @@ alias webshare="python2 -m SimpleHTTPServer"
 
 # ## Functions {{{
 # [Packer](http://wiki.archlinux.org/index.php/AUR_Helper#packer) / pacman wrapper.
-# First tries `packer`, which tells us if it won't handle the command.
+# First tries `packer`, which tells us if it will not handle the command.
 # If `packer` fails, let `pacman` do the job.
 function p {
     packer --noconfirm --noedit $*
