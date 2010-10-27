@@ -27,8 +27,14 @@ setopt MULTIOS
 setopt SHORT_LOOPS
 
 bindkey -v
+# Bindings for urxvt
+# Arrow up/down
 bindkey "^[[A" history-search-backward
 bindkey "^[[B" history-search-forward
+
+# Home/end
+bindkey "^[[7~" beginning-of-line
+bindkey "^[[8~" end-of-line
 
 # ^E to edit the current command line in $EDITOR
 autoload -U edit-command-line
