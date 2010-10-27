@@ -136,7 +136,7 @@ alias webshare="python2 -m SimpleHTTPServer"
 # First tries `packer`, which tells us if it will not handle the command.
 # If `packer` fails, let `pacman` do the job.
 function p {
-    packer --noconfirm --noedit $*
+    packer --noconfirm --noedit $* && return
     [[ $? -eq 5 ]] && pacman $*
 }
 
