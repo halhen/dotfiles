@@ -288,5 +288,5 @@ SetXtermTitle		= yes
 #PlaylistFullPaths	= yes
 
 # Update dwmstatus
-OnSongChange = "/home/henrik/.bin/dwmstatus"
-OnStop = "/home/henrik/.bin/dwmstatus"
+OnSongChange = "/home/henrik/.bin/statusline"
+OnStop = "/home/henrik/.bin/statusline"

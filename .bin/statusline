@@ -1,0 +1,105 @@
+#!/usr/bin/lua
+-- Update statusline for dwm and dvtm.
+-- Not particularly portable, but works on my setup
+require "posix"
+
+function time()
+    return os.date("%H:%M")
+end
+
+function battery()
+    local now = io.open("/sys/class/power_supply/BAT0/energy_now"):read()
+    local full = io.open("/sys/class/power_supply/BAT0/energy_full"):read()
+    local sign = ""
+
+    if now ~= full then
+        local status = io.open("/sys/class/power_supply/BAT0/energy_status"):read()
+
+        if status == "Charging" then
+            sign = "+"
+        else
+            sign = "-"
+        end
+    end
+        
+    return string.format("%s%d%%", sign, now / (full/100))
+end
+
+function temperature()
+    return io.open("/sys/class/thermal/thermal_zone0/temp"):read() / 1000 .. "C"
+end
+
+function mail()
+    local num = -2 -- Don't count .. and .
+    if posix.chdir("/home/henrik/.mail/INBOX/new") then
+        for f in posix.files() do
+            num = num + 1
+        end
+    end
+
+    if num >= 2 then
+        return num .. " new mails"
+    elseif num == 1 then
+        return "1 new mail"
+    end
+end
+
+function mocp()
+    m = io.popen("/usr/bin/mocp -i 2>/dev/null")
+    local state = m:read() or ""
+    local file = m:read() or ""
+    local title = m:read() or ""
+    local artist = m:read() or ""
+    local songtitle = m:read() or ""
+
+    file = file:sub(7)
+    title = title:sub(8)
+    artist = artist:sub(9)
+    songtitle = songtitle:sub(12)
+
+    if artist ~= "" and title ~= "" then return artist .. " - " .. title end
+    if songtitle ~= "" then return songtitle end
+    if title ~= "" then return title end
+    if artist ~= "" then return artist end
+    if file ~= "" then return file end
+end
+
+function setstatus(s)
+    -- Set dwm status text
+    if xsetroot then
+        os.execute('xsetroot -name "' .. s .. '" 2>/dev/null')
+    else
+        io.write(s .. "\n")
+        io.flush()
+    end
+end
+
+-- Read command line
+keepalive=false
+xsetroot=true
+for posn, val in ipairs(arg) do
+    if val == "-k" then
+        keepalive=true
+    elseif val == "-s" then
+        xsetroot=false
+    else
+        error("Bad argument.\nValid options are:\n   -k: keep process alive, and regularly updating\n   -s: write to stdout")
+    end
+end
+
+-- Process
+while true do
+    all = {mail(), mocp(), temperature(), battery(), time()}
+
+    data = {}
+    for k, v in pairs(all) do
+            table.insert(data, v)
+    end
+
+    s = table.concat(data, ' | ')
+    setstatus(s)
+
+    if not keepalive then break end
+    -- Sleep
+    posix.sleep(60 - os.date("%S"))
+end

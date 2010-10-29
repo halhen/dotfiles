@@ -179,7 +179,7 @@ function dvtm {
     [ -e "$FIFO" ] || mkfifo "$FIFO"
     chmod 600 $FIFO
 
-    dwmstatus -s -l > $FIFO &
+    statusline -k -s >$FIFO &
 
     STATUS_PID=$!
     /usr/bin/dvtm -s $FIFO -m "^A" "$@" 2> /dev/null
