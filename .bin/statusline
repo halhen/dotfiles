@@ -13,7 +13,7 @@ function battery()
     local sign = ""
 
     if now ~= full then
-        local status = io.open("/sys/class/power_supply/BAT0/energy_status"):read()
+        local status = io.open("/sys/class/power_supply/BAT0/status"):read()
 
         if status == "Charging" then
             sign = "+"
