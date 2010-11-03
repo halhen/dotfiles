@@ -1,48 +1,7 @@
 #!/usr/bin/lua
 -- Update statusline for dwm and dvtm.
--- Not particularly portable, but works on my setup
-require "posix"
-
-function time()
-    return os.date("%H:%M")
-end
-
-function battery()
-    local now = io.open("/sys/class/power_supply/BAT0/energy_now"):read()
-    local full = io.open("/sys/class/power_supply/BAT0/energy_full"):read()
-    local sign = ""
-
-    if now ~= full then
-        local status = io.open("/sys/class/power_supply/BAT0/status"):read()
-
-        if status == "Charging" then
-            sign = "+"
-        else
-            sign = "-"
-        end
-    end
-        
-    return string.format("%s%d%%", sign, now / (full/100))
-end
-
-function temperature()
-    return io.open("/sys/class/thermal/thermal_zone0/temp"):read() / 1000 .. "C"
-end
-
-function mail()
-    local num = -2 -- Don't count .. and .
-    if posix.chdir("/home/henrik/.mail/INBOX/new") then
-        for f in posix.files() do
-            num = num + 1
-        end
-    end
-
-    if num >= 2 then
-        return num .. " new mails"
-    elseif num == 1 then
-        return "1 new mail"
-    end
-end
+-- No looping, keepalive etc since my dwm updates clocks etc internally
+-- See http://github.com/halhen/dwm-halhen
 
 function mocp()
     m = io.popen("/usr/bin/mocp -i 2>/dev/null")
@@ -61,7 +20,10 @@ function mocp()
     if songtitle ~= "" then return songtitle end
     if title ~= "" then return title end
     if artist ~= "" then return artist end
-    if file ~= "" then return file end
+    if file ~= "" then 
+        file, _ = file:gsub("(.*/)(.*)", "%2")
+        return file 
+    end
 end
 
 function setstatus(s)
@@ -75,31 +37,21 @@ function setstatus(s)
 end
 
 -- Read command line
-keepalive=false
 xsetroot=true
 for posn, val in ipairs(arg) do
-    if val == "-k" then
-        keepalive=true
-    elseif val == "-s" then
+    if val == "-s" then
         xsetroot=false
     else
-        error("Bad argument.\nValid options are:\n   -k: keep process alive, and regularly updating\n   -s: write to stdout")
+        error("Bad argument.\nValid options are:\n   -s: write to stdout")
     end
 end
 
--- Process
-while true do
-    all = {mail(), mocp(), temperature(), battery(), time()}
+all = {mocp()}
 
-    data = {}
-    for k, v in pairs(all) do
-            table.insert(data, v)
-    end
-
-    s = table.concat(data, ' | ')
-    setstatus(s)
-
-    if not keepalive then break end
-    -- Sleep
-    posix.sleep(60 - os.date("%S"))
+data = {}
+for k, v in pairs(all) do
+        table.insert(data, v)
 end
+
+s = table.concat(data, ' | ')
+setstatus(s)

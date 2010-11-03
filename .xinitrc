@@ -35,7 +35,6 @@ autocutsel &
 # `exec dwm` converts the process to dwm, and keeps it and X alive as long as dwm is.
 function _run_dwm {
     find $HOME/.wallpaper -type f -regex '.*\.\(jpg\|png\)' | shuf -n 1 | xargs bgs
-    $HOME/.bin/statusline -k & 
     exec dwm
 }
 

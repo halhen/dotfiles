@@ -174,17 +174,7 @@ function gitrec {
 
 # Start dvtm with ^A as MOD, and with dwmstatus as status bar
 function dvtm {
-    FIFO="/tmp/dvtm-status.$$.$RANDOM"
-
-    [ -e "$FIFO" ] || mkfifo "$FIFO"
-    chmod 600 $FIFO
-
-    statusline -k -s >$FIFO &
-
-    STATUS_PID=$!
-    /usr/bin/dvtm -s $FIFO -m "^A" "$@" 2> /dev/null
-    kill $STATUS_PID
-    rm $FIFO
+    /usr/bin/dvtm -m "^A" "$@" 2> /dev/null
 }
 
 # ### cd improvements {{{
