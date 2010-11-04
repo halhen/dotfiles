@@ -22,7 +22,6 @@ setopt BG_NICE
 setopt CHECK_JOBS
 setopt CORRECT
 setopt EXTENDED_GLOB
-setopt GLOB_DOTS
 setopt MULTIOS
 setopt SHORT_LOOPS
 
