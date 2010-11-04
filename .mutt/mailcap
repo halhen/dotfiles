@@ -1,2 +1,2 @@
-text/html; w3m -dump %s;
+text/html; w3m -v -F -T text/html -I %{charset} %s; nametemplate=%s.html; needsterminal; copiousoutput
 application/pdf; zathura %s;
