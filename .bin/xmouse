@@ -1,0 +1,32 @@
+#!/bin/bash
+#
+# Enable / disable mouse, or toggle status
+
+command=${1:-toggle}
+
+_setmouse() {
+    case $1 in
+        on)
+            sudo modprobe psmouse;;
+        off)
+            sudo rmmod psmouse;;
+    esac
+}
+
+case $command in
+    toggle)
+        if lsmod | grep "^psmouse " >/dev/null; then
+            _setmouse off
+        else
+            _setmouse on
+        fi;;
+    on)
+        _setmouse on;;
+    off)
+        _setmouse off;;
+    *)
+        echo "Usage: $0 [toggle | on | off]"
+        exit 1;;
+esac
+
+exit $?
