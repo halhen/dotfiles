@@ -7,7 +7,9 @@ command=${1:-toggle}
 _setmouse() {
     case $1 in
         on)
-            sudo modprobe psmouse;;
+            sudo modprobe psmouse
+            sleep 1
+            xset m 6 3/2;;
         off)
             sudo rmmod psmouse;;
     esac
@@ -16,14 +18,14 @@ _setmouse() {
 case $command in
     toggle)
         if lsmod | grep "^psmouse " >/dev/null; then
-            _setmouse off
+            _setmouse off &
         else
-            _setmouse on
+            _setmouse on &
         fi;;
     on)
-        _setmouse on;;
+        _setmouse on &;;
     off)
-        _setmouse off;;
+        _setmouse off &;;
     *)
         echo "Usage: $0 [toggle | on | off]"
         exit 1;;
