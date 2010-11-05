@@ -125,7 +125,6 @@ alias less="less -MRs"
 export GREP_COLORS="1;33"
 alias grep="grep --color=auto"
 alias c="cd .."
-alias o="xdg-open"
 alias rm="rm --preserve-root"
 alias cal="cal -m"
 alias repkg="makepkg -efi"
@@ -137,6 +136,17 @@ alias webshare="python2 -m SimpleHTTPServer"
 # }}}
 
 # ## Functions {{{
+# Open files using xdg-open
+# If no arguments, open the first file in $PWD
+function o {
+    [[ -z $1 ]] && 1=$(ls -1|head -n 1)
+
+    while [[ -n $1 ]]; do
+        xdg-open "$1"
+        shift
+    done
+}
+
 # [Packer](http://wiki.archlinux.org/index.php/AUR_Helper#packer) / pacman wrapper.
 # First tries `packer`, which tells us if it will not handle the command.
 # If `packer` fails, let `pacman` do the job.
