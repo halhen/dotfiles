@@ -13,6 +13,10 @@ if [ -f ~/.Xmodmap ]; then
     xmodmap ~/.Xmodmap
 fi
 
+# Some more fonts
+xset +fp /usr/share/fonts/local
+xset fp rehash
+
 # Speed up the keyboard repetition rate.
 xset r rate 200 30 &
 # ... and enable/configure my mouse
