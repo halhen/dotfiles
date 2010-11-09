@@ -1,0 +1,53 @@
+
+## font
+mrxvt*font: -*-terminus-*-*-*-*-12-*-*-*-*-*-iso8859-1
+mrxvt*boldFont: -*-terminus-*-*-*-*-12-*-*-*-*-*-iso8859-1
+
+## change default colors
+mrxvt*foreground: #f2f2f2
+mrxvt*background: #101010
+
+mrxvt*color0:    #1b1d1e
+mrxvt*color1:    #f92673
+mrxvt*color2:    #86b413
+mrxvt*color3:    #fdb436
+mrxvt*color4:    #55c5d6
+mrxvt*color5:    #8952fe
+mrxvt*color6:    #899ca1
+mrxvt*color7:    #ccccc7
+
+mrxvt*color8:    #848787
+mrxvt*color9:    #ff5996
+mrxvt*color10:    #b8e354
+mrxvt*color11:    #feed6a
+mrxvt*color12:    #8ceeff
+mrxvt*color13:    #9c6efe
+mrxvt*color14:    #a9bcc1
+mrxvt*color15:    #f2f2f2
+
+mrxvt.bottomTabbar:           false
+mrxvt.autohideTabbar:         true
+mrxvt.minVisibleTabs:         8
+mrxvt.hideButtons:            true
+mrxvt.syncTabTitle:           true
+mrxvt.titleFormat:            %n. %t
+mrxvt.highlightTabOnBell:     true
+
+mrxvt.scrollBar:              false
+mrxvt.scrollbarRight:         true
+mrxvt.scrollbarStyle:         rxvt
+mrxvt.saveLines:              20000
+mrxvt.scrollTtyOutputInhibit: true
+mrxvt.scrollTtyKeypress:      true
+
+mrxvt.cursorBlink:            true
+mrxvt.cursorColor:            #fdb436
+
+mrxvt.showMenu:               false
+mrxvt.internalBorder:         0
+
+mrxvt.pointerBlank:           true
+mrxvt.pointerBlankDelay:      10
+
+mrxvt.boldColors:             false
+mrxvt.veryBright:             true

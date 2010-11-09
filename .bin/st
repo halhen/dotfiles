@@ -1,2 +1,0 @@
-#!/bin/sh
-LANG=en_US.iso88591 exec /usr/bin/st
