@@ -23,9 +23,6 @@ xset r rate 200 30 &
 xmouse on
 
 # ## Needed processes
-# Start the rxvt-unicode daemon if needed.
-pidof urxvtd || urxvtd -q -f -o
-
 # Manage clipboards
 autocutsel &
 
