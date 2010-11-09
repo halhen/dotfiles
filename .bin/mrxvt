@@ -1,0 +1,2 @@
+#!/bin/sh
+LANG="en_US.iso8859-1" exec /usr/bin/mrxvt "$@"
