@@ -1,2 +1,2 @@
 #!/bin/sh
-LANG=en_US.iso88591 /usr/bin/st
+LANG=en_US.iso88591 exec /usr/bin/st
