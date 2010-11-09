@@ -49,7 +49,7 @@ bindkey -s '^L' "|$PAGER\n"
 
 # Use the settings for urxvt from ~/.Xdefaults
 if [[ "$TERM" = "linux" ]]; then
-    for i in $(sed -n 's/^urxvt\*color\(.*\):.*#\(.*\)/\1 \2/p' "$HOME/.Xdefaults" | awk '{printf "\\e]P%X%s", $1, $2}'); do
+    for i in $(sed -n 's/^\*color\(.*\):.*#\(.*\)/\1 \2/p' "$HOME/.Xdefaults" | awk '{printf "\\e]P%X%s", $1, $2}'); do
         echo -en "$i"
     done
     clear

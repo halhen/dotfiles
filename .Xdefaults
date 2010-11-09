@@ -10,26 +10,26 @@ URxvt*geometry: 84×24
 URxvt*font: xft:terminus:pixelsize=11
 
 ## change default colors
-urxvt*foreground: #f2f2f2
-urxvt*background: #101010
+*foreground: #f2f2f2
+*background: #101010
 
-urxvt*color0:    #1b1d1e
-urxvt*color1:    #f92673
-urxvt*color2:    #86b413
-urxvt*color3:    #fdb436
-urxvt*color4:    #55c5d6
-urxvt*color5:    #8952fe
-urxvt*color6:    #899ca1
-urxvt*color7:    #ccccc7
+*color0:    #1b1d1e
+*color1:    #f92673
+*color2:    #86b413
+*color3:    #fdb436
+*color4:    #55c5d6
+*color5:    #8952fe
+*color6:    #899ca1
+*color7:    #ccccc7
 
-urxvt*color8:    #848787
-urxvt*color9:    #ff5996
-urxvt*color10:    #b8e354
-urxvt*color11:    #feed6a
-urxvt*color12:    #8ceeff
-urxvt*color13:    #9c6efe
-urxvt*color14:    #a9bcc1
-urxvt*color15:    #f2f2f2
+*color8:    #848787
+*color9:    #ff5996
+*color10:    #b8e354
+*color11:    #feed6a
+*color12:    #8ceeff
+*color13:    #9c6efe
+*color14:    #a9bcc1
+*color15:    #f2f2f2
 
 ## Fade when focus is lost
 urxvt*fading: 35
