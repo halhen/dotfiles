@@ -139,7 +139,7 @@ alias webshare="python2 -m SimpleHTTPServer"
 # Open files using xdg-open
 # If no arguments, open the first file in $PWD
 function o {
-    [[ -z $1 ]] && 1=$(ls -1|head -n 1)
+    [[ -z $1 ]] && 1=$(ls -1 --color=never|head -n 1)
 
     while [[ -n $1 ]]; do
         xdg-open "$1"
