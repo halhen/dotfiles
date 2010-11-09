@@ -53,7 +53,7 @@ noremap <right> :tabn<CR>
 noremap <up> <NOP>
 noremap <down> <NOP>
 inoremap <left> <C-o>:tabp<CR>
-inoremap <right> <C-o>:tabp<CR>
+inoremap <right> <C-o>:tabn<CR>
 inoremap <up> <NOP>
 inoremap <down> <NOP>
 
