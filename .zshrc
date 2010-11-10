@@ -77,7 +77,8 @@ fi
     # Use menu by default
     zstyle ':completion:*' menu select
 
-
+    # clyde is pacman
+    compdef _pacman clyde=pacman
 
 # }}}
 
@@ -147,12 +148,9 @@ function o {
     done
 }
 
-# [Packer](http://wiki.archlinux.org/index.php/AUR_Helper#packer) / pacman wrapper.
-# First tries `packer`, which tells us if it will not handle the command.
-# If `packer` fails, let `pacman` do the job.
+# Pacman wrapper
 function p {
-    packer --noconfirm --noedit $* && return
-    [[ $? -eq 5 ]] && pacman $*
+    clyde "$@"
 }
 
 # Make directories, cd into the first one
