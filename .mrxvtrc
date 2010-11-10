@@ -42,6 +42,12 @@ mrxvt.scrollTtyKeypress:      true
 mrxvt.cursorBlink:            false
 mrxvt.cursorColor:            #fdb436
 
+mrxvt.tabBackground:          #fdb436
+mrxvt.tabForeground:          #101010
+
+mrxvt.itabBackground:         #101010
+mrxvt.itabForeground:         #fdb436
+
 mrxvt.showMenu:               false
 mrxvt.internalBorder:         0
 
