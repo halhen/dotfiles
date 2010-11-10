@@ -36,7 +36,6 @@ mrxvt.highlightTabOnBell:     true
 mrxvt.scrollBar:              false
 mrxvt.scrollbarRight:         true
 mrxvt.scrollbarStyle:         rxvt
-mrxvt.saveLines:              20000
 mrxvt.scrollTtyOutputInhibit: true
 mrxvt.scrollTtyKeypress:      true
 
