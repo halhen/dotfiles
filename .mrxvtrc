@@ -40,7 +40,7 @@ mrxvt.saveLines:              20000
 mrxvt.scrollTtyOutputInhibit: true
 mrxvt.scrollTtyKeypress:      true
 
-mrxvt.cursorBlink:            true
+mrxvt.cursorBlink:            false
 mrxvt.cursorColor:            #fdb436
 
 mrxvt.showMenu:               false
@@ -51,3 +51,4 @@ mrxvt.pointerBlankDelay:      10
 
 mrxvt.boldColors:             false
 mrxvt.veryBright:             true
+mrxvt.fading:                 40
