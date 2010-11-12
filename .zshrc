@@ -122,7 +122,7 @@ setopt BANG_HIST
 
 # {{{ Aliases
 alias ls="ls --color=always"
-alias less="less -MRs"
+alias less="less -FiMRsX"
 export GREP_COLORS="1;33"
 alias grep="grep --color=auto"
 alias c="cd .."
