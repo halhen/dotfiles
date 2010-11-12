@@ -9,6 +9,9 @@ source ~/.mutt/mailboxes # offlineimap generated list of mailboxes
 set sendmail = "/usr/bin/msmtp"
 unset record # Gmail stores a copy
 
+# Mailing lists
+subscribe luakit-dev@lists.luakit.org
+
 # Address book
 source ~/.mutt/muttalias
 set alias_file  = ~/.mutt/muttalias
