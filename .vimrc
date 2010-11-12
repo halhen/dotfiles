@@ -16,7 +16,6 @@ vnoremap <F1> <ESC>
 
 " Misc set:s
 set nocompatible
-set encoding=utf-8
 set title
 set cursorline
 set relativenumber
