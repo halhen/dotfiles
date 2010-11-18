@@ -54,6 +54,8 @@ mrxvt.internalBorder:         0
 mrxvt.pointerBlank:           true
 mrxvt.pointerBlankDelay:      10
 
+mrxvt.saveLines:              2000
+
 mrxvt.boldColors:             false
 mrxvt.veryBright:             true
 mrxvt.fading:                 40
