@@ -68,6 +68,7 @@ fi
     
     # There's lots of bad hosts in /etc/hosts with IP 0.0.0.0. These should not be in completion
     hosts=( $(( awk 'BEGIN {OFS="\n"} /^[^#0]/ {for (i=2;i<=NF;i++) print $i}' /etc/hosts ) | grep -v '\.localdomain$' | sort -u) )
+    hosts+=( $(sed -n 's/[ 	]*Host[ 	]\{1,\}\([^ 	*$]*\).*/\1/p' ~/.ssh/config))
     zstyle ':completion:*' hosts $hosts
 
     # Less users
