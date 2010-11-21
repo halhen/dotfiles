@@ -185,6 +185,26 @@ function dvtm {
     /usr/bin/dvtm -m "^A" "$@" 2> /dev/null
 }
 
+# }}}
+
+# ### Note taking functions {{{
+
+# Open editor with note file
+function n {
+    filename="$HOME/.notes/$*.txt"
+    mkdir -p ${filename:h}
+    $EDITOR "$filename"
+}
+
+# List notes, sorted by time modified
+function nls {
+    for i in ~/.notes/**/*${1}*(D.om); do
+        echo ${i#$HOME/.notes/*}
+    done
+}
+
+# }}}
+
 # ### cd improvements {{{
 # Use pushd to preserve history. `cdm` displays a menu of previous dirs,
 # Adapted from Pro Bash Programming - ISBN 978-1430219989
@@ -205,5 +225,4 @@ function cdm {
         fi
     done
 }
-# }}}
 # }}}
