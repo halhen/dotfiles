@@ -221,3 +221,16 @@ function cdm {
     done
 }
 # }}}
+
+# Launch/attach to tmux if connecting remotely {{{
+if [[ "$TERM" != "screen" ]] && [[ -n "$SSH_CONNECTION" ]]; then
+    if $(which tmux); then
+        if tmux has-session &>/dev/null; then
+            tmux -q attach-session
+        else
+            tmux -q new-session
+        fi
+    fi
+fi
+
+# }}}
