@@ -180,11 +180,6 @@ function gitrec {
     done
 }
 
-# Start dvtm with ^A as MOD, and with dwmstatus as status bar
-function dvtm {
-    /usr/bin/dvtm -m "^A" "$@" 2> /dev/null
-}
-
 # }}}
 
 # ### Note taking functions {{{
