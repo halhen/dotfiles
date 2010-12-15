@@ -1,0 +1,65 @@
+#!/bin/bash
+#
+# Fetch all available SVT Play episodes for a specified program
+#
+# "view url": URL with video embedded on SVT Play
+# "program id": numeric ID used in SVT Play URLs to determin program
+
+function die {
+    echo "$*" >&2
+    exit 1
+}
+
+function svtplay_getvideo {
+# $1 - svtplay view url
+# $2 - target filename
+    SITEURL="$1"
+    FILENAME="$2"
+
+    [[ $SITEURL && $FILENAME ]] || die "Missing parameters in $0"
+
+    u=$(wget -qO- "$SITEURL" | sed -n 's/.*<a class="external-player" href="\([^"]*\).*/\1/p')
+    rtmpdump -r "$u" -o "$FILENAME.tmp" && mv "$FILENAME"{.tmp,}
+
+    # Clean up if rtmpdump failed
+    rm -f "$FILENAME.tmp"
+}
+
+function svtplay_viewurls {
+# Get all view urls for program
+# Prints list of "<view url> <program title>" to stdout
+# $1 - program ID 
+    [[ $1 ]] || dir "Missing parameter in $0"
+
+    rss="http://feeds.svtplay.se/v1/video/list/$1?expression=full&mode=plain"
+    wget -qO- "$rss" | xml sel -t -m "/rss/channel/item" -v "link" -o " " -v "title" -n
+}
+
+function svtplay_fetchepisodes() {
+# download all published episodes (unless already downloaded)
+# $1 - program ID
+# $2 - target directory
+    [[ $1 && $2 ]] || die "Missing parameters in $0"
+
+    svtplay_viewurls $1 | while read url title
+    do
+        [[ $url && $title ]] || continue
+
+        filename=${title// /_}
+        filename=${filename//\//.}
+        filename="$2/$filename.avi"
+
+        echo "$filename ..."
+        if [[ ! -e "$filename" ]]; then
+            svtplay_getvideo "$url" "$filename"
+        fi
+    done
+}
+
+[[ $1 && $2 ]] || die "Download all available episodes from SVT Play.
+
+Missing arguments.
+Usage: $0 <program id> <target path>"
+
+mkdir -p "$2" || die "Failed to create target path $2"
+svtplay_fetchepisodes "$1" "$2"
