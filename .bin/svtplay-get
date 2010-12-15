@@ -19,10 +19,8 @@ function svtplay_getvideo {
     [[ $SITEURL && $FILENAME ]] || die "Missing parameters in $0"
 
     u=$(wget -qO- "$SITEURL" | sed -n 's/.*<a class="external-player" href="\([^"]*\).*/\1/p')
-    rtmpdump -r "$u" -o "$FILENAME.tmp" && mv "$FILENAME"{.tmp,}
-
-    # Clean up if rtmpdump failed
-    rm -f "$FILENAME.tmp"
+    rtmpdump -r "$u" -o "$FILENAME.tmp" 
+    mv "$FILENAME"{.tmp,}
 }
 
 function svtplay_viewurls {
