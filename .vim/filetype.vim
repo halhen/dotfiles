@@ -11,6 +11,10 @@ augroup yaml
     au! BufRead,BufNewFile *.yaml,*.yml     setfiletype yaml
 augroup END
 
+augroup newlisp
+    au! BufRead,BufNewFile *.lisp,*.lsp     setfiletype newlisp
+augroup END
+
 augroup filetypedetect
     " Mail
     autocmd BufRead,BufNewFile *mutt-*      setfiletype mail
