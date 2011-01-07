@@ -14,6 +14,7 @@ export PAGER="less"
 export OOO_FORCE_DESKTOP="gnome"
 export MOZ_DISABLE_PANGO=1
 export HOSTNAME=$(hostname)
+export PYTHONSTARTUP=$HOME/.pythonrc
 # }}}
 
 # {{{ Shell options
