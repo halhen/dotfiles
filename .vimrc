@@ -18,7 +18,6 @@ vnoremap <F1> <ESC>
 set nocompatible
 set title
 set cursorline
-set relativenumber
 set backspace=indent,eol,start
 set showmatch
 syntax enable
@@ -27,8 +26,11 @@ set mouse=a
 " More history and undolevels
 set history=1024
 set undolevels=1024
-set undofile
-set undodir=~/.undo
+if v:version >= 730
+    set relativenumber
+    set undofile
+    set undodir=~/.undo
+endif
 
 " Color scheme
 colorscheme dante
