@@ -1,4 +1,53 @@
-import readline
-import rlcompleter
+# 
+# Adapted from http://norvig.com/python-iaq.html
+#
 
-readline.parse_and_bind('tab: complete')
+import sys
+import os
+import atexit
+
+# {{{ Readline settings
+try:
+    import readline
+    import rlcompleter
+except ImportError:
+    print("readline not available")
+else:
+    readline.parse_and_bind('tab: complete')
+
+    # Store history between sessions
+    histfile = os.path.join(os.environ['HOME'], '.python_history')
+    try:
+        readline.read_history_file(histfile)
+    except IOError:
+        pass
+    atexit.register(readline.write_history_file, histfile)
+# }}}
+
+# {{{ Result history and prompt 
+h = [None]
+
+class Prompt:
+    def __init__(self, str='h[%d] >>> '):
+        self.str = str
+
+    def __str__(self):
+        try:
+            if _ not in [h[-1], None, h]: h.append(_);
+        except NameError:
+            pass
+        return self.str % len(h)
+
+    def __radd__(self, other):
+        return str(other) + str(self)
+
+if os.environ.get('TERM') in ['xterm', 'vt100', 'screen']:
+    sys.ps1 = Prompt('\001\033[0;33m\002h[%d] >>> \001\033[0m\002')
+else:
+    sys.ps1 = Prompt()
+sys.ps2 = ''
+# }}}
+
+# {{{ Cleanup
+del os
+# }}}
