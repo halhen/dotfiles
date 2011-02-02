@@ -41,7 +41,7 @@ class Prompt:
     def __radd__(self, other):
         return str(other) + str(self)
 
-if os.environ.get('TERM') in ['xterm', 'vt100', 'screen']:
+if os.environ.get('TERM') in ['xterm', 'vt100', 'screen', 'rxvt-unicode']:
     sys.ps1 = Prompt('\001\033[0;33m\002h[%d] >>> \001\033[0m\002')
 else:
     sys.ps1 = Prompt()
