@@ -31,9 +31,6 @@ URxvt*font: xft:terminus:pixelsize=11
 *color14:    #a9bcc1
 *color15:    #f2f2f2
 
-## Fade when focus is lost
-urxvt*fading: 35
-
 URxvt.perl-ext-common: default,matcher,clipboard
 URxvt.urlLauncher: jumanji
 URxvt.matcher.button: 2
