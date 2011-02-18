@@ -79,3 +79,6 @@ set backupdir=/tmp/
 autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8
 \ formatoptions+=croq softtabstop=4 smartindent
 \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
+
+" gf opens file under cursor in new tab, creating it if nescessary
+map gf :tabe <cfile><CR>
