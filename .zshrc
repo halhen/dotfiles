@@ -190,16 +190,16 @@ function gitrec {
 
 # Open editor with note file
 function n {
-    filename="$HOME/.notes/$*.txt"
-    mkdir -p ${filename:h}
-    $EDITOR "$filename"
-}
+    ( # In a subshell
+        cd "$HOME/.notes"
+        git pull origin master
 
-# List notes, sorted by time modified
-function nls {
-    for i in ~/.notes/**/*${1}*(D.om); do
-        echo ${i#$HOME/.notes/*}
-    done
+        vim ${1:-ToDo}
+
+        git add -f ./*
+        git commit -m "$(printf 'On '; hostname;)"
+        git push origin master
+    )
 }
 
 # }}}
