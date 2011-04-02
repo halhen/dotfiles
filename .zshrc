@@ -194,7 +194,12 @@ function n {
         cd "$HOME/.notes"
         git pull origin master
 
-        vim ${1:-ToDo}
+        if [[ $HOSTNAME = "hallberg" ]]; then
+            TODOFILE="Work"
+        else
+            TODOFILE="Private"
+        fi
+        vim ${1:-ToDo/$TODOFILE}
 
         git add -f ./*
         git commit -m "$(printf 'On '; hostname;)"
