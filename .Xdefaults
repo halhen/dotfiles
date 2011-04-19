@@ -35,3 +35,5 @@ URxvt.perl-ext-common: default,matcher,clipboard
 URxvt.urlLauncher: jumanji
 URxvt.matcher.button: 2
 URxvt.matcher.pattern.1: \\bwww\\.[\\w-]\\.[\\w./?&@#-]*[\\w/-]
+
+URxvt.fading: 60
