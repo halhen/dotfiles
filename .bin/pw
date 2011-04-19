@@ -1,0 +1,20 @@
+#!/bin/bash
+
+LENGTH=10
+
+while getopts "hn:" flag
+do
+    case $flag in
+        h) echo "$0 [-n LENGTH] - generate password of length LENGTH" && exit 1;;
+        n) LENGTH=$OPTARG;;
+        ?) exit 1;;
+    esac
+done
+
+PW=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9-.!"#¤%&/()=?' | head -c$LENGTH)
+
+if which xclip >/dev/null; then
+    echo $PW | xclip
+fi
+
+echo $PW
