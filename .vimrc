@@ -26,11 +26,11 @@ set mouse=a
 " More history and undolevels
 set history=1024
 set undolevels=1024
-if v:version >= 730
-    set relativenumber
-    set undofile
-    set undodir=~/.undo
-endif
+
+set cryptmethod=blowfish
+set relativenumber
+set undofile
+set undodir=~/.undo
 
 " Color scheme
 colorscheme dante
