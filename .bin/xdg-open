@@ -20,7 +20,7 @@ IFS='/' read -r major minor < <(file -ib "$file" 2>/dev/null | cut -d ';' -f 1)
 # check for a specific case
 case "$major/$minor" in
   text/html)       $BROWSER "$file" &>/dev/null & exit 0 ;;
-  application/pdf) zathura "$file"  &>/dev/null & exit 0 ;;
+  application/pdf) okular "$file"  &>/dev/null & exit 0 ;;
 esac
 
 # check for just a major match
