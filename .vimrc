@@ -17,7 +17,6 @@ vnoremap <F1> <ESC>
 " Misc set:s
 set nocompatible
 set title
-set cursorline
 set backspace=indent,eol,start
 set showmatch
 syntax enable
@@ -28,9 +27,6 @@ set history=1024
 set undolevels=1024
 
 set cryptmethod=blowfish
-set relativenumber
-set undofile
-set undodir=~/.undo
 
 " Color scheme
 colorscheme dante
