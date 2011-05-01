@@ -1,0 +1,173 @@
+# Menu config for pekwm
+
+	Submenu = "Applications" {
+		Submenu = "Accessibility" {
+			Entry = "Xmag" { Actions = "Exec xmag &" } 
+		} 
+		Submenu = "Data Management" {
+			Entry = "LibreOffice Base" { Actions = "Exec /usr/bin/libreoffice -base &" } 
+		} 
+		Submenu = "Editors" {
+			Entry = "MousePad" { Actions = "Exec /usr/bin/mousepad &" } 
+			Entry = "Nano" { Actions = "Exec x-terminal-emulator  -T \"Nano\" -e sh -c \"/bin/nano\" &" } 
+			Entry = "Xedit" { Actions = "Exec xedit &" } 
+		} 
+		Submenu = "File Management" {
+			Entry = "Thunar" { Actions = "Exec /usr/bin/thunar &" } 
+			Entry = "Xfdesktop" { Actions = "Exec xfdesktop &" } 
+		} 
+		Submenu = "Graphics" {
+			Entry = "dotty" { Actions = "Exec /usr/bin/dotty &" } 
+			Entry = "ImageMagick" { Actions = "Exec /usr/bin/display logo: &" } 
+			Entry = "Inkscape" { Actions = "Exec /usr/bin/inkscape &" } 
+			Entry = "lefty" { Actions = "Exec /usr/bin/lefty &" } 
+			Entry = "LibreOffice Draw" { Actions = "Exec /usr/bin/libreoffice -draw &" } 
+			Entry = "X Window Snapshot" { Actions = "Exec xwd | xwud &" } 
+		} 
+		Submenu = "Network" {
+			Submenu = "Communication" {
+				Entry = "Mutt" { Actions = "Exec x-terminal-emulator  -T \"Mutt\" -e sh -c \"/usr/bin/mutt\" &" } 
+				Entry = "Telnet" { Actions = "Exec x-terminal-emulator  -T \"Telnet\" -e sh -c \"/usr/bin/telnet\" &" } 
+				Entry = "Xbiff" { Actions = "Exec xbiff &" } 
+			} 
+			Submenu = "Monitoring" {
+				Entry = "WICD" { Actions = "Exec /usr/bin/wicd-gtk &" } 
+			} 
+			Submenu = "Web Browsing" {
+				Entry = "Chromium" { Actions = "Exec chromium &" } 
+				Entry = "Iceweasel" { Actions = "Exec iceweasel &" } 
+				Entry = "w3m" { Actions = "Exec x-terminal-emulator  -T \"w3m\" -e sh -c \"/usr/bin/w3m /usr/share/doc/w3m/MANUAL.html\" &" } 
+			} 
+		} 
+		Submenu = "Office" {
+			Entry = "AbiWord Word Processor" { Actions = "Exec /usr/bin/abiword &" } 
+			Entry = "FreeMind" { Actions = "Exec /usr/bin/freemind &" } 
+			Entry = "gnumeric" { Actions = "Exec /usr/bin/gnumeric &" } 
+			Entry = "LibreOffice Calc" { Actions = "Exec /usr/bin/libreoffice -calc &" } 
+			Entry = "LibreOffice Impress" { Actions = "Exec /usr/bin/libreoffice -impress &" } 
+			Entry = "LibreOffice Writer" { Actions = "Exec /usr/bin/libreoffice -writer &" } 
+			Entry = "zathura" { Actions = "Exec /usr/bin/zathura &" } 
+		} 
+		Submenu = "Programming" {
+			Entry = "Python (v2.6)" { Actions = "Exec x-terminal-emulator  -T \"Python (v2.6)\" -e sh -c \"/usr/bin/python2.6\" &" } 
+			Entry = "Tclsh8.4" { Actions = "Exec x-terminal-emulator  -T \"Tclsh8.4\" -e sh -c \"/usr/bin/tclsh8.4\" &" } 
+			Entry = "Tclsh8.5" { Actions = "Exec x-terminal-emulator  -T \"Tclsh8.5\" -e sh -c \"/usr/bin/tclsh8.5\" &" } 
+			Entry = "TkWish8.4" { Actions = "Exec x-terminal-emulator -e /usr/bin/wish8.4 &" } 
+			Entry = "TkWish8.5" { Actions = "Exec x-terminal-emulator -e /usr/bin/wish8.5 &" } 
+		} 
+		Submenu = "Science" {
+			Submenu = "Data Analysis" {
+				Entry = "GNU R" { Actions = "Exec x-terminal-emulator  -T \"GNU R\" -e sh -c \"/usr/bin/R\" &" } 
+			} 
+			Submenu = "Engineering" {
+				Entry = "Dia" { Actions = "Exec /usr/bin/dia-normal &" } 
+			} 
+			Submenu = "Mathematics" {
+				Entry = "Bc" { Actions = "Exec x-terminal-emulator  -T \"Bc\" -e sh -c \"/usr/bin/bc\" &" } 
+				Entry = "Dc" { Actions = "Exec x-terminal-emulator  -T \"Dc\" -e sh -c \"/usr/bin/dc\" &" } 
+				Entry = "Gnuplot" { Actions = "Exec x-terminal-emulator  -T \"Gnuplot\" -e sh -c \"/usr/bin/gnuplot\" &" } 
+				Entry = "LibreOffice Math" { Actions = "Exec /usr/bin/libreoffice -math &" } 
+				Entry = "psppire" { Actions = "Exec /usr/bin/psppire &" } 
+				Entry = "Xcalc" { Actions = "Exec xcalc &" } 
+			} 
+		} 
+		Submenu = "Shells" {
+			Entry = "Bash" { Actions = "Exec x-terminal-emulator  -T \"Bash\" -e sh -c \"/bin/bash --login\" &" } 
+			Entry = "Dash" { Actions = "Exec x-terminal-emulator  -T \"Dash\" -e sh -c \"/bin/dash -i\" &" } 
+			Entry = "Sh" { Actions = "Exec x-terminal-emulator  -T \"Sh\" -e sh -c \"/bin/sh --login\" &" } 
+			Entry = "Zsh" { Actions = "Exec x-terminal-emulator  -T \"Zsh\" -e sh -c \"/bin/zsh4\" &" } 
+		} 
+		Submenu = "Sound" {
+			Entry = "Xfce Mixer" { Actions = "Exec /usr/bin/xfce4-mixer &" } 
+		} 
+		Submenu = "System" {
+			Submenu = "Administration" {
+				Entry = "Aptitude (terminal)" { Actions = "Exec x-terminal-emulator  -T \"Aptitude (terminal)\" -e sh -c \"/usr/bin/aptitude-curses\" &" } 
+				Entry = "Debian Task selector" { Actions = "Exec x-terminal-emulator  -T \"Debian Task selector\" -e sh -c \"su-to-root -c tasksel\" &" } 
+				Entry = "Editres" { Actions = "Exec editres &" } 
+				Entry = "OpenJDK Java 6 Policy Tool" { Actions = "Exec /usr/lib/jvm/java-6-openjdk/bin/policytool &" } 
+				Entry = "Reportbug" { Actions = "Exec x-terminal-emulator  -T \"Reportbug\" -e sh -c \"/usr/bin/reportbug --exit-prompt\" &" } 
+				Entry = "Reportbug (GTK+)" { Actions = "Exec /usr/bin/reportbug --exit-prompt --ui gtk2 &" } 
+				Entry = "TeXconfig" { Actions = "Exec x-terminal-emulator  -T \"TeXconfig\" -e sh -c \"/usr/bin/texconfig\" &" } 
+				Entry = "Xclipboard" { Actions = "Exec xclipboard &" } 
+				Entry = "Xfce Application Finder" { Actions = "Exec xfce4-appfinder &" } 
+				Entry = "Xfontsel" { Actions = "Exec xfontsel &" } 
+				Entry = "xfprint4" { Actions = "Exec xfprint4 &" } 
+				Entry = "XFrun4" { Actions = "Exec xfrun4 &" } 
+				Entry = "Xkill" { Actions = "Exec xkill &" } 
+				Entry = "Xrefresh" { Actions = "Exec xrefresh &" } 
+			} 
+			Submenu = "Hardware" {
+				Entry = "Xvidtune" { Actions = "Exec xvidtune &" } 
+			} 
+			Submenu = "Monitoring" {
+				Entry = "htop" { Actions = "Exec x-terminal-emulator  -T \"htop\" -e sh -c \"/usr/bin/htop\" &" } 
+				Entry = "Pstree" { Actions = "Exec x-terminal-emulator  -T \"Pstree\" -e sh -c \"/usr/bin/pstree.x11\" &" } 
+				Entry = "Top" { Actions = "Exec x-terminal-emulator  -T \"Top\" -e sh -c \"/usr/bin/top\" &" } 
+				Entry = "Xconsole" { Actions = "Exec xconsole -file /dev/xconsole &" } 
+				Entry = "Xev" { Actions = "Exec x-terminal-emulator -e xev &" } 
+				Entry = "Xload" { Actions = "Exec xload &" } 
+			} 
+			Submenu = "Security" {
+				Entry = "lynis auditing tool" { Actions = "Exec x-terminal-emulator  -T \"lynis auditing tool\" -e sh -c \"su-to-root -c '/usr/sbin/lynis --no-colors'\" &" } 
+			} 
+		} 
+		Submenu = "Terminal Emulators" {
+			Entry = "Rxvt-Unicode" { Actions = "Exec urxvt &" } 
+			Entry = "Rxvt-Unicode (Black, Xft)" { Actions = "Exec urxvt -fn \"xft:Mono\" -rv &" } 
+			Entry = "Xfce Terminal" { Actions = "Exec /usr/bin/xfce4-terminal &" } 
+			Entry = "Xfterm4" { Actions = "Exec x-terminal-emulator  -T \"Xfterm4\" -e sh -c \"xfterm4\" &" } 
+			Entry = "XTerm" { Actions = "Exec xterm &" } 
+			Entry = "XTerm (Unicode)" { Actions = "Exec uxterm &" } 
+		} 
+		Submenu = "Video" {
+			Entry = "gxine video player" { Actions = "Exec /usr/bin/gxine &" } 
+			Entry = "VLC media player" { Actions = "Exec /usr/bin/qvlc &" } 
+		} 
+		Submenu = "Viewers" {
+			Entry = "Evince" { Actions = "Exec /usr/bin/evince &" } 
+			Entry = "MPlayer" { Actions = "Exec /usr/bin/gmplayer &" } 
+			Entry = "Xditview" { Actions = "Exec xditview &" } 
+			Entry = "XDvi" { Actions = "Exec /usr/bin/xdvi &" } 
+		} 
+	} 
+	Submenu = "Games" {
+		Submenu = "Action" {
+			Entry = "Chromium B.S.U." { Actions = "Exec /usr/games/chromium-bsu &" } 
+		} 
+		Submenu = "Toys" {
+			Entry = "Oclock" { Actions = "Exec oclock &" } 
+			Entry = "Xclock (analog)" { Actions = "Exec xclock -analog &" } 
+			Entry = "Xclock (digital)" { Actions = "Exec xclock -digital -update 1 &" } 
+			Entry = "Xeyes" { Actions = "Exec xeyes &" } 
+			Entry = "Xlogo" { Actions = "Exec xlogo &" } 
+		} 
+	} 
+	Submenu = "Help" {
+		Entry = "Info" { Actions = "Exec x-terminal-emulator  -T \"Info\" -e sh -c \"info\" &" } 
+		Entry = "TeXdoctk" { Actions = "Exec /usr/bin/texdoctk &" } 
+		Entry = "Xfce4-about" { Actions = "Exec xfce4-about &" } 
+		Entry = "Xfhelp4" { Actions = "Exec xfhelp4 &" } 
+		Entry = "Xman" { Actions = "Exec xman &" } 
+	} 
+	Submenu = "Screen" {
+		Submenu = "Locking" {
+			Entry = "Lock Screen (XScreenSaver)" { Actions = "Exec /usr/bin/xscreensaver-command -lock &" } 
+			Entry = "Xflock4" { Actions = "Exec x-terminal-emulator  -T \"Xflock4\" -e sh -c \"xflock4\" &" } 
+		} 
+		Submenu = "Saving" {
+			Entry = "Activate ScreenSaver (Next)" { Actions = "Exec /usr/bin/xscreensaver-command -next &" } 
+			Entry = "Activate ScreenSaver (Previous)" { Actions = "Exec /usr/bin/xscreensaver-command -prev &" } 
+			Entry = "Activate ScreenSaver (Random)" { Actions = "Exec /usr/bin/xscreensaver-command -activate &" } 
+			Entry = "Demo Screen Hacks" { Actions = "Exec /usr/bin/xscreensaver-command -demo &" } 
+			Entry = "Disable XScreenSaver" { Actions = "Exec /usr/bin/xscreensaver-command -exit &" } 
+			Entry = "Enable XScreenSaver" { Actions = "Exec /usr/bin/xscreensaver &" } 
+			Entry = "Reinitialize XScreenSaver" { Actions = "Exec /usr/bin/xscreensaver-command -restart &" } 
+			Entry = "ScreenSaver Preferences" { Actions = "Exec /usr/bin/xscreensaver-command -prefs &" } 
+		} 
+	} 
+	Submenu = "Window Managers" {
+		Entry = "Dwm" { Actions = "RestartOther /usr/bin/dwm" } 
+		Entry = "Pekwm" { Actions = "RestartOther /usr/bin/pekwm" } 
+		Entry = "XFwm" { Actions = "RestartOther xfwm4" } 
+	} 

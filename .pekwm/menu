@@ -1,0 +1,88 @@
+# Menu config for pekwm
+
+  # Variables
+  INCLUDE = "vars"
+
+  RootMenu = "Pekwm" {
+  	Entry = "Terminal" { Actions = "Exec $TERM &" }
+    Entry = "Browser" { Actions = "Exec $BROWSER &" }
+    Entry = "Show files" { Actions = "Exec thunar &" }
+  	Entry = "Run.." { Actions = "ShowCmdDialog" }
+
+  	Separator {}
+
+  	Submenu = "Go to" {
+  		SubMenu = "Workspace" {
+  			# Create goto menu once per pekwm config reload. The fast way that
+  			# will work for most if not all users.
+  			COMMAND = "/usr/share/pekwm/scripts/pekwm_ws_menu.sh send"
+  			# Create goto menu every time the menu is opened. The slow way.
+  			# This is what you want if you are using external tools to make
+  			# the amount of workspaces something else than what you define in
+  			# ~/.pekwm/config. You will know if you want this.
+  			# Entry = "" { Actions = "Dynamic /usr/share/pekwm/scripts/pekwm_ws_menu.sh send dynamic" }
+  		}
+  		Entry = "Window.." { Actions = "ShowMenu GotoClient True" }
+  	}
+  	Submenu = "Pekwm" {
+  		Submenu = "Themes" {
+  			Entry { Actions = "Dynamic /usr/share/pekwm/scripts/pekwm_themeset.sh /usr/share/pekwm/themes" }
+  			Entry { Actions = "Dynamic /usr/share/pekwm/scripts/pekwm_themeset.sh ~/.pekwm/themes" }
+  		}
+  		Entry = "Reload" { Actions = "Reload" }
+  		Entry = "Restart" { Actions = "Restart" }
+  		Entry = "Exit" { Actions = "Exit" }
+  	}
+  	
+	Separator {}
+
+	INCLUDE = "/etc/pekwm/debian-menu"
+}
+
+WindowMenu = "Window Menu" {
+  	Entry = "(Un)Stick" { Actions = "Toggle Sticky" }
+  	Entry = "(Un)Shade" { Actions = "Toggle Shaded" }
+  	Entry = "Iconify " { Actions = "Set Iconified" }
+  	Entry = "Command.." { Actions = "ShowCmdDialog" }
+
+  	Submenu = "Maximize" {
+  		Entry = "Full" { Actions = "Toggle Maximized True True" }
+  		Entry = "Horizontal" { Actions = "Toggle Maximized True False" }
+  		Entry = "Vertical" { Actions = "Toggle Maximized False True" }
+  	}
+  	Submenu = "Fill" {
+  		Entry = "Full" { Actions = "MaxFill True True" }
+  		Entry = "Horizontal" { Actions = "MaxFill True False" }
+  		Entry = "Vertical" { Actions = "MaxFill False True" }
+  	}
+  	Submenu = "Stacking" {
+  		Entry = "Raise " { Actions = "Raise" }
+  		Entry = "Lower" { Actions = "Lower" }
+  		Entry = "Always On Top " { Actions = "Toggle AlwaysOnTop" }
+  		Entry = "Always Below" { Actions = "Toggle AlwaysBelow" }
+  	}
+  	Submenu = "Decor" {
+  		Entry = "Decor" { Actions = "Toggle DecorBorder; Toggle DecorTitlebar" }
+  		Entry = "Border" { Actions = "Toggle DecorBorder" }
+  		Entry = "Titlebar" { Actions = "Toggle DecorTitlebar" }
+
+  	}
+  	Submenu = "Skip" {
+  		Entry = "Menus" { Actions = "Toggle Skip Menus" }
+  		Entry = "Focus Toggle" { Actions = "Toggle Skip FocusToggle" }
+  		Entry = "Snap" { Actions = "Toggle Skip Snap" }
+  	}
+  	SubMenu = "Send To" {
+  		# Create sendto menu once per pekwm config reload. The fast way that
+  		# will work for most if not all users.
+  		COMMAND = "/usr/share/pekwm/scripts/pekwm_ws_menu.sh send"
+  		# Create sendto menu every time the menu is opened. The slow way.
+  		# This is what you want if you are using external tools to make
+  		# the amount of workspaces something else than what you define in
+  		# ~/.pekwm/config. You will know if you want this.
+  		# Entry = "" { Actions = "Dynamic /usr/share/pekwm/scripts/pekwm_ws_menu.sh send dynamic" }
+  	}
+  	Separator {}
+  	Entry = "Close" { Actions = "Close" }
+  	Submenu = "Kill" { Entry = "Kill application" { Actions = "Kill" } }
+  }
