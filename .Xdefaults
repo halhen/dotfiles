@@ -6,7 +6,7 @@ URxvt*scrollBar: false
 URxvt*borderLess: false
 
 ## geometry and font
-URxvt*geometry: 84×24
+URxvt*geometry: 100x30
 URxvt*font: xft:terminus:pixelsize=11
 
 ## change default colors
