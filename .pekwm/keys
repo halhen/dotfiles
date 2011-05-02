@@ -70,7 +70,12 @@ Global {
 	KeyPress = "Mod4 P" { Actions = "ShowCmdDialog" }
 	KeyPress = "Mod4 V" { Actions = "ShowSearchDialog" }
 	KeyPress = "Mod4 H" { Actions = "Toggle HarbourHidden" }
-    KeyPress = "Mod4 B" { Actions = "Exec $BROWSER" }
+    KeyPress = "Mod4 B" { Actions = "Exec chromium-browser" }
+
+# Volume settings
+    KeyPress = "XF86AudioRaiseVolume" { Actions = "Exec amixer set Master 5+ unmute" }
+    KeyPress = "XF86AudioLowerVolume" { Actions = "Exec amixer set Master 5- unmute" }
+    KeyPress = "XF86AudioMute"        { Actions = "Exec amixer set Master toggle" }
 
 # - - ----------------------------------------------- - -
 # CHAINS. These give you access to just about everything.
