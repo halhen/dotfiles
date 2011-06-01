@@ -1,5 +1,5 @@
 #!/bin/sh
-function start-dwm {
+function start_dwm {
     xrandr --output LVDS1 --auto --output VGA1 --auto --right-of LVDS1
     xsetroot -solid beige
     xset r rate 180 50
@@ -11,5 +11,5 @@ function start-dwm {
 }
 
 #pekwm
-start-dwm
+start_dwm
 
