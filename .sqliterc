@@ -1,2 +1,4 @@
 .headers on
 .mode columns
+PRAGMA cache_size=500000;
+

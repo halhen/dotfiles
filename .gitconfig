@@ -1,9 +1,11 @@
 [user]
 	name = Henrik Hallberg
-	email = halhen@k2h.se
+	email = henrik.hallberg@playscan.com
 [color]
 	diff = auto
 	status = auto
 	branch = auto
 [alias]
 	unstage = reset HEAD
+[push]
+	default = tracking

@@ -1,4 +1,10 @@
 Xft.dpi:	96
+Xft.autohint: 1
+Xft.lcdfilter: lcddefault
+Xft.hintstyle: hintmedium
+Xft.hinting: 1
+Xft.antialias: 1
+Xft.rgba: rgb
 
 ## borderless and no scrollbar
 URxvt*scrollBar_right: false
@@ -35,5 +41,3 @@ URxvt.perl-ext-common: default,matcher,clipboard
 URxvt.urlLauncher: jumanji
 URxvt.matcher.button: 2
 URxvt.matcher.pattern.1: \\bwww\\.[\\w-]\\.[\\w./?&@#-]*[\\w/-]
-
-URxvt.fading: 60
