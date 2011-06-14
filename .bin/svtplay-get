@@ -18,7 +18,7 @@ function svtplay_getvideo {
 
     [[ $SITEURL && $FILENAME ]] || die "Missing parameters in $0"
 
-    u=$(wget -qO- "$SITEURL" | sed -n 's/.*<a class="external-player" href="\([^"]*\).*/\1/p')
+    u=$(wget -qO- "$SITEURL" | sed -n 's/.*<param name="flashvars" value="dynamicStreams=url:\([^,]*\).*/\1/p' | head -n 1)
     rtmpdump -r "$u" -o "$FILENAME.tmp" 
     mv "$FILENAME"{.tmp,}
 }
