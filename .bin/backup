@@ -119,3 +119,4 @@ _keep_backups "$weekly_dest" 3
 _keep_backups "$monthly_dest" 3
 
 $verbose && echo "Backup done"
+exit 0

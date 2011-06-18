@@ -1,0 +1,25 @@
+#!/bin/bash
+# 
+# Backup a directory over ssh with sshfs
+
+
+function cleanup {
+    fusermount -u "$mountpoint"
+    rmdir "$mountpoint" >/dev/null 2>&1
+}
+
+function die {
+    echo "Fatal: $*" >&2
+    exit 1
+}
+
+[[ $1 && $2 ]] || die "Usage: $0 [user@]host:[dir] <target dir> [-v]"
+
+mountpoint=$(mktemp -d)
+backup_root="$2"
+
+# Cleanup at exit
+trap cleanup INT TERM EXIT
+
+sshfs "$1" "$mountpoint"
+backup -s "$mountpoint" -d "$backup_root" $3 || die "Backup failed"

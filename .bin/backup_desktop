@@ -6,9 +6,9 @@ source_folders=(Henrik Karin Musik Pictures Videos)
 backup_root="/home/backup/desktop"
 
 desktop_ip=$(gethostip -d desktop)
-mountpoint="/tmp/backup.$$"
+mountpoint=$(mktemp -d)
 
-function _cleanup {
+function cleanup {
     for f in "$mountpoint/*"; do
         umount $f >/dev/null 2>&1
         rmdir $f >/dev/null 2>&1
@@ -18,7 +18,6 @@ function _cleanup {
 
 function _fatal {
     echo "Fatal: $*" >&2
-    _cleanup
     exit 1
 }
 
@@ -29,6 +28,8 @@ function _fatal {
 # Make sure we can talk to desktop
 ping -q -c 1 $desktop_ip > /dev/null 2>&1 || _fatal "Desktop not reachable"
 
+trap cleanup INT TERM EXIT
+
 # Mount all folders
 mkdir -p $mountpoint || _fatal "Could not create mountpoint $mountpoint"
 for dir in "${source_folders[@]}"; do
@@ -38,9 +39,6 @@ done
 
 # Backup
 backup -s "$mountpoint" -d "$backup_root" -v || _fatal "Backup failed"
-
-# Cleanup
-_cleanup
 
 # Give all read access
 chmod -R a+r "$backup_root" || _fatal "Failed to chmod backup"
