@@ -42,3 +42,4 @@ backup -s "$mountpoint" -d "$backup_root" -v || _fatal "Backup failed"
 
 # Give all read access
 chmod -R a+r "$backup_root" || _fatal "Failed to chmod backup"
+find "$backup_root" -type d -exec chmod 755 {} \;
