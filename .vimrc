@@ -22,6 +22,11 @@ set showmatch
 syntax enable
 set mouse=a
 
+" Line wrap
+set wrap
+set linebreak
+set nolist
+
 " More history and undolevels
 set history=1024
 set undolevels=1024
@@ -78,3 +83,8 @@ autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8
 
 " gf opens file under cursor in new tab, creating it if nescessary
 map gf :tabe <cfile><CR>
+
+" visual copy/normal paste (Ctrl+C / Insert)
+vmap <C-c> :<Esc>`>a<CR><Esc>mx`<i<CR><Esc>my'xk$v'y!xclip -selection c<CR>u
+map <Insert> :set paste<CR>i<CR><CR><Esc>k:.!xclip -o<CR>JxkJx:set nopaste<CR> 
+
