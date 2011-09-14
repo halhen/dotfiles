@@ -187,24 +187,43 @@ function gitrec {
 
 # ### Note taking functions {{{
 
-# Open editor with note file
+TIXIHOME="$HOME/.tixi"
+
+# Main note mode. Open editor with todo and today's diary
 function n {
     ( # In a subshell
-        cd "$HOME/.notes"
-        git pull origin master
-
-        if [[ $HOSTNAME = "hallberg" ]]; then
-            TODOFILE="Work"
-        else
-            TODOFILE="Private"
-        fi
-        vim ${1:-ToDo/$TODOFILE}
-
-        git add -f ./*
-        git commit -m "$(printf 'On '; hostname;)"
-        git push origin master
+        cd "$TIXIHOME"
+        ./.meta/sync-down
+        vim -p diary/$(date "+%Y-%m-%d") todo
+        ./.meta/sync-up
     )
 }
+
+# Inbox function. Append arguments to todo
+function i {
+    ( # In a subshell
+        cd "$TIXIHOME"
+        ./.meta/sync-down
+        echo "* $*" >> todo
+        ./.meta/sync-up
+    )
+}
+
+# Diary function. If there are arguments, append them as a timestamped entry.
+# If not, open today's entry
+function d {
+    ( # In a subshell
+        cd "$TIXIHOME"
+        if [ $# -eq 0 ]; then
+            n
+        else
+            ./.meta/sync-down
+            echo -e "\n$(date '+%H:%M: ') $*" >> "diary/$(date '+%Y-%m-%d')"
+            ./.meta/sync-up
+        fi
+    )
+}
+
 
 # }}}
 
