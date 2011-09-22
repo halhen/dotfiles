@@ -137,6 +137,7 @@ alias bc="bc -l"
 alias vim="vim -p"
 alias history="history -Df"
 alias webshare="python2 -m SimpleHTTPServer"
+alias startx="exec xinit"
 
 # }}}
 
