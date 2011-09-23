@@ -18,7 +18,7 @@
 
 
 # Which subreddits should we check for images?
-REDDITSUBS="earthporn+villageporn+itookapicture+spaceart"
+REDDITSUBS="earthporn+villageporn+itookapicture+specart+ImaginaryLandscapes+SpacePorn"
 # How big should the foreground image be on the wallpaper?
 IMAGESIZE="(6/10)"
 
@@ -27,9 +27,11 @@ SOURCE="$1"
 if [ "x$SOURCE" == "x" ]; then 
     # If no $SOURCE is specified, fetch a random current top image from reddit
     SOURCE=$(wget -q http://www.reddit.com/r/$REDDITSUBS/.rss -O- | \
-             sed 's/<item>/\n&/g' | grep -iv NSFW | \
+             sed 's/<item>/\n&/g' | \
+             grep -iv NSFW | \
              egrep -oi '[a-z]+://[^; ]*.(jpg|jpeg|png)' | \
-             grep -v 'thumbs.reddit.com' | shuf -n1)
+             grep -v 'thumbs.reddit.com' | \
+             shuf -n1)
 fi
 
 IMAGE=$(basename "$SOURCE")
@@ -54,13 +56,13 @@ IMAGERES=$(echo "$RESOLUTION" | \
 
 cp "$IMAGE" "$BG" || exit 1
 
-mogrify -modulate 25,0,100 -quality 96 "$BG"
-mogrify -resize $BGZOOM -quality 96 "$BG"
-mogrify -crop "$RESOLUTION""$BGOFFSET" -quality 96 "$BG"
-mogrify -blur 128 -quality 96 "$BG"
+mogrify \( -modulate 25,0,100 \) \
+        \( -resize $BGZOOM^  \) \
+        \( -crop "$RESOLUTION""$BGOFFSET" \) \
+        \( -blur 128 \) -quality 96 "$BG"
 
-mogrify -resize ${IMAGERES} -quality 96 "$IMAGE"
-mogrify -bordercolor white -border 10 "$IMAGE"
+mogrify \( -resize ${IMAGERES} \) \
+        \( -bordercolor white -border 10 \) "$IMAGE"
 
 composite -gravity center "$IMAGE" "$BG" "$DEST"
 
