@@ -36,8 +36,9 @@ fi
 
 IMAGE=$(basename "$SOURCE")
 
-cd $(mktemp -d)
-trap 'rm -rf $PWD' EXIT
+DIR=$(mktemp -d)
+cd "$DIR" || exit 1
+trap 'rm -rf $DIR' EXIT
 
 if [ $(echo "$SOURCE" | grep '^[a-z]\+://') ]; then
     wget -q "$SOURCE" -O "$IMAGE" || exit 1
