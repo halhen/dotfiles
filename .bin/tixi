@@ -5,13 +5,13 @@ TIXISYNC=true
 
 cd "$TIXIDIR"
 
-TIXIHELP="Usage: $(basename $0) [-h] [-s] [-S] [-a file text] [-i text] [-r file]
+TIXIHELP="Usage: $(basename $0) [-h] [-s] [-S] [-a file text] [-i text] [-r file] [-e]
 
-Options:
+Options
     -h            Print this help and exit
 
   Synchronization
-    -s            Syncronize tixi to the central repo
+    -s            Syncronize tixi to the central repo (default)
     -S            Don't syncronize tixi
 
   Modification
@@ -19,9 +19,23 @@ Options:
     -i text       Timestamp and append \$text to the inbox
 
   Extraction
-    -r file       Print contents of \$file"
+    -r file       Print contents of \$file
 
-while getopts "hsSia:ir:" flag; do
+  Interactive
+    -e            Open editor with default files open
+
+Examples
+    Sync only
+
+        $ tixi
+
+    Batch insert into Inbox, then sync
+
+        $ tixi -S -i First entry
+        $ tixi -S -i Second entry
+        $ tixi"
+
+while getopts "hsSia:ir:e" flag; do
     case $flag in
         h) echo "$TIXIHELP"; exit 1;;
 
@@ -32,6 +46,8 @@ while getopts "hsSia:ir:" flag; do
         i) TIXI_DOINBOX=true;;
 
         r) TIXI_DOREAD="$OPTARG";;
+
+        e) TIXI_DOOPEN=true;;
     esac
 done
 shift $((OPTIND-1))
@@ -41,14 +57,17 @@ $TIXISYNC && ./.meta/sync-down
 # Perform
 if [ "$TIXI_DOREAD" ]; then
     cat "$TIXI_DOREAD" || exit 1
+fi
 
-elif [ "$TIXI_DOINBOX" ]; then
+if [ "$TIXI_DOINBOX" ]; then
     echo "$(date +"%Y-%m-%d %H:%M"): $@" >> "todo" || exit 1
+fi
 
-elif [ "$TIXI_DOAPPENDTO" ]; then
+if [ "$TIXI_DOAPPENDTO" ]; then
     echo "$@" >> "$TIXI_DOAPPENDTO" || exit 1
+fi
 
-else
+if [ "$TIXI_DOOPEN" ]; then
     vim -p diary/$(date "+%Y-%m-%d") todo
 fi
 
