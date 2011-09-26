@@ -138,8 +138,8 @@ alias vim="vim -p"
 alias history="history -Df"
 alias webshare="python2 -m SimpleHTTPServer"
 alias startx="exec xinit"
-alias n=tixi -s
-alias i=tixi -s -i
+alias n="tixi -s -e"
+alias i="tixi -s -i"
 
 # }}}
 
