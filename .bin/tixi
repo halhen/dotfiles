@@ -55,10 +55,6 @@ shift $((OPTIND-1))
 $TIXISYNC && ./.meta/sync-down
 
 # Perform
-if [ "$TIXI_DOREAD" ]; then
-    cat "$TIXI_DOREAD" || exit 1
-fi
-
 if [ "$TIXI_DOINBOX" ]; then
     echo "$(date +"%Y-%m-%d %H:%M"): $@" >> "todo" || exit 1
 fi
@@ -70,6 +66,11 @@ fi
 if [ "$TIXI_DOOPEN" ]; then
     vim -p diary/$(date "+%Y-%m-%d") todo
 fi
+
+if [ "$TIXI_DOREAD" ]; then
+    cat "$TIXI_DOREAD" || exit 1
+fi
+
 
 $TIXISYNC && ./.meta/sync-up
 
