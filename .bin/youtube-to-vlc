@@ -1,0 +1,7 @@
+#!/bin/sh
+
+pid=$(ps x | awk '!/awk/ && /libflashplayer.so/ {print $1}')
+fd=$(lsof -p $pid | awk '!/awk/ && /\/tmp\/Flash/ {print $4}' | tr -c -d 1234567890)
+cd /proc/$pid/fd
+vlc $fd
+

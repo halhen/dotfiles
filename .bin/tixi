@@ -1,0 +1,57 @@
+#!/bin/bash
+
+TIXIDIR="$HOME/.tixi"
+TIXISYNC=true
+
+cd "$TIXIDIR"
+
+TIXIHELP="Usage: $(basename $0) [-h] [-s] [-S] [-a file text] [-i text] [-r file]
+
+Options:
+    -h            Print this help and exit
+
+  Synchronization
+    -s            Syncronize tixi to the central repo
+    -S            Don't syncronize tixi
+
+  Modification
+    -a file text  Append \$text to \$file
+    -i text       Timestamp and append \$text to the inbox
+
+  Extraction
+    -r file       Print contents of \$file"
+
+while getopts "hsSia:ir:" flag; do
+    case $flag in
+        h) echo "$TIXIHELP"; exit 1;;
+
+        s) TIXISYNC=true;;
+        S) TIXISYNC=false;;
+
+        a) TIXI_DOAPPENDTO="$OPTARG";;
+        i) TIXI_DOINBOX=true;;
+
+        r) TIXI_DOREAD="$OPTARG";;
+    esac
+done
+shift $((OPTIND-1))
+
+$TIXISYNC && ./.meta/sync-down
+
+# Perform
+if [ "$TIXI_DOREAD" ]; then
+    cat "$TIXI_DOREAD" || exit 1
+
+elif [ "$TIXI_DOINBOX" ]; then
+    echo "$(date +"%Y-%m-%d %H:%M"): $@" >> "todo" || exit 1
+
+elif [ "$TIXI_DOAPPENDTO" ]; then
+    echo "$@" >> "$TIXI_DOAPPENDTO" || exit 1
+
+else
+    vim -p diary/$(date "+%Y-%m-%d") todo
+fi
+
+$TIXISYNC && ./.meta/sync-up
+
+exit 0
