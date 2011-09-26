@@ -1,0 +1,78 @@
+#!/usr/bin/python2
+#
+# Fetch unread messages from an IMAP inbox and add as tixi inbox entries
+
+import imaplib
+import ConfigParser
+import os
+import subprocess
+import email
+from email.header import decode_header
+
+
+def sync_tixi():
+    subprocess.Popen(['tixi', '-s'])
+    pass
+
+def get_body(msg):
+    maintype = msg.get_content_maintype()
+    if maintype == 'multipart':
+        for part in msg.get_payload():
+            if part.get_content_maintype == 'text':
+                return part.get_payload()
+    elif maintype == 'text':
+        return msg.get_payload()
+    else:
+        return None
+
+# First, sync the tixi
+sync_tixi()
+
+# Read config
+config = ConfigParser.ConfigParser()
+config.read([os.path.expanduser('~/.tixisync')])
+INDENT_BODY = '    '
+
+# Connect to the IMAP server
+if config.get('server', 'ssl'):
+    connectfn = imaplib.IMAP4_SSL
+else:
+    connectfn = imaplib.IMAP4
+
+M = connectfn(config.get('server', 'host'), config.get('server', 'port'))
+M.login(config.get('account', 'username'), config.get('account', 'password'))
+
+M.select('Inbox')
+status, msgids = M.search(None, 'UNSEEN')
+
+# For each unseen message, add a row to the Tixi inbox
+for msgid in msgids:
+    if not msgid:
+        continue
+
+    stat, data = M.fetch(msgid, '(RFC822)')
+    if stat != 'OK':
+        continue
+
+    msg = email.message_from_string(data[0][1])
+    subject = msg['Subject']
+    body = get_body(msg)
+
+    body = body.strip().replace('\r', '')
+    if body:
+        body = '\n' + body
+        body = body.replace('\n', '\n' + INDENT_BODY)
+
+    if subject and body:
+        body = '\n' + body
+
+    subparts = decode_header(subject)
+    subject = ' '.join((s[0].decode(s[1]) if s[1] else s[0]) for s in subparts)
+
+    output = subject + body
+    subprocess.Popen(['tixi', '-S', '-i', output])
+
+M.logout()
+
+# ... and sync the tixi again
+sync_tixi()
