@@ -34,8 +34,8 @@ if [ "x$SOURCE" == "x" ]; then
     SOURCE=$(wget -q http://www.reddit.com/r/$REDDITSUBS/.rss -O- | \
              sed 's/<item>/\n&/g' | \
              grep -iv NSFW | \
-             grep -Eoi '[a-z]+://[^; ]*.(jpg|jpeg|png)' | \
-             grep -v 'thumbs.reddit.com' | \
+             grep -Eoi '[a-z]+://[^<; ]*.(jpg|jpeg|png)' | \
+             grep -v 'reddit.com' | \
              shuf -n1)
 fi
 
