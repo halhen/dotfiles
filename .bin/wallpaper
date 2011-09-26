@@ -16,6 +16,11 @@
 #
 # Adapted from http://redd.it/kp7kr
 
+function die {
+    echo "Fatal: $@" >&2
+    exit 1
+}
+
 
 # Which subreddits should we check for images?
 REDDITSUBS="earthporn+villageporn+itookapicture+specart+ImaginaryLandscapes+SpacePorn"
@@ -37,13 +42,13 @@ fi
 IMAGE=$(basename "$SOURCE")
 
 DIR=$(mktemp -d)
-cd "$DIR" || exit 1
+cd "$DIR" || die "Failed to enter working directory $DIR"
 trap 'rm -rf $DIR' EXIT
 
 if [ $(echo "$SOURCE" | grep '^[a-z]\+://') ]; then
-    wget -q "$SOURCE" -O "$IMAGE" || exit 1
+    wget -q "$SOURCE" -O "$IMAGE" || die "Failed to download $SOURCE to $IMAGE"
 else
-    cp "$SOURCE" "$IMAGE" || exit 1
+    cp "$SOURCE" "$IMAGE" || die "Failed fo copy $SOURCE to $IMAGE"
 fi
 
 DEST="output.${IMAGE##*.}"
@@ -53,7 +58,7 @@ RESOLUTION=$(xrandr 2>/dev/null | \
 BGZOOM=$(echo "$RESOLUTION" | awk -Fx '{print $1*2 "x" $2*2}')
 BGOFFSET=$(echo "$RESOLUTION" | awk -Fx '{print "+" $1/3 "+" $2/3}')
 
-cp "$IMAGE" "$DEST" || exit 1
+cp "$IMAGE" "$DEST" || die "Failed to copy $IMAGE to $DEST"
 
 mogrify \( -modulate 25,0,100 \) \
         \( -resize $BGZOOM^  \) \
