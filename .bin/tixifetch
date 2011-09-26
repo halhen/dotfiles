@@ -44,9 +44,10 @@ M.login(config.get('account', 'username'), config.get('account', 'password'))
 
 M.select('Inbox')
 status, msgids = M.search(None, 'UNSEEN')
+print status, msgids
 
 # For each unseen message, add a row to the Tixi inbox
-for msgid in msgids:
+for msgid in msgids[0].split():
     if not msgid:
         continue
 
@@ -58,18 +59,18 @@ for msgid in msgids:
     subject = msg['Subject']
     body = get_body(msg)
 
-    body = body.strip().replace('\r', '')
     if body:
+        body = body.strip().replace('\r', '')
         body = '\n' + body
         body = body.replace('\n', '\n' + INDENT_BODY)
-
-    if subject and body:
-        body = '\n' + body
+    else:
+        body=''
 
     subparts = decode_header(subject)
-    subject = ' '.join((s[0].decode(s[1]) if s[1] else s[0]) for s in subparts)
+    subject = ' '.join((s[0].decode(s[1]).encode('utf-8') if s[1] else s[0]) for s in subparts)
 
     output = subject + body
+    print output
     subprocess.Popen(['tixi', '-S', '-i', output])
 
 M.logout()
