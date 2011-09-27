@@ -8,7 +8,7 @@ typeset -U path
 path=( ~/.bin $path)
 
 export AWT_TOOLKIT=MToolkit
-export BROWSER="chromium-browser"
+export BROWSER="firefox"
 export EDITOR="vim"
 export PAGER="less"
 export OOO_FORCE_DESKTOP="gnome"
