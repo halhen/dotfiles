@@ -57,10 +57,16 @@ $TIXISYNC && ./.meta/sync-down
 # Perform
 if [ "$TIXI_DOINBOX" ]; then
     echo "$(date +"%Y-%m-%d %H:%M"): $@" >> "todo" || exit 1
+    while read LINE; do
+        echo "$LINE" >> "todo"
+    done
 fi
 
 if [ "$TIXI_DOAPPENDTO" ]; then
     echo "$@" >> "$TIXI_DOAPPENDTO" || exit 1
+    while read LINE; do
+        echo "$LINE" >> "$TIXI_APPENDTO"
+    done
 fi
 
 if [ "$TIXI_DOOPEN" ]; then
