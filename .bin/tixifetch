@@ -8,7 +8,9 @@ import os
 import subprocess
 import email
 from email.header import decode_header
+from datetime import datetime
 
+now = datetime.now
 
 def sync_tixi():
     subprocess.Popen(['tixi', '-s'])
@@ -44,7 +46,6 @@ M.login(config.get('account', 'username'), config.get('account', 'password'))
 
 M.select('Inbox')
 status, msgids = M.search(None, 'UNSEEN')
-print status, msgids
 
 # For each unseen message, add a row to the Tixi inbox
 for msgid in msgids[0].split():
@@ -61,8 +62,9 @@ for msgid in msgids[0].split():
 
     if body:
         body = body.strip().replace('\r', '')
-        body = '\n' + body
-        body = body.replace('\n', '\n' + INDENT_BODY)
+        if body:
+            body = '\n' + body
+            body = body.replace('\n', '\n' + INDENT_BODY)
     else:
         body=''
 
@@ -72,6 +74,8 @@ for msgid in msgids[0].split():
     output = subject + body
     print output
     subprocess.Popen(['tixi', '-S', '-i', output])
+    subprocess.Popen(['tixi', '-S', '-a', 'diary/'+now().strftime('%Y-%m-%d'), 
+                                            now().strftime('\n%H:%M: ') + output])
 
 M.logout()
 
