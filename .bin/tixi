@@ -18,6 +18,8 @@ Options
     -a file text  Append \$text to \$file
     -i text       Timestamp and append \$text to the inbox
 
+    -I            Read text from stdin instead of command line arguments
+
   Extraction
     -r file       Print contents of \$file
 
@@ -35,7 +37,7 @@ Examples
         $ tixi -S -i Second entry
         $ tixi"
 
-while getopts "hsSia:ir:e" flag; do
+while getopts "hsSia:iIr:e" flag; do
     case $flag in
         h) echo "$TIXIHELP"; exit 1;;
 
@@ -43,7 +45,8 @@ while getopts "hsSia:ir:e" flag; do
         S) TIXISYNC=false;;
 
         a) TIXI_DOAPPENDTO="$OPTARG";;
-        i) TIXI_DOINBOX=true;;
+        i) TIXI_DOAPPENDTO="todo";;
+        I) TIXI_STDIN=true;;
 
         r) TIXI_DOREAD="$OPTARG";;
 
@@ -55,18 +58,14 @@ shift $((OPTIND-1))
 $TIXISYNC && ./.meta/sync-down
 
 # Perform
-if [ "$TIXI_DOINBOX" ]; then
-    echo "$(date +"%Y-%m-%d %H:%M"): $@" >> "todo" || exit 1
-    while read LINE; do
-        echo "$LINE" >> "todo"
-    done
-fi
-
 if [ "$TIXI_DOAPPENDTO" ]; then
-    echo "$@" >> "$TIXI_DOAPPENDTO" || exit 1
-    while read LINE; do
-        echo "$LINE" >> "$TIXI_APPENDTO"
-    done
+    if [ "$TIXI_STDIN" ]; then
+        while read LINE; do
+            echo "$LINE" >> "$TIXI_DOAPPENDTO" ̣|| exit 1
+        done
+    else
+        echo "$@" >> "$TIXI_DOAPPENDTO" || exit 1
+    fi
 fi
 
 if [ "$TIXI_DOOPEN" ]; then
