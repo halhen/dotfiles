@@ -91,3 +91,6 @@ map go :silent !xdg-open <cfile><CR>:redraw!<CR>
 vmap <C-c> :<Esc>`>a<CR><Esc>mx`<i<CR><Esc>my'xk$v'y!xclip -selection c<CR>u
 map <Insert> :set paste<CR>i<CR><CR><Esc>k:.!xclip -o<CR>JxkJx:set nopaste<CR> 
 
+" :w!! to write file as root
+" (Not a perfect solution as it asks to reload the file, but it works)
+cmap w!! %!sudo tee >/dev/null %
