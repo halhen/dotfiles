@@ -139,6 +139,7 @@ alias k="pal -c 10"
 alias history="history -Df"
 alias webshare="python2 -m SimpleHTTPServer"
 alias startx="exec xinit"
+alias impressive="impressive -G 1"
 alias n="tixi -s -e"
 alias i="tixi -s -i"
 
