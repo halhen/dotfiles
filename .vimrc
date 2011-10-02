@@ -22,6 +22,10 @@ set showmatch
 syntax enable
 set mouse=a
 
+set showmode
+set showcmd
+set ruler
+
 " Line wrap
 set wrap
 set linebreak
