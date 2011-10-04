@@ -63,6 +63,10 @@ inoremap <right> <C-o>:tabn<CR>
 inoremap <up> <NOP>
 inoremap <down> <NOP>
 
+" F5 for word count
+noremap <F5> :w !wc<CR>
+inoremap <F5> <C-o>:w !wc<CR>
+
 " Space for scrolling
 noremap <space> <C-d>
 
