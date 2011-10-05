@@ -126,20 +126,23 @@ setopt BANG_HIST
 if [[ $OSTYPE =~ "linux*" ]]; then
     alias ls="ls --color=always"
 fi
-alias l=ls
-alias less="less -FiMRsX"
+alias bc="bc -l"
+alias c="cd .."
 export GREP_COLORS="1;33"
 alias grep="grep --color=auto"
-alias c="cd .."
-alias rm="rm --preserve-root"
-alias repkg="makepkg -efi"
-alias bc="bc -l"
-alias vim="vim -p"
-alias k="pal -c 10"
 alias history="history -Df"
-alias webshare="python2 -m SimpleHTTPServer"
-alias startx="exec xinit"
 alias impressive="impressive -G 1"
+alias k="pal -c 10"
+alias l=ls
+alias less="less -FiMRsX"
+alias repkg="makepkg -efi"
+alias rm="rm --preserve-root"
+alias scp="noglob scp"
+alias startx="exec xinit"
+alias vim="vim -p"
+alias webshare="python2 -m SimpleHTTPServer"
+
+# Tixi
 alias n="tixi -s -e"
 alias i="tixi -s -i"
 
