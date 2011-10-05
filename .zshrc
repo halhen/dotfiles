@@ -137,10 +137,13 @@ alias l=ls
 alias less="less -FiMRsX"
 alias repkg="makepkg -efi"
 alias rm="rm --preserve-root"
-alias scp="noglob scp"
 alias startx="exec xinit"
 alias vim="vim -p"
 alias webshare="python2 -m SimpleHTTPServer"
+
+# No zsh glob expansion for these commands
+alias find="noglob find"
+alias scp="noglob scp"
 
 # Tixi
 alias n="tixi -s -e"
