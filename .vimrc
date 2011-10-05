@@ -1,7 +1,7 @@
 " Leader functions
 let mapleader = ","
 " Create an underscore of ='s at the current line
-noremap <leader>1 yypVr=
+noremap <leader>1 yyp^v$r=
 
 " Key remapping
 noremap ' `
