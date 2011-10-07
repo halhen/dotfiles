@@ -13,7 +13,7 @@ export EDITOR="vim"
 export PAGER="less"
 export OOO_FORCE_DESKTOP="gnome"
 export MOZ_DISABLE_PANGO=1
-export HOSTNAME=$(hostname)
+export HOSTNAME=$(uname -n)
 export PYTHONSTARTUP=$HOME/.pythonrc
 # }}}
 
