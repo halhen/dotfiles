@@ -1,0 +1,107 @@
+#!/bin/bash
+#
+# References:
+#   - https://wiki.archlinux.org/index.php/Simple_Stateful_Firewall
+#   - http://www.tty1.net/blog/2007-02-06-iptables-firewall_en.html
+#   - http://rackerhacker.com/2010/04/12/best-practices-iptables/
+
+function die {
+    echo "$@" >&2
+    exit 1
+}
+
+iptables=$(which iptables)
+sysctl=$(which sysctl)
+
+[[ $iptables ]] || die "Could not find iptables"
+[[ $sysctl ]] || die "Could not find sysctl"
+
+function firewall_clear {
+    $iptables -F
+    $iptables -F -t mangle
+    $iptables -X -t mangle
+    $iptables -F -t nat
+    $iptables -X -t nat
+    $iptables -X
+
+    $iptables -P INPUT      ACCEPT
+    $iptables -P OUTPUT     ACCEPT
+    $iptables -P FORWARD    ACCEPT
+
+    # TODO: Restore sysctl
+}
+
+function firewall_start {
+    $sysctl net.ipv4.tcp_syncookies=1 >/dev/null
+    $sysctl net.ipv4.ip_forward=0 >/dev/null
+    $sysctl net.ipv4.icmp_echo_ignore_broadcasts=1 >/dev/null
+    $sysctl net.ipv4.icmp_echo_ignore_all=1 >/dev/null
+    $sysctl net.ipv4.conf.all.log_martians=1 >/dev/null
+    $sysctl net.ipv4.icmp_ignore_bogus_error_responses=1 >/dev/null
+    $sysctl net.ipv4.conf.all.rp_filter=1 >/dev/null
+    $sysctl net.ipv4.conf.all.send_redirects=0 >/dev/null
+    $sysctl net.ipv4.conf.all.accept_source_route=0 >/dev/null
+    $sysctl net.ipv4.tcp_rfc1337=1 >/dev/null
+    $sysctl net.ipv4.tcp_timestamps=0 >/dev/null
+
+    ################################
+    # filter table
+    ################################
+    # Keep default rules as accept in case we remove flush the chains
+    $iptables -P INPUT      ACCEPT
+    $iptables -P FORWARD    ACCEPT
+    $iptables -P OUTPUT     ACCEPT
+
+    $iptables -N TCP
+    $iptables -N UDP
+    $iptables -N LOGDROP
+
+    $iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+
+    $iptables -A INPUT -i lo -j ACCEPT
+
+    $iptables -A INPUT -m conntrack --ctstate INVALID -j LOGDROP
+
+    # Try the protocol specific chains for valid new connections
+    $iptables -A INPUT -p tcp --syn -m conntrack --ctstate NEW -j TCP
+    $iptables -A INPUT -p udp -m conntrack --ctstate NEW -j UDP
+
+    # Log and drop what's left
+    $iptables -A INPUT -p tcp -j REJECT --reject-with tcp-rst
+    $iptables -A INPUT -p udp -j REJECT --reject-with icmp-port-unreachable
+    $iptables -A INPUT -j REJECT --reject-with icmp-port-unreachable
+    $iptables -A INPUT -m limit --limit 10/min -j LOG --log-prefix "IN "
+    $iptables -A INPUT -j DROP
+
+    $iptables -A FORWARD -m limit --limit 10/min -j LOG --log-prefix "FW "
+    $iptables -A FORWARD -j DROP
+
+    ################################
+    # Custom chains
+    ################################
+
+    # LOGDROP
+    $iptables -A LOGDROP -m limit --limit 10/min -j LOG --log-prefix "DR "
+    $iptables -A LOGDROP -j DROP
+
+    # TCP: Here we get NEW, --syn packets
+    $iptables -A TCP -p tcp --dport 22 -j ACCEPT -m comment --comment "SSH server"
+
+}
+
+case "$1" in
+    start)
+        firewall_clear
+        firewall_start
+        ;;
+    stop)
+        firewall_clear
+        ;;
+    restart)
+        $0 start
+        ;;
+    *)
+        die "usage: $0 (start|stop|restart)"
+        ;;
+esac
+exit 0
