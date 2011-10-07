@@ -23,7 +23,7 @@ function die {
 
 
 # Which subreddits should we check for images?
-REDDITSUBS="earthporn+villageporn+itookapicture+specart+ImaginaryLandscapes+SpacePorn"
+REDDITSUBS="specart+ImaginaryLandscapes+SpacePorn"
 # How big part of the screen should the foreground image be?
 IMAGESIZE="(6/10)"
 
@@ -65,7 +65,7 @@ mogrify \( -modulate 25,0,100 \) \
         \( -crop "$RESOLUTION""$BGOFFSET" \) \
         \( -blur 128 \) -quality 96 "$DEST"
 
-xrandr | sed -n 's|.* connected \([^ ]*\).*|\1|p' | while read MONITORGEOM; do
+xrandr 2>/dev/null | sed -n 's|.* connected \([^ ]*\).*|\1|p' | while read MONITORGEOM; do
     IMAGERES=$(echo "$MONITORGEOM" | \
                tr '+' 'x' | \
                awk -Fx '{W=$1*'$IMAGESIZE';
