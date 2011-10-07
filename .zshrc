@@ -162,12 +162,6 @@ function o {
         shift
     done
 }
-
-# Pacman wrapper
-function p {
-    clyde "$@"
-}
-
 # Make directories, cd into the first one
 function md {
     mkdir -p "$@" && cd "$1"
@@ -179,11 +173,6 @@ function calc {
     echo "$@" | bc -l
 }
 
-
-# Search man pages for user commands
-function k {
-    man -k "$@" | grep '(1' --color=never
-}
 
 # Recursively execute git command in git roots from $PWD
 # Example: $ gitrec push

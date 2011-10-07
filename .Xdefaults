@@ -36,8 +36,3 @@ URxvt*font: xft:terminus:pixelsize=11
 *color13:    #9c6efe
 *color14:    #a9bcc1
 *color15:    #f2f2f2
-
-URxvt.perl-ext-common: default,matcher,clipboard
-URxvt.urlLauncher: jumanji
-URxvt.matcher.button: 2
-URxvt.matcher.pattern.1: \\bwww\\.[\\w-]\\.[\\w./?&@#-]*[\\w/-]
