@@ -69,7 +69,7 @@ if [ "$TIXI_DOAPPENDTO" ]; then
 fi
 
 if [ "$TIXI_DOOPEN" ]; then
-    vim -p diary/$(date "+%Y-%m-%d") todo
+    vim -p todo diary/$(date "+%Y-%m-%d")
 fi
 
 if [ "$TIXI_DOREAD" ]; then
