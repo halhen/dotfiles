@@ -132,7 +132,6 @@ export GREP_COLORS="1;33"
 alias grep="grep --color=auto"
 alias history="history -Df"
 alias impressive="impressive -G 1"
-alias k="pal -c 10"
 alias l=ls
 alias less="less -FiMRsX"
 alias repkg="makepkg -efi"
