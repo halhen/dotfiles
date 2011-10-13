@@ -23,7 +23,7 @@ function die {
 
 
 # Which subreddits should we check for images?
-REDDITSUBS="specart+ImaginaryLandscapes+SpacePorn"
+REDDITSUBS="specart+ImaginaryLandscapes+SpacePorn+VillagePorn"
 # How big part of the screen should the foreground image be?
 IMAGESIZE="(6/10)"
 
