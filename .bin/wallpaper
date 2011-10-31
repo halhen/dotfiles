@@ -36,6 +36,7 @@ if [ "x$SOURCE" == "x" ]; then
              grep -iv NSFW | \
              grep -Eoi '[a-z]+://[^<; ]*.(jpg|jpeg|png)' | \
              grep -v 'reddit.com' | \
+             grep -v 'redditmedia.com' | \
              shuf -n1)
 fi
 
