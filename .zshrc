@@ -15,6 +15,8 @@ export OOO_FORCE_DESKTOP="gnome"
 export MOZ_DISABLE_PANGO=1
 export HOSTNAME=$(uname -n)
 export PYTHONSTARTUP=$HOME/.pythonrc
+
+find /usr/share/terminfo -name "$TERM" | grep -q "$TERM" || export TERM=rxvt-256color
 # }}}
 
 # {{{ Shell options
