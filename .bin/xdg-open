@@ -11,7 +11,8 @@
 file="$1"
 
 if [[ ! -f "$file" ]]; then
-  exec /usr/bin/xdg-open "$file" &
+  /usr/bin/xdg-open "$file" &
+  exit 0
 fi
 
 # read the major and minor mimetype
@@ -30,4 +31,4 @@ case "$major" in
   video) vlc "$file"           &>/dev/null & exit 0 ;;
 esac
 
-exec /usr/bin/xdg-open "$file" &
+/usr/bin/xdg-open "$file" &
