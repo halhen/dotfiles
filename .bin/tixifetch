@@ -5,6 +5,7 @@
 import imaplib
 import ConfigParser
 import os
+import sys
 import subprocess
 import email
 from email.header import decode_header
@@ -41,6 +42,8 @@ if config.get('server', 'ssl'):
 else:
     connectfn = imaplib.IMAP4
 
+trustedsenders = [a.strip() for a in config.get('user', 'trusted').split(',')]
+
 M = connectfn(config.get('server', 'host'), config.get('server', 'port'))
 M.login(config.get('account', 'username'), config.get('account', 'password'))
 
@@ -57,8 +60,13 @@ for msgid in msgids[0].split():
         continue
 
     msg = email.message_from_string(data[0][1])
+    sender = email.utils.parseaddr(msg['From'])[1]
     subject = msg['Subject']
     body = get_body(msg)
+
+    if sender not in trustedsenders:
+        print "ERROR: Untrusted sender:", msg['From'], " IGNORING"
+        continue
 
     if body:
         body = body.strip().replace('\r', '')
@@ -71,10 +79,23 @@ for msgid in msgids[0].split():
     subparts = decode_header(subject)
     subject = ' '.join((s[0].decode(s[1]).encode('utf-8') if s[1] else s[0]) for s in subparts)
 
-    output = subject + body
-    print output
-    subprocess.Popen(['tixi', '-S', '-i', output])
-    subprocess.Popen(['tixi', '-S', '-a', 'diary/'+now().strftime('%Y-%m-%d'), 
+    if subject.lower().startswith('get '):
+        # Return page to mailer
+        filename = subject[4:]
+        if os.path.relpath(filename).startswith(os.pardir):
+            print "ERROR: Path outside tixi base directory requested"
+            print subject, msg['From']
+            # Exit with error to get alerts from cron
+            sys.exit(1)
+
+        print "Sending %s to %s" % (filename, sender)
+        p1 = subprocess.Popen(['tixi', '-S', '-r', filename], stdout=subprocess.PIPE)
+        p2 = subprocess.Popen(['mail', '-S', 'encoding=quoted-printable', '-s', 'Tixi: ' + filename, sender], stdin=p1.stdout)
+    else:
+        output = subject + body
+        print output
+        subprocess.Popen(['tixi', '-S', '-i', output])
+        subprocess.Popen(['tixi', '-S', '-a', 'diary/'+now().strftime('%Y-%m-%d'), 
                                             now().strftime('\n%H:%M: ') + output])
 
 M.logout()
