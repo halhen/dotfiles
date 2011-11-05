@@ -144,7 +144,6 @@ alias webshare="python2 -m SimpleHTTPServer"
 
 # No zsh glob expansion for these commands
 alias find="noglob find"
-alias scp="noglob scp"
 
 # Tixi
 alias n="tixi -s -e"

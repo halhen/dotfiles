@@ -86,4 +86,4 @@ xrandr 2>/dev/null | sed -n 's|.* connected \([^ ]*\).*|\1|p' | while read MONIT
     composite -geometry "$IMAGEGEOM" "$IMAGE" "$DEST" "$DEST"
 done
 
-feh --bg-center "$DEST"
+feh --no-xinerama --bg-fill "$DEST"
