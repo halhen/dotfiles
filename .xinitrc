@@ -16,6 +16,7 @@ xset m 5 1
 # Autostart
 skype &
 pidgin &
+which redshift && redshift &
 
 # Launch WM
 dwm
