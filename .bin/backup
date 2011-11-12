@@ -1,122 +1,102 @@
 #!/bin/bash
-#
-# Backup script using rsync snapshot style
-# Reference: http://www.mikerubel.org/computers/rsync_snapshots/
 
-function _fatal {
-    echo "Fatal: $*" >&2
+set -o nounset
+
+function usage {
+    echo "Usage: $(basename $0) -s <source> -d <destination> [OPTION] ... [INCLUDE] ...
+
+Backup all listed INCLUDEs or everything from \$source to \$destination.
+All INCLUDEs will be copied from \$source to \$destindation/\$name-$seqtempl.
+If no INCLUDEs are given, everything from \$source will be copied.
+
+One of \$source or \$destination may be ssh paths (user@host:dir).
+
+  Options:
+    -s source       root directory to backup from
+    -d destination  root directory of destination
+    -n name         name of backup, default backup
+    -k numkeep      keep the latest \$numkeep named \$name
+    -v              verbose mode, give twice to trace script source
+    -h              print this help and exit"
+}
+
+function die {
+    echo "$@" >&2
     exit 1
 }
 
-function _help {
-    echo "
-Usage: $0 -s dir_to_backup -d destination_dir [-v] [-h]
-
-    Options:
-        -s dir_to_backup    Backup all contents in dir_to_backup.
-        -d destination_dir  Backup files to destination_dir. 
-                            In this folder, daily, weekly and monthly folders
-                            will be created.
-        -v                  verbose mode
-        -h                  print this help and exit"
-
-    exit 1
-}
-
-# Find existing paths that contain the strftime FORMAT given
-function _find_existing_backups {
-    matching_dirs=$(find_by_strftime_format "$1")
-    [[ $matching_dirs ]] && ls -td1 $(find_by_strftime_format "$1")
-}
-
-# Remove old backups
-# $1 is the format of backups, $2 is number of backups to keep
-function _keep_backups {
-    local dirpattern="$1"
-    local num_keepers="$2"
-    [[ $1 && $2 ]] || _fatal "Missing parameters in _keep_backups"
-
-    for old in $(_find_existing_backups "$dirpattern" | tail -n +$(( $num_keepers+1 ))); do
-        $verbose && echo "Removing old backup: $old"
-        rm -rf "$old" || echo "Remove failed, continuing..."
-    done
-}
-
-# Create a symlink snapshot of $1 named $2.
-function _snapshot {
-    snapshot_dest=$2
-    snapshot_name=$(date +"$snapshot_dest")
-    cp -alL "$1" "$snapshot_name" || _fatal "Snapshot to $snapshot_name failed"
-}
-
-# Set defaults
+# Defaults
+name=backup
 verbose=false
+seqtempl="%Y-%m-%dT%H%M%S"
 
-# Parse command line
-while getopts "hvs:d:n:" flag
-do
-    case $flag in 
-        h)  _help;;
-        v)  verbose=true;;
-        s)  bu_source="$OPTARG";;
-        d)  bu_dest="$OPTARG";;
-        ?)  _fatal "Unrecognized option, see $(basename $0) -h for help."
+
+# Read input
+while getopts "hvs:d:n:k:" flag; do
+    case $flag in
+        h) usage; exit 0;;
+        v) $verbose && set -x; verbose=true;;
+        s) srcroot="$OPTARG";;
+        d) destroot="$OPTARG";;
+        n) name="$OPTARG";;
+        k) numkeep="$OPTARG";;
+        ?) exit 1;;
     esac
 done
 
-# Verify command line
-[[ -z $bu_source ]] && _fatal "Missing -s option. See $(basename $0) -h for help." 
-[[ ! -d $bu_source ]] && _fatal "Missing source directory: $bu_source"
-[[ -z $bu_dest ]] && _fatal "Missing -d option. See $(basename $0) -h for help." 
+shift $((OPTIND-1))
+[ $# -eq 0 ] && set "" # By default, backup everything in srcroot
 
-$verbose && echo "Source: $bu_source"
-$verbose && echo "Destination: $bu_dest"
+[ "${srcroot:-}" ] || die "Missing source"
+[ "${destroot:-}" ] || die "Missing destination"
 
-daily_dest="$bu_dest/daily-%Y%m%d"
-weekly_dest="$bu_dest/weekly-%Y%W"
-monthly_dest="$bu_dest/monthly-%Y%m"
+function destsh {
+    # Execute command on destination; either local or ssh remote
+    if [[ "$destroot" == *:* ]]; then
+        destsh="$(which ssh) -T ${destroot%%:*}"
+    else
+        destsh="$(which bash)"
+    fi
+    echo $@ | $destsh
+}
 
-# Get name of last known backup
-previous_backup=$(_find_existing_backups "$daily_dest" | head -n 1)
-$verbose && echo "Previous backup: $previous_backup"
 
-# Name this backup
-this_backup=$(date +"$daily_dest")
-$verbose && echo "This backup: $this_backup"
+# Prepare
+this="$name-$(date "+$seqtempl")"
 
-# Create new backup dir
-mkdir -p "$this_backup" || _fatal "Failed to create directory: $this_backup"
+# Directory is after the colon, if any
+destdir="${destroot#*:}/$this"
+$verbose && echo "Destination: $destdir"
 
-# Hardlink old contents if it exists, unless we're redoing backup to same dir
-if [[ -d "$previous_backup" && "$previous_backup" != "$this_backup" ]]; then
-    $verbose && echo "Hardlinking previous backup..."
-    cp -alL "$previous_backup/." "$this_backup" || _fatal "Hardlinking failed"
-    $verbose && echo "    Done"
+
+# Backup
+destsh mkdir -p \"$destdir\" || die "Failed to mkdir"
+
+haderror=false
+while [ $# -gt 0 ]; do
+    $verbose && echo "Backing up $srcroot$1"
+
+    rsync -azP $($verbose || echo -q) \
+          --delete \
+          --recursive \
+          --link-dest=../latest \
+          "$srcroot$1" "$destroot/$this/" || haderror=true
+    shift
+done
+
+destsh rm -f \"$destdir/../latest\"
+destsh ln -s \"$this\" \"$destdir/../latest\" || haderror=true
+
+
+# Rotate
+if [ "${numkeep:-}" ]; then
+    for old in $(destsh find "$destdir/.." -name \"$name-*\" \
+                            | sort -r \
+                            | tail -n +$(( numkeep+1 )) ); do
+        $verbose && echo "Removing $old"
+        destsh rm -rf \"$old\" || haderror=true
+    done
 fi
 
-# Do the actual rsync backup
-$verbose && echo "rsync:ing backup..."
-$verbose && rsync_p="-P"
-rsync $rsync_p -ah --copy-unsafe-links --delete "$bu_source/" "$this_backup" || _fatal "rsync failed"
-$verbose && echo "    Done"
 
-# Update `latest` symlink
-latest_symlink="$(dirname "$this_backup")/latest"
-$verbose && echo "Creating $latest_symlink"
-rm $latest_symlink 2>/dev/null
-ln -s "$this_backup" "$latest_symlink" || _fatal "Failed to create the latest symlink"
-
-# Update weekly and monthly snapshots
-$verbose && echo "Creating weekly snapshot"
-_snapshot "$latest_symlink" "$weekly_dest"
-$verbose && echo "Creating monthly snapshot"
-_snapshot "$latest_symlink" "$monthly_dest"
-
-# Remove old ones
-$verbose && echo "Removing obsolete backups"
-_keep_backups "$daily_dest" 6
-_keep_backups "$weekly_dest" 3
-_keep_backups "$monthly_dest" 3
-
-$verbose && echo "Backup done"
-exit 0
+$haderror && exit 1 || exit 0

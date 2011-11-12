@@ -16,30 +16,30 @@ function cleanup {
     rmdir $mountpoint >/dev/null 2>&1
 }
 
-function _fatal {
-    echo "Fatal: $*" >&2
+function die {
+    echo "$@" >&2
     exit 1
 }
 
 
 # Must be root
-[[ $(id -u) -eq 0 ]] || _fatal "Must be root"
+[[ $(id -u) -eq 0 ]] || die "Must be root"
 
 # Make sure we can talk to desktop
-ping -q -c 1 $desktop_ip > /dev/null 2>&1 || _fatal "Desktop not reachable"
+ping -q -c 1 $desktop_ip > /dev/null 2>&1 || die "Desktop not reachable"
 
 trap cleanup INT TERM EXIT
 
 # Mount all folders
-mkdir -p $mountpoint || _fatal "Could not create mountpoint $mountpoint"
+mkdir -p $mountpoint || die "Could not create mountpoint $mountpoint"
 for dir in "${source_folders[@]}"; do
-    mkdir -p "$mountpoint/$dir" || _fatal "Could not create mountpoint $mountpoint"
-    mount.cifs "//$desktop_ip/$dir" "$mountpoint/$dir" -o iocharset=utf8,password="" || _fatal "Could not mount $dir" 
+    mkdir -p "$mountpoint/$dir" || die "Could not create mountpoint $mountpoint"
+    mount.cifs "//$desktop_ip/$dir" "$mountpoint/$dir" -o iocharset=utf8,password="" || die "Could not mount $dir" 
 done
 
 # Backup
-backup -s "$mountpoint" -d "$backup_root" -v || _fatal "Backup failed"
+backup -s "$mountpoint/" -d "$backup_root" -v -n daily -k 10 || die "Backup failed"
 
 # Give all read access
-chmod -R a+r "$backup_root" || _fatal "Failed to chmod backup"
+chmod -R a+r "$backup_root" || die "Failed to chmod backup"
 find "$backup_root" -type d -exec chmod 755 {} \;
