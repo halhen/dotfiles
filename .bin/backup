@@ -84,19 +84,25 @@ while [ $# -gt 0 ]; do
     shift
 done
 
-destsh rm -f \"$destdir/../latest\"
-destsh ln -s \"$this\" \"$destdir/../latest\" || haderror=true
+# If some backup went wrong
+$haderror && {
+    destsh mv \"$destdir/../{,failed-}$this\"
+}
 
+# If all backups were good
+$haderror || {
+    destsh rm -f \"$destdir/../latest\"
+    destsh ln -s \"$this\" \"$destdir/../latest\" || haderror=true
 
-# Rotate
-if [ "${numkeep:-}" ]; then
-    for old in $(destsh find "$destdir/.." -name \"$name-*\" \
-                            | sort -r \
-                            | tail -n +$(( numkeep+1 )) ); do
-        $verbose && echo "Removing $old"
-        destsh rm -rf \"$old\" || haderror=true
-    done
-fi
-
+    # Rotate
+    if [ "${numkeep:-}" ]; then
+        for old in $(destsh find "$destdir/.." -name \"$name-*\" \
+                                | sort -r \
+                                | tail -n +$(( numkeep+1 )) ); do
+            $verbose && echo "Removing $old"
+            destsh rm -rf \"$old\" || haderror=true
+        done
+    fi
+}
 
 $haderror && exit 1 || exit 0
