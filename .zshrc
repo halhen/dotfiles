@@ -153,7 +153,7 @@ alias i="tixi -s -i"
 alias g="git status"
 alias gb="git branch"
 alias gd="git diff"
-alias gg="git log --graph"
+alias gg="git log --graph --decorate"
 
 # }}}
 
