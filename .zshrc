@@ -149,6 +149,12 @@ alias find="noglob find"
 alias n="tixi -s -e"
 alias i="tixi -s -i"
 
+# Git
+alias g="git status"
+alias gb="git branch"
+alias gd="git diff"
+alias gg="git log --graph"
+
 # }}}
 
 # ## Functions {{{
