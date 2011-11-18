@@ -14,7 +14,8 @@ done
 PW=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9-.!"#¤%&/()=?' | head -c$LENGTH)
 
 if which xclip >/dev/null; then
-    echo $PW | xclip
+    echo $PW | xclip -i
+    echo $PW | xclip -i -selection clipboard
 fi
 
 echo $PW
