@@ -2,6 +2,8 @@
 let mapleader = ","
 " Create an underscore of ='s at the current line
 noremap <leader>1 yyp^v$r=
+" Clean up whitespace
+noremap <leader>w :%s/\s\+$//<cr>:let @/=''<CR>
 
 " Key remapping
 noremap ' `
@@ -13,6 +15,10 @@ noremap k gk
 inoremap <F1> <ESC>
 nnoremap <F1> <ESC>
 vnoremap <F1> <ESC>
+
+" H and L to beginning and end of line
+noremap H ^
+noremap L g_
 
 " Misc set:s
 set nocompatible
