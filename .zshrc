@@ -46,6 +46,11 @@ bindkey '^E' edit-command-line
 # ^L to pipe through $PAGER and execute
 bindkey -s '^L' "|$PAGER\n"
 
+# color STDERR red
+exec 2>>(while read line; do
+            print ${fg[red]}${(q)line}$resetcolor > /dev/tty;
+            print -n $'\0';
+         done &)
 # }}}
 
 # {{{ Colors for console
@@ -68,7 +73,7 @@ fi
 
     # More processes in kill completion
     zstyle ':completion:*:processes' command 'ps --forest -A -o pid,user,cmd'
-    
+
     # There's lots of bad hosts in /etc/hosts with IP 0.0.0.0. These should not be in completion
     hosts=( $(( awk 'BEGIN {OFS="\n"} /^[^#0]/ {for (i=2;i<=NF;i++) print $i}' /etc/hosts ) | grep -v '\.localdomain$' | sort -u) )
     hosts+=( $(sed -n 's/[ 	]*Host[ 	]\{1,\}\([^ 	*$]*\).*/\1/p' ~/.ssh/config))
@@ -203,10 +208,10 @@ export DIRSTACKSIZE=10
 
 # cd by menu, with previous directories as options
 function cdm {
-    #echo 
+    #echo
     select i in $(dirs -p | tail -n +2); do
         if [[ -n "$i" ]]; then
-            cd "${i//\~/$HOME}" 
+            cd "${i//\~/$HOME}"
             return $?
         fi
     done
