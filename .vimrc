@@ -1,7 +1,8 @@
 " Leader functions
 let mapleader = ","
-" Create an underscore of ='s at the current line
+" Create an underscore of ='s or -'s at the current line
 noremap <leader>1 yyp^v$r=
+noremap <leader>2 yyp^v$r-
 " Clean up whitespace
 noremap <leader>w :%s/\s\+$//<cr>:let @/=''<CR>
 
@@ -73,7 +74,7 @@ inoremap <down> <NOP>
 noremap <F5> :w !wc<CR>
 inoremap <F5> <C-o>:w !wc<CR>
 
-" Space for scrolling
+" Space for jumping down
 noremap <space> <C-d>
 
 " Search
@@ -100,10 +101,6 @@ map gf :tabe <cfile><CR>
 
 " go opens file under cursor using xdg-open; also works with URLs
 map go :silent !xdg-open <cfile><CR>:redraw!<CR>
-
-" visual copy/normal paste (Ctrl+C / Insert)
-vmap <C-c> :<Esc>`>a<CR><Esc>mx`<i<CR><Esc>my'xk$v'y!xclip -selection c<CR>u
-map <Insert> :set paste<CR>i<CR><CR><Esc>k:.!xclip -o<CR>JxkJx:set nopaste<CR> 
 
 " :w!! to write file as root
 " (Not a perfect solution as it asks to reload the file, but it works)
