@@ -46,11 +46,6 @@ bindkey '^E' edit-command-line
 # ^L to pipe through $PAGER and execute
 bindkey -s '^L' "|$PAGER\n"
 
-# color STDERR red
-exec 2>>(while read line; do
-            print ${fg[red]}${(q)line}$resetcolor > /dev/tty;
-            print -n $'\0';
-         done &)
 # }}}
 
 # {{{ Colors for console
@@ -158,6 +153,7 @@ alias i="tixi -s -i"
 alias g="git status"
 alias gb="git branch"
 alias gd="git diff"
+alias gdc="git diff --cached"
 alias gg="git log --graph --decorate"
 
 # }}}
