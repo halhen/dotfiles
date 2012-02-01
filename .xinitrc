@@ -14,7 +14,7 @@ xset r rate 180 50
 xset m 5 1
 
 # Some sanity for selections. Not much, but some.
-which autocutsel && ps a | grep -q autocutsel || {
+which autocutsel && {
     autocutsel -fork &
     autocutsel -selection PRIMARY -fork &
 }
