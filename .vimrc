@@ -101,7 +101,7 @@ autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8
 map gf :tabe <cfile><CR>
 
 " go opens file under cursor using xdg-open; also works with URLs
-map go :silent !xdg-open <cWORD><CR>:redraw!<CR>
+map go :silent !xdg-open "<cWORD>"<CR>:redraw!<CR>
 
 " :w!! to write file as root
 " (Not a perfect solution as it asks to reload the file, but it works)

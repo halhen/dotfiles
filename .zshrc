@@ -15,8 +15,6 @@ export OOO_FORCE_DESKTOP="gnome"
 export MOZ_DISABLE_PANGO=1
 export HOSTNAME=$(uname -n)
 export PYTHONSTARTUP=$HOME/.pythonrc
-
-find /usr/share/terminfo -name "$TERM" | grep -q "$TERM" || export TERM=rxvt-256color
 # }}}
 
 # {{{ Shell options
@@ -29,7 +27,6 @@ setopt MULTIOS
 setopt SHORT_LOOPS
 
 bindkey -v
-# Bindings for urxvt
 # Arrow up/down
 bindkey "^[[A" history-search-backward
 bindkey "^[[B" history-search-forward
@@ -50,7 +47,7 @@ bindkey -s '^L' "|$PAGER\n"
 
 # {{{ Colors for console
 
-# Use the settings for urxvt from ~/.Xdefaults
+# Use the color settings from ~/.Xdefaults in console
 if [[ "$TERM" = "linux" ]]; then
     for i in $(sed -n 's/^\*color\(.*\):.*#\(.*\)/\1 \2/p' "$HOME/.Xdefaults" | awk '{printf "\\e]P%X%s", $1, $2}'); do
         echo -en "$i"
