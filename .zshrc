@@ -78,8 +78,8 @@ fi
     # Use menu by default
     zstyle ':completion:*' menu select
 
-    # clyde is pacman
-    compdef _pacman clyde=pacman
+    # Tab completion for .. et al
+    zstyle ':completion:*' special-dirs true
 
 # }}}
 
