@@ -5,6 +5,8 @@ noremap <leader>1 yyp^v$r=
 noremap <leader>2 yyp^v$r-
 " Clean up whitespace
 noremap <leader>w :%s/\s\+$//<cr>:let @/=''<CR>
+" Replace word under cursor
+nnoremap <leader>s :%s/\<<C-r><C-w>\>/
 
 " Key remapping
 noremap ' `
