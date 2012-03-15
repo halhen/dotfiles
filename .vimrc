@@ -4,9 +4,24 @@ let mapleader = ","
 noremap <leader>1 yyp^v$r=
 noremap <leader>2 yyp^v$r-
 " Clean up whitespace
-noremap <leader>w :%s/\s\+$//<cr>:let @/=''<CR>
-" Replace word under cursor
+noremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+" Initiate replace with word under cursor
 nnoremap <leader>s :%s/\<<C-r><C-w>\>/
+" Replace word under cursor with the yanked text
+nnoremap <leader>S "_diwP
+" Word count
+noremap <leader>wc :w !wc<CR>
+inoremap <leader>wc <C-o>:w !wc<CR>
+
+
+" gf opens file under cursor in new tab, creating it if nescessary
+map gf :tabe <cfile><CR>
+" go opens file under cursor using xdg-open; also works with URLs
+map go :silent !xdg-open "<cWORD>"<CR>:redraw!<CR>
+
+" :w!! to write file as root
+" (Not a perfect solution as it asks to reload the file, but it works)
+cmap w!! %!sudo tee >/dev/null %
 
 " Key remapping
 noremap ' `
@@ -14,6 +29,7 @@ noremap ` '
 " Move up and down lines by screen
 noremap j gj
 noremap k gk
+
 " Stop mis-hitting F1
 inoremap <F1> <ESC>
 nnoremap <F1> <ESC>
@@ -22,6 +38,21 @@ vnoremap <F1> <ESC>
 " H and L to beginning and end of line
 noremap H ^
 noremap L g_
+
+" Tabbing
+noremap <left> :tabp<CR>
+noremap <right> :tabn<CR>
+inoremap <left> <C-o>:tabp<CR>
+inoremap <right> <C-o>:tabn<CR>
+
+" Disable arrow keys
+noremap <up> <NOP>
+noremap <down> <NOP>
+inoremap <up> <NOP>
+inoremap <down> <NOP>
+
+" Space for jumping down
+noremap <space> <C-d>
 
 " Misc set:s
 set nocompatible
@@ -62,24 +93,6 @@ set expandtab
 set foldmethod=marker
 nmap <enter> za
 
-" Tabbing
-noremap <left> :tabp<CR>
-noremap <right> :tabn<CR>
-" Disable arrow keys to really get off them
-noremap <up> <NOP>
-noremap <down> <NOP>
-inoremap <left> <C-o>:tabp<CR>
-inoremap <right> <C-o>:tabn<CR>
-inoremap <up> <NOP>
-inoremap <down> <NOP>
-
-" F5 for word count
-noremap <F5> :w !wc<CR>
-inoremap <F5> <C-o>:w !wc<CR>
-
-" Space for jumping down
-noremap <space> <C-d>
-
 " Search
 set incsearch
 set ignorecase
@@ -98,13 +111,3 @@ set backupdir=/tmp/
 autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8
 \ formatoptions+=croq softtabstop=4 smartindent
 \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
-
-" gf opens file under cursor in new tab, creating it if nescessary
-map gf :tabe <cfile><CR>
-
-" go opens file under cursor using xdg-open; also works with URLs
-map go :silent !xdg-open "<cWORD>"<CR>:redraw!<CR>
-
-" :w!! to write file as root
-" (Not a perfect solution as it asks to reload the file, but it works)
-cmap w!! %!sudo tee >/dev/null %
