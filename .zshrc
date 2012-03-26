@@ -133,6 +133,7 @@ alias history="history -Df"
 alias impressive="impressive -G 1"
 alias l=ls
 alias less="less -FiMRsX"
+alias mysql="mysql --sigint-ignore"
 alias repkg="makepkg -efi"
 alias rm="rm --preserve-root"
 alias startx="exec xinit"
