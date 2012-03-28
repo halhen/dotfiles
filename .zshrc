@@ -137,6 +137,7 @@ alias mysql="mysql --sigint-ignore"
 alias repkg="makepkg -efi"
 alias rm="rm --preserve-root"
 alias startx="exec xinit"
+alias vi="vim -p"
 alias vim="vim -p"
 alias webshare="python2 -m SimpleHTTPServer"
 
