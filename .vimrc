@@ -111,3 +111,6 @@ set backupdir=/tmp/
 autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8
 \ formatoptions+=croq softtabstop=4 smartindent
 \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
+
+" Execute python script with F5
+au FileType python map <F5> :w !/usr/bin/python2<CR>
