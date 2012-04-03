@@ -103,9 +103,13 @@ set gdefault
 set wildmenu
 set wildmode=list:longest
 
-" Backup
+" Backup and swp directory
+if !filewritable("/tmp/.vim")
+    silent execute '!umask 002; mkdir /tmp/.vim'
+endif
 set backup
-set backupdir=/tmp/
+set backupdir=/tmp/.vim
+set directory=/tmp/.vim
 
 " Smarter python indentation
 autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8
