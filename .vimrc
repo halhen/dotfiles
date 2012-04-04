@@ -61,7 +61,11 @@ set backspace=indent,eol,start
 set showmatch
 syntax enable
 set mouse=a
+
 set hlsearch
+" Clear search highlight
+noremap <F3> :let @/ = ""<CR>
+
 
 set showmode
 set showcmd
