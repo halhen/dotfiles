@@ -123,7 +123,7 @@ setopt BANG_HIST
 
 # {{{ Aliases
 if [[ $OSTYPE =~ "linux*" ]]; then
-    alias ls="ls --color=always"
+    alias ls="ls --color='always' --group-directories-first"
 fi
 alias bc="bc -l"
 alias c="cd .."
