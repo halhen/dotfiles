@@ -122,3 +122,6 @@ autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8
 
 " Execute python script with F5
 au FileType python map <F5> :w !/usr/bin/python2<CR>
+
+" Insert debug pointn with F7
+au FileType python map <F7> Oimport pdb; pdb.set_trace();<ESC>
