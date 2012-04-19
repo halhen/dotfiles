@@ -10,6 +10,7 @@ path=( ~/.bin $path)
 export AWT_TOOLKIT=MToolkit
 export BROWSER="firefox"
 export EDITOR="vim"
+export LESS="-r" # Support colors in less, e.g. through ipython
 export PAGER="less"
 export OOO_FORCE_DESKTOP="gnome"
 export MOZ_DISABLE_PANGO=1
