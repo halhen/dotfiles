@@ -15,7 +15,14 @@ export PAGER="less"
 export OOO_FORCE_DESKTOP="gnome"
 export MOZ_DISABLE_PANGO=1
 export HOSTNAME=$(uname -n)
+# }}}
+
+# {{{ Python options
 export PYTHONSTARTUP=$HOME/.pythonrc
+export WORKON_HOME=~/.virtualenvs
+export PIP_VIRTUALENV_BASE=$WORKON_HOME
+export PIP_RESPECT_VIRTUALENV=true
+which virtualenvwrapper.sh >/dev/null && source virtualenvwrapper.sh
 # }}}
 
 # {{{ Shell options
@@ -124,7 +131,7 @@ setopt BANG_HIST
 
 # {{{ Aliases
 if [[ $OSTYPE =~ "linux*" ]]; then
-    alias ls="ls --color=always"
+    alias ls="ls --color='always' --group-directories-first"
 fi
 alias bc="bc -l"
 alias c="cd .."

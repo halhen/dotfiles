@@ -61,7 +61,11 @@ set backspace=indent,eol,start
 set showmatch
 syntax enable
 set mouse=a
+
 set hlsearch
+" Clear search highlight
+noremap <F3> :let @/ = ""<CR>
+
 
 set showmode
 set showcmd
@@ -118,3 +122,6 @@ autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8
 
 " Execute python script with F5
 au FileType python map <F5> :w !/usr/bin/python2<CR>
+
+" Insert debug pointn with F7
+au FileType python map <F7> Oimport pdb; pdb.set_trace();<ESC>
