@@ -21,7 +21,7 @@ export PYTHONSTARTUP=$HOME/.pythonrc
 export WORKON_HOME=~/.virtualenvs
 export PIP_VIRTUALENV_BASE=$WORKON_HOME
 export PIP_RESPECT_VIRTUALENV=true
-which virtualenvwrapper.sh >/dev/null && virtualenvwrapper.sh
+which virtualenvwrapper.sh >/dev/null && source virtualenvwrapper.sh
 # }}}
 
 # {{{ Shell options
