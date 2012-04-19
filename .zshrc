@@ -14,7 +14,14 @@ export PAGER="less"
 export OOO_FORCE_DESKTOP="gnome"
 export MOZ_DISABLE_PANGO=1
 export HOSTNAME=$(uname -n)
+# }}}
+
+# {{{ Python options
 export PYTHONSTARTUP=$HOME/.pythonrc
+export WORKON_HOME=~/.virtualenvs
+export PIP_VIRTUALENV_BASE=$WORKON_HOME
+export PIP_RESPECT_VIRTUALENV=true
+which virtualenvwrapper.sh >/dev/null && virtualenvwrapper.sh
 # }}}
 
 # {{{ Shell options
