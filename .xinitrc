@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Configure monitors
-xrandr --output LVDS1 --auto --output VGA1 --auto --right-of LVDS1
+xrandr --output LVDS1 --auto --output $(xrandr | sed -n 's|^\(VGA.\).*|\1|p') --auto --left-of LVDS1
 
 # Set wallpaper in the background
 xsetroot -solid beige
