@@ -176,6 +176,7 @@ function o {
         shift
     done
 }
+
 # Make directories, cd into the first one
 function md {
     mkdir -p "$@" && cd "$1"
@@ -194,6 +195,26 @@ function gitrec {
     local repo
     for repo in **/.git; do
         (echo "--- ${repo:h} ---"; cd ${repo:h}; git "$@"; echo)
+    done
+}
+
+# Run $1 when $2+ is written, forever. Used to e.g. auto reload when coding
+# Usage:
+#    $ onwrite script.py "python script.py" *.py
+#
+# Adapted from http://stackoverflow.com/a/10670583
+function onwrite {
+    which inotifywait || return;
+    cmd="$1"
+    shift
+
+    while true; do
+        echo '--------------------'
+        clear
+        eval "$cmd &!"
+        trap "kill $!&> /dev/null; return;" SIGINT SIGTERM
+        inotifywait -e modify -qq "$@"
+        kill $! &> /dev/null
     done
 }
 
