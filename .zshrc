@@ -209,8 +209,8 @@ function onwrite {
     shift
 
     while true; do
-        echo '--------------------'
         clear
+        echo "---------- $(date) ----------"
         eval "$cmd &!"
         trap "kill $!&> /dev/null; return;" SIGINT SIGTERM
         inotifywait -e modify -qq "$@"
