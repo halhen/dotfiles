@@ -19,14 +19,14 @@ xterm*faceName: xft:Inconsolata:pixelsize=12
 xterm*utf8: 2
 
 ## No bold fonts, but a little lighter
-*boldMode: false
-*colorBDMode: true
-*colorBD: rgb:fc/fc/fc
+xterm*boldMode: false
+xterm*colorBDMode: true
+xterm*colorBD: rgb:fc/fc/fc
 
 
 ## change default colors
-*foreground: #f2f2f2
-*background: #101010
+xterm*foreground: #f2f2f2
+xterm*background: #101010
 
 *color0:    #1b1d1e
 *color1:    #f92673
