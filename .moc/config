@@ -61,7 +61,7 @@ Prebuffering		= 64
 # Sound driver - OSS, ALSA, JACK, or null (only for debugging)
 # You can enter more than one driver separated by a coma. The first working
 # driver will be used.
-SoundDriver		= JACK, ALSA, OSS
+SoundDriver		= JACK:ALSA:OSS
 
 # Jack output settings
 JackOutLeft		= "alsa_pcm:playback_1"
@@ -89,7 +89,7 @@ AlsaMixer2		= Master
 AlsaDevice		= default
 
 # Show files with dot at the beginning?
-ShowHiddenFiles		= no
+ShowHiddenFiles		= yes
 
 # Start in the music directory if no arguments are given. If set to no, start
 # in the current directory.
@@ -282,7 +282,7 @@ CanStartInPlaylist	= yes
 # UseCursorSelection	= no
 
 # Set the terminal title when running under xterm.
-SetXtermTitle		= yes
+SetXtermTitle		= no
 
 # Display full paths instead of just file names in the playlist.
 #PlaylistFullPaths	= yes
