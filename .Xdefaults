@@ -14,19 +14,14 @@ URxvt*scrollBar_right: false
 URxvt*scrollBar: false
 URxvt*borderLess: false
 
-## geometry and font
-URxvt*geometry: 100x30
-URxvt*font: xft:terminus:pixelsize=11
-
-
 ## xterm settings
-xterm*font: xft:terminus:pixelsize=11
+xterm*faceName: xft:Inconsolata:pixelsize=12
+xterm*utf8: 2
 
 ## No bold fonts, but a little lighter
-xterm*boldFont: xft:terminus:pixelsize=11
-xterm*boldMode: false
-xterm*colorBDMode: true
-xterm*colorBD: rgb:fc/fc/fc
+*boldMode: false
+*colorBDMode: true
+*colorBD: rgb:fc/fc/fc
 
 
 ## change default colors
