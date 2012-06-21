@@ -1,18 +1,18 @@
 set realname = "Henrik Hallberg"
 set from = "henrik@k2h.se"
-
 source ~/.mutt/imap_user_pw
 
 set folder=imaps://imap.gmail.com
 set imap_check_subscribed
-set smtp_url=smtps://$imap_user@smtp.gmail.com
-set smtp_pass=$imap_pass
-
+unset imap_passive
+set imap_keepalive = 300
+set mail_check = 60
 mailboxes = "+INBOX"
 set spoolfile = "+INBOX"
 set postponed = "+[Gmail]/Drafts"
 
-macro index,pager A "unset trash\n " "Gmail archive message"
+set smtp_url=smtps://$imap_user@smtp.gmail.com
+set smtp_pass=$imap_pass
 
 set sort_aux=last-date-received
 set sort=reverse-threads
@@ -20,26 +20,42 @@ set sort_re
 
 set header_cache= ~/.mutt/hcache
 
-unset imap_passive
+# Key bindings
+macro index,pager A "unset trash\n " "Gmail archive message"
 
-set imap_keepalive = 300
+bind index gg first-entry
+bind index G first-entry
 
-set mail_check = 60
+bind pager h previous-undeleted
+bind pager j next-line
+bind pager k previous-line
+bind pager l next-undeleted
+
 
 # Palette for use with the Linux console.  Black background.
-color hdrdefault blue black
-color quoted blue black
-color signature blue black
-color attachment yellow black
-color message brightyellow black
-color error brightyellow black
+color hdrdefault blue default
+color quoted blue default
+color signature blue default
+color attachment yellow default
+color message brightyellow default
+color error brightyellow default
 color indicator black yellow
 color status black white
-color tree white black
-color normal white black
-color markers yellow black
-color search white black
-color tilde brightmagenta black
-color index blue black ~F
-color index blue black ~D
-color index yellow black "~N|~O"
+color tree white default
+color normal white default
+color markers yellow default
+color search white default
+color tilde brightmagenta default
+color index blue default ~F
+color index blue default ~D
+color index yellow default "~N|~O"
+
+# Color diffs
+# http://karelzak.blogspot.se/2010/02/highlighted-patches-inside-mutt.html
+color body yellow default "^diff \-.*"
+color body yellow default "^index [a-f0-9].*"
+color body yellow default "^\-\-\- .*"
+color body yellow default "^[\+]{3} .*"
+color body green default "^[\+][^\+]+.*"
+color body red  default "^\-[^\-]+.*"
+color body yellow default "^@@ .*"
