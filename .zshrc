@@ -10,7 +10,7 @@ path=( ~/.bin $path)
 export AWT_TOOLKIT=MToolkit
 export BROWSER="firefox"
 export EDITOR="vim"
-export LESS="-r" # Support colors in less, e.g. through ipython
+export LESS="-FiMRsX"
 export PAGER="less"
 export OOO_FORCE_DESKTOP="gnome"
 export MOZ_DISABLE_PANGO=1
@@ -140,7 +140,6 @@ alias grep="grep --color=auto"
 alias history="history -Df"
 alias impressive="impressive -G 1"
 alias l=ls
-alias less="less -FiMRsX"
 alias mysql="mysql --sigint-ignore"
 alias repkg="makepkg -efi"
 alias rm="rm --preserve-root"

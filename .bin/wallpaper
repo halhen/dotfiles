@@ -21,23 +21,52 @@ function die {
     exit 1
 }
 
+FILLSCREEN=false
+while getopts "hf" flag; do
+    case $flag in
+        h) echo "Usage: $0 [-h(elp)] [-f(ill screen)] IMAGE-URL-OR-PATH"; exit 0;;
+        f) FILLSCREEN=true
+    esac
+done
 
 # Which subreddits should we check for images?
 REDDITSUBS="EarthPorn+specart+ImaginaryLandscapes"
 # How big part of the screen should the foreground image be?
 IMAGESIZE="(6/10)"
+BORDERSIZE=2
 
+if $FILLSCREEN; then
+    IMAGESIZE="(1/1)"
+    BORDERSIZE=0
+fi
+shift $(($OPTIND-1))
 
 SOURCE="$1"
 if [ "x$SOURCE" == "x" ]; then 
-    # If no $SOURCE is specified, fetch a random current top image from reddit
-    SOURCE=$(wget -q http://www.reddit.com/r/$REDDITSUBS/.rss -O- | \
-             sed 's/<item>/\n&/g' | \
-             grep -iv NSFW | \
-             grep -Eoi '[a-z]+://[^<; ]*.(jpg|jpeg|png)' | \
-             grep -v 'reddit.com' | \
-             grep -v 'redditmedia.com' | \
-             shuf -n1)
+    # If no $SOURCE is specified, check if we have a fixed, local available
+    # (named active.jpg or active.png in ~/.wallpaper)
+    SOURCE=~/.wallpaper/active.jpg
+
+    if [ ! -r "$SOURCE" ]; then
+        SOURCE=~/.wallpaper/active.png
+    fi
+
+    # Fill screen when using fixed, local wallpaper
+    if [ -r "$SOURCE" ]; then
+        IMAGESIZE="(1/1)"
+        BORDERSIZE=0
+    fi
+
+    if [ ! -r "$SOURCE" ]; then
+        # Else fetch a random current top image from reddit
+        SOURCE=$(wget -q http://www.reddit.com/r/$REDDITSUBS/.rss -O- | \
+                 sed 's/<item>/\n&/g' | \
+                 grep -iv NSFW | \
+                 grep -Eoi '[a-z]+://[^<; ]*.(jpg|jpeg|png)' | \
+                 grep -v 'reddit.com' | \
+                 grep -v 'redditmedia.com' | \
+                 shuf -n1)
+    fi
 fi
 
 IMAGE=$(basename "$SOURCE")
@@ -74,7 +103,7 @@ xrandr 2>/dev/null | sed -n 's|.* connected \([^ ]*\).*|\1|p' | while read MONIT
                          printf "%.0fx%.0f",W,H;}')
 
     mogrify \( -resize ${IMAGERES} \) \
-            \( -bordercolor white -border 10 \) "$IMAGE"
+            \( -bordercolor white -border $BORDERSIZE \) "$IMAGE"
 
     NEWSIZE=$(identify "$IMAGE" | awk '{print $3}')
     IMAGEGEOM=$(echo "${MONITORGEOM}x${NEWSIZE}" | \
