@@ -1,0 +1,45 @@
+set realname = "Henrik Hallberg"
+set from = "henrik@k2h.se"
+
+source ~/.mutt/imap_user_pw
+
+set folder=imaps://imap.gmail.com
+set imap_check_subscribed
+set smtp_url=smtps://$imap_user@smtp.gmail.com
+set smtp_pass=$imap_pass
+
+mailboxes = "+INBOX"
+set spoolfile = "+INBOX"
+set postponed = "+[Gmail]/Drafts"
+
+macro index,pager A "unset trash\n " "Gmail archive message"
+
+set sort_aux=last-date-received
+set sort=reverse-threads
+set sort_re
+
+set header_cache= ~/.mutt/hcache
+
+unset imap_passive
+
+set imap_keepalive = 300
+
+set mail_check = 60
+
+# Palette for use with the Linux console.  Black background.
+color hdrdefault blue black
+color quoted blue black
+color signature blue black
+color attachment yellow black
+color message brightyellow black
+color error brightyellow black
+color indicator black yellow
+color status black white
+color tree white black
+color normal white black
+color markers yellow black
+color search white black
+color tilde brightmagenta black
+color index blue black ~F
+color index blue black ~D
+color index yellow black "~N|~O"
