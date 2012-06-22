@@ -125,3 +125,11 @@ au FileType python map <F5> :w !/usr/bin/python2<CR>
 
 " Insert debug pointn with F7
 au FileType python map <F7> Oimport pdb; pdb.set_trace();<ESC>
+
+" Email settings
+" Wrap text
+au FileType mail setlocal textwidth=72 formatoptions=tcql
+" Reformat whole mail
+au FileType mail nmap <F1> gggqGgg
+" Reformat paragraph under cursor
+au FileType mail nmap <F2> gqap
