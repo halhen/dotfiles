@@ -5,7 +5,7 @@ xrandr --output LVDS1 --auto --output $(xrandr | sed -n 's|^\(VGA.\).*|\1|p') --
 
 # Set wallpaper in the background
 xsetroot -solid beige
-until wallpaper; do
+until ~/.bin/wallpaper; do
     sleep 10s
 done & 
 
