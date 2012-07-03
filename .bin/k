@@ -1,5 +1,0 @@
-#!/bin/bash
-#
-# Output calendar
-
-pal -c 10
