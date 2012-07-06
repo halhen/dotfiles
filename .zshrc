@@ -159,7 +159,9 @@ alias i="tixi -s -i"
 alias g="git status"
 alias gb="git branch"
 alias gd="git diff"
+alias gdw="git diff --word-diff"
 alias gdc="git diff --cached"
+alias gdcw="git diff --cached --word-diff"
 alias gg="git log --graph --decorate"
 
 # }}}
