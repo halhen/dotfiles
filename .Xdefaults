@@ -28,7 +28,7 @@ xterm*colorBD: rgb:fc/fc/fc
 xterm*foreground: #f2f2f2
 xterm*background: #101010
 
-*color0:    #1b1d1e
+*color0:    #303030
 *color1:    #f92673
 *color2:    #86b413
 *color3:    #fdb436

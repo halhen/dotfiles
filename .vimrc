@@ -1,8 +1,11 @@
 " Leader functions
 let mapleader = ","
-" Create an underscore of ='s or -'s at the current line
-noremap <leader>1 yyp^v$r=
-noremap <leader>2 yyp^v$r-
+" Create an underscore of separators as per asciidoc defaults
+noremap <leader>0 yyp^v$r=
+noremap <leader>1 yyp^v$r-
+noremap <leader>2 yyp^v$r~
+noremap <leader>3 yyp^v$r^
+noremap <leader>4 yyp^v$r+
 " Clean up whitespace
 noremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 " Initiate replace with word under cursor
@@ -12,7 +15,6 @@ nnoremap <leader>S "_diwP
 " Word count
 noremap <leader>wc :w !wc<CR>
 inoremap <leader>wc <C-o>:w !wc<CR>
-
 
 " gf opens file under cursor in new tab, creating it if nescessary
 map gf :tabe <cfile><CR>
@@ -29,11 +31,6 @@ noremap ` '
 " Move up and down lines by screen
 noremap j gj
 noremap k gk
-
-" Stop mis-hitting F1
-inoremap <F1> <ESC>
-nnoremap <F1> <ESC>
-vnoremap <F1> <ESC>
 
 " H and L to beginning and end of line
 noremap H ^
@@ -64,8 +61,7 @@ set mouse=a
 
 set hlsearch
 " Clear search highlight
-noremap <F3> :let @/ = ""<CR>
-
+noremap <F1> :let @/ = ""<CR>
 
 set showmode
 set showcmd
@@ -115,21 +111,26 @@ set backup
 set backupdir=/tmp/.vim
 set directory=/tmp/.vim
 
+" Word wrapping
+" Highlight background of too long lines
+augroup vimrc_autocmds
+  autocmd BufEnter * highlight OverLength ctermbg=darkgrey guibg=#592929
+  autocmd BufEnter * match OverLength /\%75v.*/
+augroup END
+
+" Wrap text
+au FileType mail,asciidoc,gitcommit setlocal textwidth=72 formatoptions=tcql
+" Reformat whole mail
+au FileType mail,asciidoc,gitcommit nmap <F1> gggqGgg
+" Reformat paragraph under cursor
+au FileType mail,asciidoc,gitcommit nmap <F2> gqap
+
+
 " Smarter python indentation
 autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8
 \ formatoptions+=croq softtabstop=4 smartindent
 \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
-
 " Execute python script with F5
 au FileType python map <F5> :w !/usr/bin/python2<CR>
-
-" Insert debug pointn with F7
+" Insert debug point with F7
 au FileType python map <F7> Oimport pdb; pdb.set_trace();<ESC>
-
-" Email settings
-" Wrap text
-au FileType mail setlocal textwidth=72 formatoptions=tcql
-" Reformat whole mail
-au FileType mail nmap <F1> gggqGgg
-" Reformat paragraph under cursor
-au FileType mail nmap <F2> gqap
