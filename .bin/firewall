@@ -33,7 +33,7 @@ function firewall_clear {
 
 function firewall_start {
     $sysctl net.ipv4.tcp_syncookies=1 >/dev/null
-    $sysctl net.ipv4.ip_forward=0 >/dev/null
+    $sysctl net.ipv4.ip_forward=1 >/dev/null
     $sysctl net.ipv4.icmp_echo_ignore_broadcasts=1 >/dev/null
     $sysctl net.ipv4.icmp_echo_ignore_all=1 >/dev/null
     $sysctl net.ipv4.conf.all.log_martians=1 >/dev/null
@@ -75,6 +75,9 @@ function firewall_start {
 
     $iptables -A FORWARD -m limit --limit 10/min -j LOG --log-prefix "FW "
     $iptables -A FORWARD -j DROP
+    
+
+    $iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 
     ################################
     # Custom chains
