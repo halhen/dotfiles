@@ -1,0 +1,153 @@
+#!/bin/bash
+#
+# Copyright (c) 2012, Henrik Hallberg (henrik@k2h.se)
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are
+# met:
+# * Redistributions of source code must retain the above copyright notice,
+#  this list of conditions and the following disclaimer.
+# * Redistributions in binary form must reproduce the above copyright
+#  notice, this list of conditions and the following disclaimer in the
+#  documentation and/or other materials provided with the distribution.
+# * Neither the name of the project nor the names of its contributors may
+#  be used to endorse or promote products derived from this software
+#  without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+# A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+# PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+# LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+# NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+usage() {
+    echo "Establish VPN through your run of the mill SSH server (with root SSH access)"
+    echo ""
+    echo "USAGE"
+    echo "-----"
+    echo "  Start tunnel"
+    echo "    $ ssh-vpn [-s first-ssh-hop] [-i clientip:serverip] [user@]ssh-host [route] ..."
+    echo ""
+    echo "    -i|--ip"
+    echo "      Pair of IP addresses for tunnel"
+    echo "      If no -i is given, 10.b.c.1:10.b.c.2, where b and c are random, is used."
+    echo "    -s|--first-ssh-hop"
+    echo "      IP address of the first SSH server you connect to. Use if you connect through"
+    echo "      reverse tunnels or intermediate servers with ProxyCommand."
+    echo ""
+    echo "  Stop tunnel"
+    echo "    $ kill <pid of pppd>"
+    echo ""
+    echo "EXAMPLES"
+    echo "--------"
+    echo "  Gain access to the 192.168.xxx.yyy network at work"
+    echo "    $ ssh-vpn -i 10.10.0.1:10.10.0.2 root@work 192.168.0.0/16"
+    echo ""
+    echo "  Encrypt all IP traffic, e.g. when on a public wifi"
+    echo "    $ ssh-vpn root@secureproxy default"
+    echo ""
+    echo "REQUIREMENTS"
+    echo "------------"
+    echo "  * pppd(8) on both client and server"
+    echo "  * ssh(1) on client and sshd(8) on server"
+    echo "  * Working root ssh access with authentication key to server"
+    echo "    * ssh-keygen(1), ssh-copy-id(1)"
+    echo "    * /etc/ssh/sshd_config:"
+    echo "      PermitRootLogin without-password"
+    echo ""
+    echo "For routing:"
+    echo "  * iproute2 on client"
+    echo "  * IP forwarding enabled on server; including something like"
+    echo "    * sysctl net.ipv4.ip_forward=1"
+    echo "    * iptables -P FORWARD ACCEPT"
+    echo "    * iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE"
+    echo ""
+    echo "RECOMMENDED READING"
+    echo "-------------------"
+    echo "  * VPN PPP-SSH Mini HOWTO"
+    echo "    http://tldp.org/HOWTO/ppp-ssh/"
+    echo "  * SSH Keys"
+    echo "    https://wiki.archlinux.org/index.php/SSH_Keys"
+    echo "  * SSH tunnel through bastion host"
+    echo "    http://backdrift.org/transparent-proxy-with-ssh"
+    echo "  * Why TCP over TCP is a bad idea"
+    echo "    http://sites.inka.de/bigred/devel/tcp-tcp.html "
+    echo ""
+    echo "SEE ALSO"
+    echo "--------"
+    echo "ssh(1), sshd(8), sshd_config(5), pppd(8), ssh-keygen(1), iptables(8)"
+}
+
+do_args() {
+    while [[ "$#" -gt 0 ]]; do
+        case "$1" in
+            -h|--help)
+                usage; exit 1;;
+            -i|--ip)
+                ip_pair="$2"
+                shift;;
+            -s|--first-ssh-hop)
+                ssh_ip="$2"
+                shift;;
+            -t|--trace)
+                set -x;;
+            -*)
+                echo "Unknown argument: $1" >&2; exit 1;;
+            *)
+                break;;
+        esac
+        shift
+    done
+
+    ssh_host="$1"
+    [[ -z "$ssh_host" ]] && echo "Missing ssh-host, see 'ssh-vpn --help'" >&2 && exit 1;
+    shift
+
+    routes=("$@")
+
+    if [[ -z "$ip_pair" ]]; then
+        ip_pair=10.$(($RANDOM % 256)).$(($RANDOM % 256)).1
+        ip_pair="${ip_pair}:${ip_pair%.*}.2"
+    fi
+}
+
+connect() {
+    pppd updetach noauth silent nodeflate pty \
+         "/usr/bin/ssh -oServerAliveInterval=55 '$ssh_host' pppd nodetach notty noauth" \
+         ipparam vpn "$ip_pair"
+
+    if [[ ${#routes[@]} -gt 0 ]]; then
+        # Add route to ssh host through current gateway
+        current_default=$(ip route show 0.0.0.0/0 | head -n1 | cut -d' ' -f3)
+        ssh_pid=$(ps ax -o"%p %a" | \
+                      awk '$2 == "/usr/bin/ssh" && $4 == "'$ssh_host'" {print $1; exit;}')
+        [[ -z "$ssh_ip" ]] && \
+            ssh_ip=$(ss -np | awk '/,'$ssh_pid',/ {split($5,a,":"); print a[1];}')
+        if [[ -z "$ssh_ip" ]]; then
+            echo "IP of the first SSH hop not found. Consider using the -s switch."
+        else
+            echo "Routing $ssh_ip through current default gateway ($current_default)"
+            ip route add "$ssh_ip" via "$current_default"
+        fi
+
+        for route in "${routes[@]}"; do
+            echo "Routing $route trough tunnel"
+            case route in
+                default|*/0)
+                    ip route replace default via "${ip_pair#*:}";;
+                *)
+                    ip route add "$route" via "${ip_pair#*:}";;
+            esac
+        done
+    fi
+}
+
+do_args "$@"
+connect
