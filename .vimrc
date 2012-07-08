@@ -61,7 +61,7 @@ set mouse=a
 
 set hlsearch
 " Clear search highlight
-noremap <F1> :let @/ = ""<CR>
+noremap Q :let @/ = ""<CR>
 
 set showmode
 set showcmd
