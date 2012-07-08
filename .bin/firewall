@@ -73,10 +73,6 @@ function firewall_start {
     $iptables -A INPUT -m limit --limit 10/min -j LOG --log-prefix "IN "
     $iptables -A INPUT -j DROP
 
-    $iptables -A FORWARD -m limit --limit 10/min -j LOG --log-prefix "FW "
-    $iptables -A FORWARD -j DROP
-    
-
     $iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 
     ################################
