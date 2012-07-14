@@ -141,3 +141,5 @@ autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8
 au FileType python map <F5> :w !/usr/bin/python2<CR>
 " Insert debug point with F7
 au FileType python map <F7> Oimport pdb; pdb.set_trace();<ESC>
+
+autocmd FileType c setlocal cindent
