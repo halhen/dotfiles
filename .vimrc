@@ -51,6 +51,12 @@ inoremap <down> <NOP>
 " Space for jumping down
 noremap <space> <C-d>
 
+" Center on found element
+map * *zz
+map # #zz
+map N Nzz
+map n nzz
+
 " Misc set:s
 set nocompatible
 set title
