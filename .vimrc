@@ -62,6 +62,7 @@ set nocompatible
 set title
 set backspace=indent,eol,start
 set showmatch
+set autochdir
 syntax enable
 set mouse=a
 
