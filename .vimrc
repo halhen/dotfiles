@@ -51,9 +51,6 @@ inoremap <down> <NOP>
 " Space for jumping down
 noremap <space> <C-d>
 
-" Tab for completion
-imap <Tab> <C-P>
-
 " Misc set:s
 set nocompatible
 set title
