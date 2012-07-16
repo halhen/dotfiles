@@ -1,4 +1,4 @@
-## Fonts
+! Fonts
 Xft.dpi:	96
 Xft.autohint: 1
 Xft.lcdfilter: lcddefault
@@ -8,25 +8,34 @@ Xft.antialias: 1
 Xft.rgba: rgb
 
 
-## URxvt settings
-## borderless and no scrollbar
+! URxvt settings
+! borderless and no scrollbar
 URxvt*scrollBar_right: false
 URxvt*scrollBar: false
 URxvt*borderLess: false
 
-## xterm settings
+URxvt*font: xft:terminus:pixelsize=12
+URxvt*boldFont: xft:terminus:pixelsize=12
+URxvt.perl-ext-common:  default,matcher
+URxvt.urlLauncher:      /usr/bin/firefox
+URxvt.matcher.button:   1
+
+
+! xterm settings
 xterm*faceName: xft:Inconsolata:pixelsize=12
 xterm*utf8: 2
 
-## No bold fonts, but a little lighter
+! No bold fonts, but a little lighter
 xterm*boldMode: false
 xterm*colorBDMode: true
 xterm*colorBD: rgb:fc/fc/fc
 
 
-## change default colors
+! change default colors
 xterm*foreground: #f2f2f2
 xterm*background: #101010
+URxvt*foreground: #f2f2f2
+URxvt*background: #101010
 
 *color0:    #303030
 *color1:    #f92673
