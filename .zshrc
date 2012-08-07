@@ -11,6 +11,7 @@ export AWT_TOOLKIT=MToolkit
 export BROWSER="firefox"
 export EDITOR="vim"
 export LESS="-FiMRsX"
+export MANWIDTH=80
 export PAGER="less"
 export OOO_FORCE_DESKTOP="gnome"
 export MOZ_DISABLE_PANGO=1
