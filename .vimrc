@@ -86,8 +86,8 @@ set undolevels=1024
 set cryptmethod=blowfish
 
 " Color scheme
-colorscheme dante
-hi Folded ctermbg=Black
+" colorscheme dante
+" hi Folded ctermbg=Black
 
 " Tab settings
 set autoindent
@@ -117,13 +117,6 @@ endif
 set backup
 set backupdir=/tmp/.vim
 set directory=/tmp/.vim
-
-" Word wrapping
-" Highlight background of too long lines
-augroup vimrc_autocmds
-  autocmd BufEnter * highlight OverLength ctermbg=darkgrey guibg=#592929
-  autocmd BufEnter * match OverLength /\%75v.*/
-augroup END
 
 " Wrap text
 au FileType mail,asciidoc,gitcommit setlocal textwidth=72 formatoptions=tcql
