@@ -112,7 +112,7 @@ set wildmode=list:longest
 
 " Backup and swp directory
 if !filewritable("/tmp/.vim")
-    silent execute '!umask 002; mkdir /tmp/.vim'
+    silent execute '!umask 000; mkdir /tmp/.vim'
 endif
 set backup
 set backupdir=/tmp/.vim
