@@ -1,0 +1,4 @@
+#!/bin/bash
+# http://fauxzen.com/add-a-progress-bar-to-copy-command-in-linux/
+
+rsync --progress -ah "$@"
