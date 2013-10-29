@@ -1,0 +1,49 @@
+#!/bin/bash
+
+function die {
+    echo "$@" >&2
+    exit 1
+}
+
+function usage {
+   echo "Start sqlite memory database and load csv with header"
+   echo "Make tons of assumptions, e.g. that the header is the line before the data, but works for me(tm)"
+   echo "Usage $0 csvfile tablename"
+   echo "  -s s Set s as separator"
+   echo "  -S n Skip n lines"
+}
+
+SEPARATOR=","
+SKIP=0
+
+while getopts "hs:S:" flag; do
+    case $flag in
+        h) usage; exit 0;;
+        s) SEPARATOR="$OPTARG" ;;
+        S) SKIP="$OPTARG";;
+        ?) exit 1;;
+    esac
+done
+
+shift $((OPTIND-1))
+[ $# -ne 2 ] && usage && exit 1
+
+CSVFILE="$1"
+TABLENAME="$2"
+
+SQL=$(mktemp)
+CSVDATA=$(mktemp)
+trap "rm $SQL $CSVDATA" EXIT
+
+#Skip lines
+tail -n+"$((1+$SKIP))" "$CSVFILE" > "$CSVDATA"
+echo "create table $TABLENAME ($(head -n1 "$CSVDATA" | tr -d '"#' | tr "$SEPARATOR" ","));" > $SQL
+cat $SQL
+
+# Extract data
+tail -n+$((2 + $SKIP)) "$CSVFILE" > "$CSVDATA"
+echo ".separator $SEPARATOR" >> $SQL
+echo ".import $CSVDATA $TABLENAME" >> $SQL
+echo ".mode column" >> $SQL
+echo ".header on" >> $SQL
+sqlite3 -init "$SQL"
