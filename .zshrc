@@ -39,6 +39,7 @@ bindkey -v
 # Arrow up/down
 bindkey "^[[A" history-search-backward
 bindkey "^[[B" history-search-forward
+bindkey "^R" history-incremental-search-backward
 
 # Home/end
 bindkey "^[[7~" beginning-of-line
