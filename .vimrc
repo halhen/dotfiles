@@ -137,5 +137,7 @@ au FileType python map <F7> Oimport pdb; pdb.set_trace();<ESC>
 
 " Auto hightlight word under cursor
 au FileType bash,sh,zsh,python,javascript,html autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
+hi Incsearch ctermfg=LightGray
+hi Incsearch ctermbg=Black
 
 autocmd FileType c setlocal cindent
