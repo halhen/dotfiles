@@ -138,6 +138,7 @@ fi
 alias bc="bc -l"
 alias c="cd .."
 export GREP_COLORS="1;33"
+alias glances="glances --theme-white"
 alias grep="grep --color=auto"
 alias history="history -Df"
 alias impressive="impressive -G 1"

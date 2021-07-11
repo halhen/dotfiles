@@ -9,3 +9,7 @@
 	unstage = reset HEAD
 [push]
 	default = tracking
+[pull]
+	rebase = false
+[credential]
+	helper = cache

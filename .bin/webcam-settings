@@ -2,7 +2,7 @@
 
 v4l2-ctl --set-ctrl brightness=136
 v4l2-ctl --set-ctrl contrast=132
-v4l2-ctl --set-ctrl saturation=138
+v4l2-ctl --set-ctrl saturation=135
 v4l2-ctl --set-ctrl sharpness=194
 v4l2-ctl --set-ctrl exposure_auto_priority=1
 v4l2-ctl --set-ctrl zoom_absolute=142
