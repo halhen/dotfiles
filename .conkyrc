@@ -1,7 +1,7 @@
 use_xft yes
 xftfont 123:size=8
 xftalpha 0.1
-update_interval 1
+update_interval 5
 total_run_times 0
 
 own_window yes
@@ -25,7 +25,7 @@ default_outline_color green
 alignment middle_left
 xinerama_head 2
 gap_x 20
-gap_y -20
+gap_y -60
 no_buffers yes
 uppercase no
 cpu_avg_samples 2
