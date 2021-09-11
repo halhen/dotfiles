@@ -16,6 +16,7 @@ export PAGER="less"
 export OOO_FORCE_DESKTOP="gnome"
 export MOZ_DISABLE_PANGO=1
 export HOSTNAME=$(uname -n)
+export GOPATH=$HOME/go
 
 [[ -f $HOME/.cargo/env ]] && source $HOME/.cargo/env
 # }}}
