@@ -37,7 +37,7 @@ use_spacer yes
 minimum_size 0 0
 TEXT
 ${voffset 13}${offset 30}${color c4c9b7}${font GE Inspira:pixelsize=120}${time %H:%M}${font}${voffset -84}${offset 10}${font GE Inspira:pixelsize=42}${time %d} ${voffset -15}${font GE Inspira:pixelsize=22}${time  %B} ${time %Y}${font}${voffset 24}${font GE Inspira:pixelsize=58}${offset -178}${time %A}${font}
-    ${voffset 4}${offset 12}${font Ubuntu:pixelsize=12}${color FFA300}GPU ${offset 8}$color${hwmon 1 fan 1} rpm / ${hwmon 1 temp 1}°${offset 30}${color FFA300}MEM ${offset 8}$color$mem / $swap${offset 30}${color FFA300}CPU ${offset 8}$color${cpu cpu0}% / ${loadavg 1} / ${hwmon 4 fan 2} rpm / ${hwmon 2 temp 1}°
+    ${voffset 4}${offset 12}${font Ubuntu:pixelsize=12}${color FFA300}GPU ${offset 7}$color${hwmon 1 fan 1} rpm / ${hwmon 1 temp 1}°${offset 25}${color FFA300}MEM ${offset 7}$color$mem${offset 25}${color FFA300}CPU ${offset 7}$color${loadavg 1} / ${hwmon 2 temp 1}°${offset 25}${color FFA300}NET ${offset 7}$color${downspeedf enp4s0} / ${upspeedf enp4s0} KiB/s
 
 
 
