@@ -14,7 +14,7 @@ own_window_argb_value 110
 
 double_buffer yes
 #minimum_size 250 5
-maximum_width 600
+#maximum_width 600
 draw_shades yes
 draw_outline no
 draw_borders no
@@ -23,7 +23,7 @@ default_color ccd4ba
 default_shade_color 444f4c
 default_outline_color black
 alignment middle_left
-xinerama_head 2
+xinerama_head 1
 gap_x 0
 gap_y -60
 no_buffers yes
@@ -36,7 +36,7 @@ use_spacer yes
 
 minimum_size 0 0
 TEXT
-${voffset 13}${offset 30}${color c4c9b7}${font GE Inspira:pixelsize=120}${time %H:%M}${font}${voffset -84}${offset 10}${font GE Inspira:pixelsize=42}${time %d} ${voffset -15}${font GE Inspira:pixelsize=22}${time  %B} ${time %Y}${font}${voffset 24}${font GE Inspira:pixelsize=58}${offset -178}${time %A}${font}
+${voffset 13}${offset 30}${color c4c9b7}${font GE Inspira:pixelsize=120}${time %H:%M}${font}${voffset -84}${offset 48}${font GE Inspira:pixelsize=42}${time %d} ${voffset -15}${font GE Inspira:pixelsize=22}${time  %B} ${time %Y}${font}${voffset 24}${font GE Inspira:pixelsize=58}${offset -228}${time %A}${font}
     ${voffset 4}${offset 12}${font Ubuntu:pixelsize=12}${color FFA300}GPU ${offset 7}$color${hwmon 1 fan 1} rpm / ${hwmon 1 temp 1}°${offset 25}${color FFA300}MEM ${offset 7}$color$mem${offset 25}${color FFA300}CPU ${offset 7}$color${loadavg 1} / ${hwmon 2 temp 1}°${offset 25}${color FFA300}NET ${offset 7}$color${downspeedf enp4s0} / ${upspeedf enp4s0} KiB/s
 
 
