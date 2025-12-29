@@ -1,0 +1,9 @@
+[Unit]
+Description=Set webcam zoom to 9
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/v4l2-ctl -d /dev/video0 --set-ctrl=zoom_absolute=9
+
+[Install]
+WantedBy=default.target
